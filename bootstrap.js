@@ -1,4 +1,4 @@
-import routes from './routes/routes';
-import store from './store/index';
+import router from './router/routes';
+import links from './lib/sidebar-links';
 
-export default { routes, store };
+export default { router, links };

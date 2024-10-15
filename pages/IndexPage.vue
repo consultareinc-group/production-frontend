@@ -19,7 +19,6 @@
 
 <script setup>
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
-
 import { useRoute } from "vue-router";
 
 const route = useRoute();
