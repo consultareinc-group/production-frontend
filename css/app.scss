@@ -1,0 +1,51 @@
+// app global css in SCSS form
+
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all");
+
+* {
+  font-family: "Open Sans";
+}
+
+body {
+  background-color: $page-background;
+}
+
+.hlogo {
+  height: $hlogo-height;
+  width: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.sidebar-qitem {
+  color: $grey-8;
+  border-top: 1px solid rgb(43, 59, 85);
+
+  * {
+    font-weight: 300;
+    font-size: $sidebar-font-size;
+  }
+
+  .q-icon {
+    color: rgb(77, 93, 124);
+    font-size: 20px;
+  }
+
+  .q-item__section--avatar {
+    padding-right: 4px;
+    min-width: calc($sidebar-font-size * 3);
+  }
+
+  .q-item__label--caption {
+    font-size: calc($sidebar-font-size * 0.975);
+    color: $grey-6;
+  }
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.normal-case {
+  font-style: normal !important;
+}
