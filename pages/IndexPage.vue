@@ -1,12 +1,12 @@
 <template>
-  <q-page class="q-pa-md column">
+  <div class="q-pa-md">
     <page-breadcrumbs
       title="Page Title"
       :items="[
         {
-          label: 'Nav 1',
-          icon: 'home',
-          to: { name: 'Nav1' },
+          label: 'Menu Item',
+          icon: 'link',
+          to: { name: 'menu-item' },
         },
       ]"
     />
@@ -14,7 +14,7 @@
       <span class="text-h4">Path: {{ route.path }}</span>
       <span class="text-h4">Name: {{ route.name }}</span>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script setup>
