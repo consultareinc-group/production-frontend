@@ -114,6 +114,10 @@
     <section class="q-mt-xl">
       <MaterialDetailsTable />
     </section>
+
+    <section class="q-mt-xl">
+      <ActivityLogsTable />
+    </section>
   </div>
 </template>
 
@@ -126,6 +130,7 @@ import { CONTAINER_PADDING_Y, CONTAINER_PADDING_X } from "../../lib/vars";
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import SelectComponent from "../../components/ui/SelectComponent.vue";
 import MaterialDetailsTable from "../../components/production/MaterialDetailsTable.vue";
+import ActivityLogsTable from "../../components/production/ActivityLogsTable.vue";
 
 const route = useRoute();
 
