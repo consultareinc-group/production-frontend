@@ -12,7 +12,18 @@
       binary-state-sort
       @request="onRequest"
       separator="cell"
+      class="overflow-auto"
     >
+      <template v-slot:body-cell-batch_number="props">
+        <q-td :props="props">
+          <span
+            :style="{ color: '#286091' }"
+            class="underline cursor-pointer"
+            >{{ props.row.batch_number }}</span
+          >
+        </q-td>
+      </template>
+
       <template v-slot:top>
         <div class="fit row wrap justify-between items-center">
           <div class="row items-center">
@@ -41,14 +52,18 @@
         <q-td :props="props">
           <div
             class="relative-position row items-center"
-            :style="{ width: px(120) }"
+            :style="{ width: '100%', 'min-width': px(100) }"
           >
             <span>{{ props.row.status }}</span>
 
             <q-btn unelevated icon="more_vert" class="more-vert">
               <q-menu>
                 <q-list style="min-width: 100px">
-                  <q-item clickable v-close-popup>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="viewProductionPlanDetails(props.row.batch_number)"
+                  >
                     <q-item-section>View</q-item-section>
                   </q-item>
                   <q-item clickable v-close-popup>
@@ -69,8 +84,12 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+
 import { px } from "src/lib/utils";
 import { columns, originalRows } from "../../data/viewProductPlansDummyData";
+
+const router = useRouter();
 
 const rows = ref([]);
 const tableRef = ref();
@@ -84,8 +103,6 @@ const pagination = ref({
   rowsNumber: 0,
 });
 
-const showDropdown = ref(false);
-
 onMounted(() => {
   // get initial data from server (1st page)
   tableRef.value.requestServerInteraction();
@@ -94,75 +111,44 @@ onMounted(() => {
 // emulate ajax call
 // SELECT * FROM ... WHERE...LIMIT...
 function fetchFromServer(startRow, count, filter, sortBy, descending) {
-  const data = filter
-    ? originalRows.value.filter((row) =>
-        Object.values(row).some((val) =>
-          String(val).toLowerCase().includes(filter.toLowerCase())
-        )
-      )
-    : originalRows.value.slice();
+  let data = originalRows.value.slice();
 
-  // handle sortBy
+  // Handle filtering
+  if (filter) {
+    data = data.filter((row) => {
+      return Object.values(row).some((val) =>
+        String(val).toLowerCase().includes(filter.toLowerCase())
+      );
+    });
+  }
+
+  // Handle sorting
   if (sortBy) {
-    const sortFn =
-      sortBy === "desc"
-        ? descending
-          ? (a, b) => (a.name > b.name ? -1 : a.name < b.name ? 1 : 0)
-          : (a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
-        : descending
-        ? (a, b) => parseFloat(b[sortBy]) - parseFloat(a[sortBy])
-        : (a, b) => parseFloat(a[sortBy]) - parseFloat(b[sortBy]);
-    data.sort(sortFn);
+    data.sort(dynamicSort(sortBy, descending));
   }
 
-  if (sortBy === "product_name") {
-    const sortFn = descending
-      ? (a, b) =>
-          a.product_name > b.product_name
-            ? -1
-            : a.product_name < b.product_name
-            ? 1
-            : 0
-      : (a, b) =>
-          a.product_name > b.product_name
-            ? 1
-            : a.product_name < b.product_name
-            ? -1
-            : 0;
-    data.sort(sortFn);
-  }
-
-  if (sortBy === "quantity") {
-    const sortFn = descending
-      ? (a, b) => b.quantity - a.quantity
-      : (a, b) => a.quantity - b.quantity;
-    data.sort(sortFn);
-  }
-
-  if (sortBy === "start_date_time" || sortBy === "end_date_time") {
-    const sortFn = descending
-      ? (a, b) => new Date(b[sortBy]) - new Date(a[sortBy])
-      : (a, b) => new Date(a[sortBy]) - new Date(b[sortBy]);
-    data.sort(sortFn);
-  }
-
-  if (sortBy === "customer") {
-    const sortFn = descending
-      ? (a, b) =>
-          a.customer > b.customer ? -1 : a.customer < b.customer ? 1 : 0
-      : (a, b) =>
-          a.customer > b.customer ? 1 : a.customer < b.customer ? -1 : 0;
-    data.sort(sortFn);
-  }
-
-  if (sortBy === "status") {
-    const sortFn = descending
-      ? (a, b) => (a.status > b.status ? -1 : a.status < b.status ? 1 : 0)
-      : (a, b) => (a.status > b.status ? 1 : a.status < b.status ? -1 : 0);
-    data.sort(sortFn);
-  }
-
+  // Simulate server response
   return data.slice(startRow, startRow + count);
+}
+
+function dynamicSort(field, descending) {
+  return function (a, b) {
+    let fieldA = a[field];
+    let fieldB = b[field];
+
+    // Handle different field types
+    if (typeof fieldA === "string" && typeof fieldB === "string") {
+      fieldA = fieldA.toLowerCase();
+      fieldB = fieldB.toLowerCase();
+    } else {
+      fieldA = parseFloat(fieldA);
+      fieldB = parseFloat(fieldB);
+    }
+
+    if (fieldA < fieldB) return descending ? 1 : -1;
+    if (fieldA > fieldB) return descending ? -1 : 1;
+    return 0;
+  };
 }
 
 // emulate 'SELECT count(*) FROM ...WHERE...'
@@ -221,8 +207,11 @@ function onRequest(props) {
 }
 
 // handle the option click
-const handleOptionClick = (option) => {
-  console.log(option);
+const viewProductionPlanDetails = (batch_number) => {
+  router.push({
+    name: "viewProductionPlanDetails",
+    params: { id: batch_number },
+  });
 };
 
 // Watch for changes in pagination.rowsPerPage and refetch data
@@ -237,7 +226,7 @@ watch(
 <style lang="scss" scoped>
 .more-vert {
   position: absolute;
-  right: -8px;
+  right: 0;
   padding: 2px 6px;
   border-radius: 100%;
   transition: background-color 0.3s ease;
@@ -256,6 +245,10 @@ watch(
 }
 :deep(.q-table__top) {
   padding: 0 0 21px 0;
+}
+
+:deep(.q-table--cell-separator .q-table__top) {
+  border-bottom: none;
 }
 
 :deep(.q-field--standard .q-field__control:before) {
