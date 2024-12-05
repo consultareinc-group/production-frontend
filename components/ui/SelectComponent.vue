@@ -1,7 +1,19 @@
 <template>
   <div>
-    <label for="">Select dropdown</label>
-    <q-select dense square outlined label-stack v-model="model" use-input input-debounce="0" :options="options" @filter="filterFn" style="width: 250px">
+    <label class="select-header">{{ label }}</label>
+    <q-select
+      dense
+      square
+      outlined
+      label-stack
+      v-model="model"
+      use-input
+      input-debounce="0"
+      :options="options"
+      @filter="filterFn"
+      style="width: 200px"
+      class="q-mt-xs"
+    >
       <template v-slot:no-option>
         <q-item>
           <q-item-section class="text-grey"> No results </q-item-section>
@@ -11,36 +23,37 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 
-const stringOptions = ["Google", "Facebook", "Twitter", "Apple", "Oracle"];
+const props = defineProps({
+  label: { type: String, required: true },
+  optionsArray: { type: Array, required: true },
+});
 
-export default {
-  setup() {
-    const options = ref(stringOptions);
+const options = ref(props.optionsArray);
+const model = ref(props.optionsArray[0]);
 
-    return {
-      model: ref(null),
-      options,
+const filterFn = (val, update) => {
+  if (val === "") {
+    update(() => {
+      options.value = props.optionsArray;
+    });
+    return;
+  }
 
-      filterFn(val, update) {
-        if (val === "") {
-          update(() => {
-            options.value = stringOptions;
-
-            // here you have access to "ref" which
-            // is the Vue reference of the QSelect
-          });
-          return;
-        }
-
-        update(() => {
-          const needle = val.toLowerCase();
-          options.value = stringOptions.filter((v) => v.toLowerCase().indexOf(needle) > -1);
-        });
-      },
-    };
-  },
+  update(() => {
+    const needle = val.toLowerCase();
+    options.value = props.optionsArray.filter(
+      (v) => v.toLowerCase().indexOf(needle) > -1
+    );
+  });
 };
 </script>
+
+<style lang="scss" scoped>
+.select-header {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+}
+</style>
