@@ -1,5 +1,5 @@
 <template>
-  <section
+  <div
     :style="{ margin: `${px(CONTAINER_PADDING_Y)} ${px(CONTAINER_PADDING_X)}` }"
   >
     <PageBreadcrumbs
@@ -7,6 +7,7 @@
       :items="[
         {
           label: 'Production Planning',
+          to: { name: 'viewProductionPlans' },
         },
         {
           label: 'View Production Plans',
@@ -22,7 +23,7 @@
     <div class="table-container">
       <ViewProductionPlansTable />
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
