@@ -10,9 +10,9 @@ const routes = [
         component: () => import("../pages/IndexPage.vue"),
       },
       {
-        path: "planning",
-        name: "planning",
-        component: () => import("../pages/PlanningPage.vue"),
+        path: "planning/view-production-plans",
+        name: "viewProductionPlans",
+        component: () => import("../pages/Production/ViewProductionPlans.vue"),
       },
 
       // Add your route here
