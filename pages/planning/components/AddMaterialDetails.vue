@@ -58,7 +58,6 @@
             v-model="materialDetails.batch"
             id="batch"
             label="Batch"
-            is-required
             type="number"
           />
         </div>

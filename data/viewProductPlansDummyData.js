@@ -84,7 +84,7 @@ export const originalRows = ref([
     start_date_time: "August 14, 2024 8:00 AM",
     end_date_time: "August 17, 2024 5:00 PM",
     customer: "Doe, Jane",
-    status: "Active",
+    status: "Verified",
   },
   {
     batch_number: 10003,

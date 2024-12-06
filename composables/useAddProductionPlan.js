@@ -6,7 +6,7 @@ export function useAddProductionPlan() {
   const deleteMaterialLoading = ref(false);
 
   const productDetails = ref({
-    batch_number: "",
+    batch_number: Date.now(),
     product_name: "",
     description: "",
     quantity: "",

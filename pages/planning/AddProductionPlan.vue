@@ -137,7 +137,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { px } from "../../lib/utils";
 
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
