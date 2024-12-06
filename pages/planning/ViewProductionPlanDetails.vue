@@ -16,7 +16,9 @@
       ]"
     />
 
-    <SectionWrapper>
+    <SectionWrapperLoader v-if="loading" has-header />
+
+    <SectionWrapper v-else>
       <template #header>
         <h2 class="title">Product Details</h2>
         <SelectComponent
@@ -126,7 +128,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { px } from "../../lib/utils";
@@ -137,8 +139,10 @@ import SelectComponent from "../../components/ui/SelectComponent.vue";
 import MaterialDetailsTable from "./components/MaterialDetailsTable.vue";
 import ActivityLogsTable from "./components/ActivityLogsTable.vue";
 import SectionWrapper from "../../components/ui/SectionWrapper.vue";
+import SectionWrapperLoader from "../../components/ui/SectionWrapperLoader.vue";
 
 const route = useRoute();
+const loading = ref(false);
 
 const selectOptions = ref([
   "Pending",
@@ -150,6 +154,13 @@ const selectOptions = ref([
   "Canceled",
   "Delayed",
 ]);
+
+onMounted(() => {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+  }, 2000);
+});
 </script>
 
 <style lang="scss" scoped>
