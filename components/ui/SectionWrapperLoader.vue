@@ -10,8 +10,14 @@
     </template>
 
     <template #default>
-      <div class="row justify-between">
-        <div class="column" :style="{ width: px(303) }">
+      <div
+        class="row justify-between"
+        :style="{
+          gap: px(50),
+          flexWrap: 'nowrap',
+        }"
+      >
+        <div class="column" :style="{ width: '100%' }">
           <div
             class="skeleton"
             :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
@@ -26,7 +32,7 @@
           ></div>
         </div>
 
-        <div class="column" :style="{ width: px(303) }">
+        <div class="column" :style="{ width: '100%' }">
           <div
             class="skeleton"
             :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
@@ -45,7 +51,7 @@
           ></div>
         </div>
 
-        <div class="column" :style="{ width: px(303) }">
+        <div class="column" :style="{ width: '100%' }">
           <div
             class="skeleton"
             :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"

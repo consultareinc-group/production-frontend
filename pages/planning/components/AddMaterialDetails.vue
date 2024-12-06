@@ -15,8 +15,14 @@
       </template>
 
       <template #default>
-        <div class="row justify-between">
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+        <div
+          class="row justify-between"
+          :style="{
+            gap: px(50),
+            flexWrap: 'nowrap',
+          }"
+        >
+          <div class="column" :style="{ gap: px(18), width: '100%' }">
             <InputField
               v-model="materialDetails.material_name"
               id="material_name"
@@ -39,7 +45,7 @@
               is-required
             />
           </div>
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+          <div class="column" :style="{ gap: px(18), width: '100%' }">
             <InputField
               v-model="materialDetails.lot_number"
               id="lot_number"
@@ -60,7 +66,7 @@
               type="number"
             />
           </div>
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+          <div class="column" :style="{ gap: px(18), width: '100%' }">
             <InputField
               v-model="materialDetails.amount_issued_date_time"
               id="amount_issued_date_time"

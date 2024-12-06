@@ -26,8 +26,14 @@
       </template>
 
       <template #default>
-        <div class="row justify-between">
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+        <div
+          class="row justify-between"
+          :style="{
+            gap: px(50),
+            flexWrap: 'nowrap',
+          }"
+        >
+          <div class="column" :style="{ width: '100%', gap: px(18) }">
             <InputField
               v-model="route.params.id"
               id="batch_number"
@@ -50,7 +56,7 @@
             />
           </div>
 
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+          <div class="column" :style="{ width: '100%', gap: px(18) }">
             <InputField
               v-model="productDetails.quantity"
               id="quantity"
@@ -75,7 +81,7 @@
             <InputField id="customer" label="Customer" is-required />
           </div>
 
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
+          <div class="column" :style="{ width: '100%', gap: px(18) }">
             <InputField
               v-model="productDetails.purchase_order_number"
               id="purchase_order_number"
