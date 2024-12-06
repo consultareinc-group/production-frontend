@@ -13,6 +13,7 @@
       @request="onRequest"
       separator="cell"
       class="overflow-auto"
+      table-header-class="bg-dark text-white"
     >
       <template v-slot:body-cell-batch_number="props">
         <q-td :props="props">
@@ -73,11 +74,7 @@
                   >
                     <q-item-section>Edit</q-item-section>
                   </q-item>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    :disable="props.row.status === 'Pending'"
-                  >
+                  <q-item clickable v-close-popup @click="archiveDialog = true">
                     <q-item-section>Archive</q-item-section>
                   </q-item>
                 </q-list>
@@ -87,6 +84,51 @@
         </q-td>
       </template>
     </q-table>
+
+    <q-dialog v-model="archiveDialog" persistent>
+      <q-card class="q-px-xl relative-position">
+        <q-icon
+          name="cancel"
+          color="grey"
+          size="sm"
+          class="absolute-top-right q-mt-sm q-mr-sm cursor-pointer"
+          @click="archiveDialog = false"
+        />
+        <q-card-section class="text-center q-mt-lg">
+          <q-icon name="archive" color="orange-10" size="lg" />
+          <div class="text-h6 text-weight-bold">Archive Confirmation</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-center">
+          Are you sure you want to archive this production plan?
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-center">
+          <span class="text-bold">Batch Number: </span> 100003
+        </q-card-section>
+
+        <q-card-section class="flex justify-center q-my-lg">
+          <q-btn
+            flat
+            no-caps
+            label="Cancel"
+            class="border-000000-all q-px-lg"
+            v-close-popup
+          />
+          <div class="q-mx-md"></div>
+          <q-btn
+            flat
+            no-caps
+            class="bg-accent text-white q-px-lg"
+            @click="archivePlan"
+            :disable="archivePlanLoading"
+          >
+            <q-spinner v-if="archivePlanLoading" />
+            <span v-else>Confirm</span>
+          </q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -110,6 +152,9 @@ const pagination = ref({
   rowsPerPage: 10,
   rowsNumber: 0,
 });
+
+const archiveDialog = ref(false);
+const archivePlanLoading = ref(false);
 
 onMounted(() => {
   // get initial data from server (1st page)
@@ -230,6 +275,15 @@ const editProductionPlan = (batch_number) => {
   });
 };
 
+// handle production plan archive
+const archivePlan = () => {
+  archivePlanLoading.value = true;
+  setTimeout(() => {
+    archiveDialog.value = false;
+    archivePlanLoading.value = false;
+  }, 1500);
+};
+
 // Watch for changes in pagination.rowsPerPage and refetch data
 watch(
   () => pagination.value.rowsPerPage,
@@ -305,5 +359,10 @@ watch(
 
 :deep(.q-field__native) {
   min-height: 29px !important;
+}
+
+:deep(.q-table__linear-progress) {
+  color: #fff !important;
+  height: 5px;
 }
 </style>

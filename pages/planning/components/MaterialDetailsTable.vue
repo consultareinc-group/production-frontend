@@ -12,6 +12,7 @@
       binary-state-sort
       @request="onRequest"
       separator="cell"
+      table-header-class="bg-dark text-white"
     >
       <template v-slot:body-cell="props">
         <q-td
@@ -171,5 +172,10 @@ function onRequest(props) {
 
 :deep(.q-table--cell-separator .q-table__top) {
   border-bottom: none;
+}
+
+:deep(.q-table__linear-progress) {
+  color: #fff !important;
+  height: 5px;
 }
 </style>

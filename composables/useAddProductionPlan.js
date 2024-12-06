@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { Notify } from "quasar";
 
 export function useAddProductionPlan() {
   const loading = ref(false);
@@ -74,6 +75,28 @@ export function useAddProductionPlan() {
       productDetails: productDetails.value,
       materials: materials.value,
     };
+
+    Notify.create({
+      color: "green-2",
+      message: `
+      <div style="font-size: 14px; color: #155724">
+      <strong>Success!</strong> The record has been saved.
+      </div>
+      `,
+      position: "top-right",
+      html: true,
+      actions: [
+        {
+          icon: "close",
+          color: "green-8",
+          handler: () => {
+            /* close handler */
+          },
+        },
+      ],
+      classes: "notification",
+    });
+
     console.log("Production Plan:", productionPlan);
   };
 

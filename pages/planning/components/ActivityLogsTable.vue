@@ -14,6 +14,7 @@
       separator="cell"
       class="overflow-auto"
       style="max-width: 460px"
+      table-header-class="bg-dark text-white"
     >
     </q-table>
   </div>
@@ -160,5 +161,10 @@ function onRequest(props) {
 
 :deep(.q-table--cell-separator .q-table__top) {
   border-bottom: none;
+}
+
+:deep(.q-table__linear-progress) {
+  color: #fff !important;
+  height: 5px;
 }
 </style>
