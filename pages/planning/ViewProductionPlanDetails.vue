@@ -1,7 +1,5 @@
 <template>
-  <div
-    :style="{ margin: `${px(CONTAINER_PADDING_Y)} ${px(CONTAINER_PADDING_X)}` }"
-  >
+  <MainContentWrapper>
     <PageBreadcrumbs
       title="Production Planning"
       :items="[
@@ -124,7 +122,7 @@
     <section class="q-mt-xl">
       <ActivityLogsTable />
     </section>
-  </div>
+  </MainContentWrapper>
 </template>
 
 <script setup>
@@ -132,7 +130,6 @@ import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 import { px } from "../../lib/utils";
-import { CONTAINER_PADDING_Y, CONTAINER_PADDING_X } from "../../lib/vars";
 
 import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
 import SelectComponent from "../../components/ui/SelectComponent.vue";
@@ -140,6 +137,7 @@ import MaterialDetailsTable from "./components/MaterialDetailsTable.vue";
 import ActivityLogsTable from "./components/ActivityLogsTable.vue";
 import SectionWrapper from "../../components/ui/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/ui/SectionWrapperLoader.vue";
+import MainContentWrapper from "../../components/MainContentWrapper.vue";
 
 const route = useRoute();
 const loading = ref(false);

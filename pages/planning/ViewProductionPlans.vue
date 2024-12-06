@@ -1,7 +1,5 @@
 <template>
-  <div
-    :style="{ margin: `${px(CONTAINER_PADDING_Y)} ${px(CONTAINER_PADDING_X)}` }"
-  >
+  <MainContentWrapper>
     <PageBreadcrumbs
       title="Production Planning"
       :items="[
@@ -17,22 +15,22 @@
     />
 
     <div class="add-button">
-      <ButtonComponent>Add New</ButtonComponent>
+      <ButtonComponent :to="{ name: 'addProductionPlan' }"
+        >Add New</ButtonComponent
+      >
     </div>
 
     <div class="table-container">
       <ViewProductionPlansTable />
     </div>
-  </div>
+  </MainContentWrapper>
 </template>
 
 <script setup>
-import { px } from "../../lib/utils";
-import { CONTAINER_PADDING_Y, CONTAINER_PADDING_X } from "../../lib/vars";
-
 import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
 import ButtonComponent from "../../components/ui/ButtonComponent.vue";
 import ViewProductionPlansTable from "./components/ViewProductionPlansTable.vue";
+import MainContentWrapper from "../../components/MainContentWrapper.vue";
 </script>
 
 <style lang="scss" scoped>
