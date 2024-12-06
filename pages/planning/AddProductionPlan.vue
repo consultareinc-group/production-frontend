@@ -28,39 +28,68 @@
       <template #default>
         <div class="row justify-between">
           <div class="column" :style="{ width: px(303), gap: px(18) }">
-            <InputField id="batchNumber" label="Batch Number" is-required />
-            <InputField id="productName" label="Product Name" is-required />
-            <InputField id="description" label="Description" type="textarea" />
-          </div>
-          <div class="column" :style="{ width: px(303), gap: px(18) }">
-            <InputField id="quantity" label="Quantity" is-required />
             <InputField
-              id="startDateTime"
+              v-model="productDetails.batch_number"
+              id="batch_number"
+              label="Batch Number"
+              is-required
+              type="number"
+            />
+            <InputField
+              v-model="productDetails.product_name"
+              id="product_name"
+              label="Product Name"
+              is-required
+            />
+            <InputField
+              v-model="productDetails.description"
+              id="description"
+              label="Description"
+              type="textarea"
+            />
+          </div>
+
+          <div class="column" :style="{ width: px(303), gap: px(18) }">
+            <InputField
+              v-model="productDetails.quantity"
+              id="quantity"
+              label="Quantity"
+              is-required
+              type="number"
+            />
+            <InputField
+              v-model="productDetails.start_date_time"
+              id="start_date_time"
               label="Start Date & Time"
               is-required
               type="date"
             />
             <InputField
-              id="endDateTime"
+              v-model="productDetails.end_date_time"
+              id="end_date_time"
               label="End Date & Time"
               is-required
               type="date"
             />
             <InputField id="customer" label="Customer" is-required />
           </div>
+
           <div class="column" :style="{ width: px(303), gap: px(18) }">
             <InputField
-              id="purchaseOrderNumber"
+              v-model="productDetails.purchase_order_number"
+              id="purchase_order_number"
               label="Purchase Order Number"
               is-required
             />
             <InputField
-              id="salesOrderNumber"
+              v-model="productDetails.sales_order_number"
+              id="sales_order_number"
               label="Sales Order Number"
               is-required
             />
             <InputField
-              id="commentsNotes"
+              v-model="productDetails.comment_notes"
+              id="comment_notes"
               label="Comments/Notes"
               type="textarea"
             />
@@ -71,20 +100,27 @@
 
     <SectionWrapperLoader v-if="loading" />
     <div v-else>
-      <div v-for="(material, index) in materials" :key="index" class="q-mb-xl">
-        <AddMaterialDetails :material="material" />
+      <div v-for="material in materials" :key="material.id" class="q-mb-xl">
+        <AddMaterialDetails @delete="deleteMaterial(material.id)" />
       </div>
     </div>
     <SectionWrapperLoader v-if="addMaterialLoading" class="q-mb-xl" />
 
     <div>
-      <ButtonComponent @click="addMaterialComponent" class="q-mt-xl"
-        >Add Material</ButtonComponent
-      >
+      <ButtonComponent @click="addMaterial" class="q-mt-xl">
+        <q-spinner
+          v-if="addMaterialLoading"
+          size="24px"
+          color="positive"
+          class="q-mr-md"
+        />
+        Add Material
+      </ButtonComponent>
     </div>
 
     <div>
       <ButtonComponent
+        @click="saveProductionPlan"
         class="q-mt-xl"
         color="positive"
         :style="{
@@ -112,10 +148,17 @@ import InputField from "../../components/ui/InputField.vue";
 import AddMaterialDetails from "./components/AddMaterialDetails.vue";
 import ButtonComponent from "../../components/ui/ButtonComponent.vue";
 
-const loading = ref(false);
+import { useAddProductionPlan } from "../../composables/useAddProductionPlan";
 
-const materials = ref([{}]);
-const addMaterialLoading = ref(false);
+const {
+  loading,
+  addMaterialLoading,
+  productDetails,
+  materials,
+  addMaterial,
+  deleteMaterial,
+  saveProductionPlan,
+} = useAddProductionPlan();
 
 onMounted(() => {
   loading.value = true;
@@ -123,14 +166,6 @@ onMounted(() => {
     loading.value = false;
   }, 2000);
 });
-
-const addMaterialComponent = () => {
-  addMaterialLoading.value = true;
-  setTimeout(() => {
-    materials.value.push({});
-    addMaterialLoading.value = false;
-  }, 2000);
-};
 </script>
 
 <style lang="scss" scoped>
