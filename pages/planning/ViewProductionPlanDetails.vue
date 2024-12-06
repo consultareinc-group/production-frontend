@@ -12,6 +12,7 @@
           to: { name: 'viewProductionPlanDetails' },
         },
       ]"
+      class="q-mb-xl"
     />
 
     <SectionWrapperLoader v-if="loading" has-header />

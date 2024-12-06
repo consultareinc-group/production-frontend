@@ -12,7 +12,6 @@
       binary-state-sort
       @request="onRequest"
       separator="cell"
-      hide-bottom
       class="overflow-auto"
       style="max-width: 460px"
     >
