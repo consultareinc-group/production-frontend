@@ -5,7 +5,6 @@
       :items="[
         {
           label: 'Production Planning',
-          to: { name: 'viewProductionPlans' },
         },
         {
           label: 'View Production Plans',
@@ -14,7 +13,10 @@
       ]"
     />
 
-    <div class="add-button">
+    <div class="action-buttons">
+      <ButtonComponent color="white" text-color="black" outline
+        >Archives</ButtonComponent
+      >
       <ButtonComponent :to="{ name: 'addProductionPlan' }"
         >Add New</ButtonComponent
       >
@@ -34,10 +36,11 @@ import MainContentWrapper from "../../components/MainContentWrapper.vue";
 </script>
 
 <style lang="scss" scoped>
-.add-button {
+.action-buttons {
   display: flex;
   justify-content: flex-end;
   margin-top: 22px;
+  gap: 20px;
 }
 
 .table-container {
