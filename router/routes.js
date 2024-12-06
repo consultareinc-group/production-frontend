@@ -12,13 +12,13 @@ const routes = [
       {
         path: "planning/view-production-plans",
         name: "viewProductionPlans",
-        component: () => import("../pages/Production/ViewProductionPlans.vue"),
+        component: () => import("../pages/planning/ViewProductionPlans.vue"),
       },
       {
         path: "planning/view-production-plans/:id",
         name: "viewProductionPlanDetails",
         component: () =>
-          import("../pages/production/ViewProductionPlanDetails.vue"),
+          import("../pages/planning/ViewProductionPlanDetails.vue"),
       },
 
       // Add your route here

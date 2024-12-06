@@ -86,8 +86,8 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 
-import { px } from "src/lib/utils";
-import { columns, originalRows } from "../../data/viewProductPlansDummyData";
+import { px } from "../../../lib/utils";
+import { columns, originalRows } from "../../../data/viewProductPlansDummyData";
 
 const router = useRouter();
 

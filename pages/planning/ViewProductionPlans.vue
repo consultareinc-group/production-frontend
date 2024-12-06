@@ -27,12 +27,12 @@
 </template>
 
 <script setup>
-import { px } from "src/lib/utils";
+import { px } from "../../lib/utils";
 import { CONTAINER_PADDING_Y, CONTAINER_PADDING_X } from "../../lib/vars";
 
-import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
+import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
 import ButtonComponent from "../../components/ui/ButtonComponent.vue";
-import ViewProductionPlansTable from "../../components/production/ViewProductionPlansTable.vue";
+import ViewProductionPlansTable from "./components/ViewProductionPlansTable.vue";
 </script>
 
 <style lang="scss" scoped>

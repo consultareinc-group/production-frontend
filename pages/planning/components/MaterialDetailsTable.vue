@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="full-width">
     <q-table
       flat
       ref="tableRef"
-      title="Activity Logs"
+      title="Material Details"
       :rows="rows"
       :columns="columns"
       row-key="id"
@@ -12,10 +12,19 @@
       binary-state-sort
       @request="onRequest"
       separator="cell"
-      hide-bottom
-      class="overflow-auto"
-      style="max-width: 460px"
     >
+      <template v-slot:body-cell="props">
+        <q-td
+          :props="props"
+          :style="{
+            'max-width': props.col.name === 'description' ? px(400) : 'none',
+            'min-width': props.col.name === 'description' ? px(300) : 'none',
+            'white-space': 'wrap',
+          }"
+        >
+          {{ props.value }}
+        </q-td>
+      </template>
     </q-table>
   </div>
 </template>
@@ -23,8 +32,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-import { px } from "src/lib/utils";
-import { columns, originalRows } from "../../data/activityLogsDummyData";
+import { px } from "../../../lib/utils";
+import { columns, originalRows } from "../../../data/materialDetailsDummyData";
 
 const rows = ref([]);
 const tableRef = ref();
