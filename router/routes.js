@@ -20,6 +20,11 @@ const routes = [
         component: () =>
           import("../pages/planning/ViewProductionPlanDetails.vue"),
       },
+      {
+        path: "planning/add-production-plan",
+        name: "addProductionPlan",
+        component: () => import("../pages/planning/AddProductionPlan.vue"),
+      },
 
       // Add your route here
     ],
