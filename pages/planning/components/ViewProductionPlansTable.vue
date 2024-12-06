@@ -66,10 +66,18 @@
                   >
                     <q-item-section>View</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="editProductionPlan(props.row.batch_number)"
+                  >
                     <q-item-section>Edit</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup>
+                  <q-item
+                    clickable
+                    v-close-popup
+                    :disable="props.row.status === 'Pending'"
+                  >
                     <q-item-section>Archive</q-item-section>
                   </q-item>
                 </q-list>
@@ -210,6 +218,14 @@ function onRequest(props) {
 const viewProductionPlanDetails = (batch_number) => {
   router.push({
     name: "viewProductionPlanDetails",
+    params: { id: batch_number },
+  });
+};
+
+// handle production plan edit
+const editProductionPlan = (batch_number) => {
+  router.push({
+    name: "editProductionPlan",
     params: { id: batch_number },
   });
 };

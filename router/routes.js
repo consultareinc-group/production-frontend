@@ -25,6 +25,11 @@ const routes = [
         name: "addProductionPlan",
         component: () => import("../pages/planning/AddProductionPlan.vue"),
       },
+      {
+        path: "planning/edit-production-plan/:id",
+        name: "editProductionPlan",
+        component: () => import("../pages/planning/EditProductionPlan.vue"),
+      },
 
       // Add your route here
     ],
