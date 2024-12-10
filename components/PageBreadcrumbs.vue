@@ -1,5 +1,5 @@
 <template>
-  <h4 class="q-ma-none text-weight-light text-grey-9 q-mb-md">{{ props.title }}</h4>
+  <h5 class="q-ma-none text-weight-light text-grey-9 q-mb-md">{{ props.title }}</h5>
   <div class="bg-white q-py-sm q-px-md q-mb-md">
     <q-breadcrumbs class="text-grey-8" gutter="none">
       <template v-slot:separator>
