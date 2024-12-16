@@ -32,20 +32,7 @@ export function useAddProductionPlan() {
     supplier_name: "",
   });
 
-  const materials = ref([
-    {
-      id: Date.now(),
-      material_name: "",
-      description: "",
-      uom: "",
-      lot_number: "",
-      amount: "",
-      batch: "",
-      amount_issued_date_time: "",
-      pick_location: "",
-      supplier_name: "",
-    },
-  ]);
+  const materials = ref([]);
 
   const addMaterial = () => {
     addMaterialLoading.value = true;
