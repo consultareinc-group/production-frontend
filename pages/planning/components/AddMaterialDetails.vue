@@ -6,6 +6,7 @@
           <h2 class="title">Material Details</h2>
 
           <q-btn
+            v-if="!isFirst"
             unelevated
             icon="delete"
             class="delete-icon"
@@ -15,79 +16,175 @@
       </template>
 
       <template #default>
-        <div
-          class="row justify-between"
-          :style="{
-            gap: px(50),
-            flexWrap: 'nowrap',
-          }"
-        >
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="materialDetails.material_name"
-              id="material_name"
-              label="Material Name"
-              is-required
-            >
-              <q-icon name="search" size="24px" color="black" />
-            </InputField>
+        <div class="row justify-between" style="gap: 50px; flex-wrap: nowrap">
+          <div class="column" style="gap: 18px; width: 100%">
+            <!-- material name -->
+            <div class="q-px-sm">
+              <label>Material Name <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="materialDetails.material_name"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
 
-            <InputField
-              v-model="materialDetails.description"
-              id="description"
-              label="Description"
-              type="textarea"
-            />
-            <InputField
-              v-model="materialDetails.uom"
-              id="uom"
-              label="UOM"
-              is-required
-            />
+            <!-- description -->
+            <div class="q-px-sm">
+              <label>Description</label>
+              <q-input
+                outlined
+                v-model="materialDetails.description"
+                type="textarea"
+                dense
+                class="q-mt-sm"
+                input-style="height: 140px"
+              />
+            </div>
+
+            <!-- uom -->
+            <div class="q-px-sm">
+              <label>UOM <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="materialDetails.uom"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
           </div>
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="materialDetails.lot_number"
-              id="lot_number"
-              label="Lot Number"
-              is-required
-            />
-            <InputField
-              v-model="materialDetails.amount"
-              id="amount"
-              label="Amount"
-              is-required
-              type="number"
-            />
-            <InputField
-              v-model="materialDetails.batch"
-              id="batch"
-              label="Batch"
-              type="number"
-            />
+          <div class="column" style="gap: 18px; width: 100%">
+            <!-- lot number -->
+            <div class="q-px-sm">
+              <label>Lot Number <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="materialDetails.lot_number"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- amount -->
+            <div class="q-px-sm">
+              <label>Amount <span class="text-red">*</span></label>
+              <q-input
+                type="number"
+                outlined
+                v-model="materialDetails.amount"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- batch -->
+            <div class="q-px-sm">
+              <label>Batch <span class="text-red">*</span></label>
+              <q-input
+                type="number"
+                outlined
+                v-model="materialDetails.batch"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
           </div>
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="materialDetails.amount_issued_date_time"
-              id="amount_issued_date_time"
-              label="Amount Issued Date & Time"
-              is-required
-              type="date"
-            />
-            <InputField
-              v-model="materialDetails.pick_location"
-              id="pick_location"
-              label="Pick Location"
-              is-required
-            />
-            <InputField
-              v-model="materialDetails.supplier_name"
-              id="supplier_name"
-              label="Supplier Name"
-              is-required
-            >
-              <q-icon name="search" size="24px" color="black" />
-            </InputField>
+
+          <div class="column" style="gap: 18px; width: 100%">
+            <!-- amount issued date and time -->
+            <div class="q-px-sm">
+              <label
+                >Amount Issued Date & Time
+                <span class="text-red">*</span></label
+              >
+              <q-input
+                outlined
+                v-model="materialDetails.amount_issued_date_time"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="materialDetails.amount_issued_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="materialDetails.amount_issued_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        format24h
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+
+            <!-- pick location -->
+            <div class="q-px-sm">
+              <label>Pick Location <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="materialDetails.pick_location"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- Supplier Name -->
+            <div class="q-px-sm">
+              <label>Supplier Name <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="materialDetails.supplier_name"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
           </div>
         </div>
       </template>
@@ -143,12 +240,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { px } from "../../../lib/utils";
 
-import SectionWrapper from "../../../components/ui/SectionWrapper.vue";
-import InputField from "../../../components/ui/InputField.vue";
+import SectionWrapper from "../../../components/SectionWrapper.vue";
 
 import { useAddProductionPlan } from "../../../composables/useAddProductionPlan";
+
+defineProps({
+  isFirst: Boolean,
+});
 
 const emit = defineEmits(["delete"]);
 
