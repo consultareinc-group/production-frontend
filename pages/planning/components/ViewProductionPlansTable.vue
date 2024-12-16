@@ -15,6 +15,7 @@
       row-key="id"
       v-model:pagination="pagination"
       :filter="filter"
+      :loading="loading"
       binary-state-sort
       @request="onRequest"
       table-header-class="bg-dark text-white"
@@ -26,13 +27,18 @@
             <q-btn dense icon="more_vert" flat round>
               <q-menu style="width: 100px">
                 <q-list>
-                  <!-- <q-item
-                            :to="{ name: 'route-name-here', params: { id: props.row.id } }"
-                          > -->
-                  <q-item clickable v-close-popup to="">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="viewProductionPlanDetails(props.row.batch_number)"
+                  >
                     <q-item-section>View</q-item-section>
                   </q-item>
-                  <q-item clickable v-close-popup to="">
+                  <q-item
+                    clickable
+                    v-close-popup
+                    @click="editProductionPlan(props.row.batch_number)"
+                  >
                     <q-item-section>Edit</q-item-section>
                   </q-item>
                   <q-item
@@ -303,6 +309,7 @@ const originalRows = ref([
 
 const rows = ref([]);
 const tableRef = ref();
+const loading = ref(false);
 const filter = ref("");
 const pagination = ref({
   sortBy: "desc",
@@ -382,33 +389,40 @@ function onRequest(props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   const filter = props.filter;
 
-  // update rowsCount with appropriate value
-  pagination.value.rowsNumber = getRowsNumberCount(filter);
+  loading.value = true;
 
-  // get all rows if "All" (0) is selected
-  const fetchCount =
-    rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage;
+  // emulate server
+  setTimeout(() => {
+    // update rowsCount with appropriate value
+    pagination.value.rowsNumber = getRowsNumberCount(filter);
 
-  // calculate starting row of data
-  const startRow = (page - 1) * rowsPerPage;
+    // get all rows if "All" (0) is selected
+    const fetchCount =
+      rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage;
 
-  // fetch data from "server"
-  const returnedData = fetchFromServer(
-    startRow,
-    fetchCount,
-    filter,
-    sortBy,
-    descending
-  );
+    // calculate starting row of data
+    const startRow = (page - 1) * rowsPerPage;
 
-  // clear out existing data and add new
-  rows.value.splice(0, rows.value.length, ...returnedData);
+    // fetch data from "server"
+    const returnedData = fetchFromServer(
+      startRow,
+      fetchCount,
+      filter,
+      sortBy,
+      descending
+    );
 
-  // don't forget to update local pagination object
-  pagination.value.page = page;
-  pagination.value.rowsPerPage = rowsPerPage;
-  pagination.value.sortBy = sortBy;
-  pagination.value.descending = descending;
+    // clear out existing data and add new
+    rows.value.splice(0, rows.value.length, ...returnedData);
+
+    // don't forget to update local pagination object
+    pagination.value.page = page;
+    pagination.value.rowsPerPage = rowsPerPage;
+    pagination.value.sortBy = sortBy;
+    pagination.value.descending = descending;
+
+    loading.value = false;
+  }, 1000);
 }
 
 // handle the option click
