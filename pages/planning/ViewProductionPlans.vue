@@ -13,37 +13,27 @@
       ]"
     />
 
-    <div class="action-buttons">
-      <ButtonComponent color="white" text-color="black" outline
-        >Archives</ButtonComponent
-      >
-      <ButtonComponent :to="{ name: 'addProductionPlan' }"
-        >Add New</ButtonComponent
-      >
+    <div class="row justify-end q-mt-lg q-gutter-x-md">
+      <q-btn label="Archives" no-caps flat class="bg-accent text-white" />
+      <q-btn
+        label="Add New"
+        no-caps
+        flat
+        class="bg-primary text-white"
+        :to="{ name: 'addProductionPlan' }"
+      />
     </div>
 
-    <div class="table-container">
+    <div class="q-mt-lg">
       <ViewProductionPlansTable />
     </div>
   </MainContentWrapper>
 </template>
 
 <script setup>
-import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
-import ButtonComponent from "../../components/ui/ButtonComponent.vue";
+import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import ViewProductionPlansTable from "./components/ViewProductionPlansTable.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 </script>
 
-<style lang="scss" scoped>
-.action-buttons {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 22px;
-  gap: 20px;
-}
-
-.table-container {
-  margin-top: 44px;
-}
-</style>
+<style lang="scss" scoped></style>
