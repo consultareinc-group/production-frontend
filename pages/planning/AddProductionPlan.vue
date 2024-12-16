@@ -12,7 +12,6 @@
           to: { name: 'addProductionPlan' },
         },
       ]"
-      class="q-mb-xl"
     />
 
     <SectionWrapperLoader v-if="loading" class="q-mb-xl" />
@@ -28,84 +27,263 @@
       <template #default>
         <div
           class="row justify-between"
-          :style="{
-            gap: px(50),
-            flexWrap: 'nowrap',
-          }"
+          style="gap: 50px; flex-wrap: nowrap; height: 100%"
         >
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="productDetails.batch_number"
-              id="batch_number"
-              label="Batch Number"
-              is-required
-              type="number"
-            />
-            <InputField
-              v-model="productDetails.product_name"
-              id="product_name"
-              label="Product Name"
-              is-required
-            />
-            <InputField
-              v-model="productDetails.description"
-              id="description"
-              label="Description"
-              type="textarea"
-            />
+          <div class="column q-gutter-y-md" style="width: 100%">
+            <!-- batch number -->
+            <div class="q-px-sm">
+              <label>Batch Number <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="productDetails.batch_number"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- product name -->
+            <div class="q-px-sm">
+              <label>Product Name <span class="text-red">*</span></label>
+              <q-select
+                use-input
+                outlined
+                dense
+                v-model="productDetails.product_name"
+                :options="searchOptions"
+                option-label="title"
+                option-value="id"
+                input-debounce="500"
+                hide-selected
+                hide-dropdown-icon
+                fill-input
+                map-options
+                emit-value
+                @filter="filterOptions"
+                :rules="[(val) => !!val || 'Field is required']"
+                class="q-mt-sm"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-select>
+            </div>
+
+            <!-- description -->
+            <div class="q-px-sm">
+              <label>Description</label>
+              <q-input
+                outlined
+                v-model="productDetails.description"
+                type="textarea"
+                dense
+                class="q-mt-sm"
+                input-style="height: 140px"
+              />
+            </div>
           </div>
 
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="productDetails.quantity"
-              id="quantity"
-              label="Quantity"
-              is-required
-              type="number"
-            />
-            <InputField
-              v-model="productDetails.start_date_time"
-              id="start_date_time"
-              label="Start Date & Time"
-              is-required
-              type="date"
-            />
-            <InputField
-              v-model="productDetails.end_date_time"
-              id="end_date_time"
-              label="End Date & Time"
-              is-required
-              type="date"
-            />
-            <InputField id="customer" label="Customer" is-required />
+          <!-- quantity -->
+          <div class="column q-gutter-y-md" style="width: 100%">
+            <div class="q-px-sm">
+              <label>Quantity <span class="text-red">*</span></label>
+              <q-input
+                type="number"
+                outlined
+                v-model="productDetails.quantity"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- start date and time -->
+            <div class="q-px-sm">
+              <label>Start Date & Time <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="productDetails.start_date_time"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="productDetails.start_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="productDetails.start_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        format24h
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+
+            <!-- end date and time -->
+            <div class="q-px-sm">
+              <label>End Date & Time <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="productDetails.end_date_time"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="productDetails.end_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+
+                <template v-slot:append>
+                  <q-icon name="access_time" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="productDetails.end_date_time"
+                        mask="YYYY-MM-DD HH:mm"
+                        format24h
+                        color="dark"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            label="Close"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+
+            <!-- customer -->
+            <div class="q-px-sm">
+              <label>Customer <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="productDetails.customer"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
           </div>
 
-          <div class="column" :style="{ gap: px(18), width: '100%' }">
-            <InputField
-              v-model="productDetails.purchase_order_number"
-              id="purchase_order_number"
-              label="Purchase Order Number"
-              is-required
-            />
-            <InputField
-              v-model="productDetails.sales_order_number"
-              id="sales_order_number"
-              label="Sales Order Number"
-              is-required
-            />
-            <InputField
-              v-model="productDetails.comment_notes"
-              id="comment_notes"
-              label="Comments/Notes"
-              type="textarea"
-            />
+          <!-- purchase order number -->
+          <div class="column" :style="{ gap: '18px', width: '100%' }">
+            <div class="q-px-sm">
+              <label
+                >Purchase Order Number <span class="text-red">*</span></label
+              >
+              <q-input
+                outlined
+                v-model="productDetails.purchase_order_number"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- sales order number -->
+            <div class="q-px-sm">
+              <label>Sales Order Number <span class="text-red">*</span></label>
+              <q-input
+                outlined
+                v-model="productDetails.sales_order_number"
+                dense
+                class="q-mt-sm"
+                :rules="[(val) => !!val || 'Field is required']"
+              />
+            </div>
+
+            <!-- comments/notes -->
+            <div class="col-3 q-px-sm">
+              <label>Comments/Notes</label>
+              <q-input
+                outlined
+                v-model="productDetails.comment_notes"
+                type="textarea"
+                dense
+                class="q-mt-sm"
+                input-style="height: 140px"
+              />
+            </div>
           </div>
         </div>
       </template>
     </SectionWrapper>
 
-    <SectionWrapperLoader v-if="loading" />
+    <SectionWrapperLoader v-if="loading" class="q-mb-xl" />
+
     <div v-else>
+      <AddMaterialDetails is-first class="q-mb-xl" />
       <div v-for="material in materials" :key="material.id" class="q-mb-xl">
         <AddMaterialDetails @delete="deleteMaterial(material.id)" />
       </div>
@@ -113,7 +291,7 @@
     <SectionWrapperLoader v-if="addMaterialLoading" class="q-mb-xl" />
 
     <div>
-      <ButtonComponent @click="addMaterial" class="q-mt-xl">
+      <q-btn @click="addMaterial" no-caps flat class="bg-primary text-white">
         <q-spinner
           v-if="addMaterialLoading"
           size="24px"
@@ -121,38 +299,32 @@
           class="q-mr-md"
         />
         Add Material
-      </ButtonComponent>
+      </q-btn>
     </div>
 
     <div>
-      <ButtonComponent
+      <q-btn
         @click="saveProductionPlan"
-        class="q-mt-xl"
-        color="positive"
-        :style="{
-          width: px(322),
-          height: px(48),
-          'font-size': px(16),
-          'font-weight': 700,
-        }"
-      >
-        Save
-      </ButtonComponent>
+        label="Save"
+        no-caps
+        flat
+        class="bg-accent text-white q-mt-xl"
+        style="width: 322px; height: 46px; font-size: 1rem; font-weight: 700"
+      />
     </div>
   </MainContentWrapper>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import { px } from "../../lib/utils";
+import { ref, onMounted } from "vue";
+// For demonstration purposes only, please use the API from axios.js in real tasks.
+import axios from "axios";
 
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
-import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
-import SectionWrapper from "../../components/ui/SectionWrapper.vue";
-import SectionWrapperLoader from "../../components/ui/SectionWrapperLoader.vue";
-import InputField from "../../components/ui/InputField.vue";
+import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
+import SectionWrapper from "../../components/SectionWrapper.vue";
+import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
 import AddMaterialDetails from "./components/AddMaterialDetails.vue";
-import ButtonComponent from "../../components/ui/ButtonComponent.vue";
 
 import { useAddProductionPlan } from "../../composables/useAddProductionPlan";
 
@@ -166,6 +338,26 @@ const {
   saveProductionPlan,
 } = useAddProductionPlan();
 
+let searchOptions = ref([]);
+
+// Filter options based on user input
+const filterOptions = (val, update, abort) => {
+  if (val) {
+    axios
+      .get(`https://jsonplaceholder.typicode.com/todos?title_like=${val}`)
+      .then((response) => {
+        if (response.status === 200) {
+          update(() => {
+            searchOptions.value = response.data;
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
+
 onMounted(() => {
   loading.value = true;
   setTimeout(() => {
@@ -175,12 +367,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.add-button {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 22px;
-}
-
 .table-container {
   margin-top: 44px;
 }
@@ -201,5 +387,9 @@ onMounted(() => {
   span {
     color: red;
   }
+}
+
+:deep(.q-textarea .q-field__native) {
+  resize: none;
 }
 </style>
