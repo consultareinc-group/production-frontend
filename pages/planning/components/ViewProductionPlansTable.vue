@@ -1,5 +1,12 @@
 <template>
   <div class="full-width">
+    <div class="flex justify-end q-mb-md">
+      <div class="flex justify-end items-center">
+        <div class="q-mr-md">Search:</div>
+        <q-input v-model="filter" outlined dense class="bg-white" />
+      </div>
+    </div>
+
     <q-table
       flat
       ref="tableRef"
@@ -7,74 +14,32 @@
       :columns="columns"
       row-key="id"
       v-model:pagination="pagination"
-      :loading="loading"
       :filter="filter"
       binary-state-sort
       @request="onRequest"
-      separator="cell"
-      class="overflow-auto"
       table-header-class="bg-dark text-white"
+      class="overflow-auto"
     >
-      <template v-slot:body-cell-batch_number="props">
+      <template v-slot:body-cell-action="props">
         <q-td :props="props">
-          <span
-            :style="{ color: '#286091' }"
-            class="underline cursor-pointer"
-            >{{ props.row.batch_number }}</span
-          >
-        </q-td>
-      </template>
-
-      <template v-slot:top>
-        <div class="fit row wrap justify-between items-center">
-          <div class="row items-center">
-            <span class="q-mr-sm">Show</span>
-            <q-select
-              v-model="pagination.rowsPerPage"
-              :options="[10, 15, 20, 25, 30]"
-              class="q-ml-sm bg-white"
-              :style="{ width: px(72) }"
-            />
-          </div>
-          <div class="row items-center">
-            <span class="q-mr-sm">Search</span>
-            <q-input
-              outlined
-              dense
-              debounce="300"
-              v-model="filter"
-              class="bg-white"
-            />
-          </div>
-        </div>
-      </template>
-
-      <template v-slot:body-cell-status="props">
-        <q-td :props="props">
-          <div
-            class="relative-position row items-center"
-            :style="{ width: '100%', 'min-width': px(100) }"
-          >
-            <span>{{ props.row.status }}</span>
-
-            <q-btn unelevated icon="more_vert" class="more-vert">
-              <q-menu>
-                <q-list style="min-width: 100px">
-                  <q-item
-                    clickable
-                    v-close-popup
-                    @click="viewProductionPlanDetails(props.row.batch_number)"
-                  >
+          <div class="table-menu">
+            <q-btn dense icon="more_vert" flat round>
+              <q-menu style="width: 100px">
+                <q-list>
+                  <!-- <q-item
+                            :to="{ name: 'route-name-here', params: { id: props.row.id } }"
+                          > -->
+                  <q-item clickable v-close-popup to="">
                     <q-item-section>View</q-item-section>
                   </q-item>
+                  <q-item clickable v-close-popup to="">
+                    <q-item-section>Edit</q-item-section>
+                  </q-item>
                   <q-item
                     clickable
                     v-close-popup
-                    @click="editProductionPlan(props.row.batch_number)"
+                    @click="showArchiveDialog(props.row)"
                   >
-                    <q-item-section>Edit</q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="archiveDialog = true">
                     <q-item-section>Archive</q-item-section>
                   </q-item>
                 </q-list>
@@ -104,7 +69,8 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none text-center">
-          <span class="text-bold">Batch Number: </span> 100003
+          <span class="text-bold">Batch Number: </span>
+          {{ selectedRow.batch_number }}
         </q-card-section>
 
         <q-card-section class="flex justify-center q-my-lg">
@@ -136,25 +102,219 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 
-import { px } from "../../../lib/utils";
-import { columns, originalRows } from "../../../data/viewProductPlansDummyData";
-
 const router = useRouter();
+
+const columns = ref([
+  {
+    name: "batch_number",
+    required: true,
+    label: "Batch Number",
+    align: "left",
+    field: (row) => row.batch_number,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "product_name",
+    required: true,
+    label: "Product Name",
+    align: "left",
+    field: (row) => row.product_name,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "quantity",
+    required: true,
+    label: "Quantity",
+    align: "left",
+    field: (row) => row.quantity,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "start_date_time",
+    required: true,
+    label: "Start Date & Time",
+    align: "left",
+    field: (row) => row.start_date_time,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "end_date_time",
+    required: true,
+    label: "End Date & Time",
+    align: "left",
+    field: (row) => row.end_date_time,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "customer",
+    required: true,
+    label: "Customer",
+    align: "left",
+    field: (row) => row.customer,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "status",
+    required: true,
+    label: "Status",
+    align: "left",
+    field: (row) => row.status,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  { name: "action", field: "action" },
+  // Add more columns as needed
+]);
+
+const originalRows = ref([
+  {
+    batch_number: 10001,
+    product_name: "Product A - PT10001",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 16, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10002,
+    product_name: "Product A - PT10002",
+    quantity: "60",
+    start_date_time: "August 14, 2024 8:00 AM",
+    end_date_time: "August 17, 2024 5:00 PM",
+    customer: "Doe, Jane",
+    status: "Verified",
+  },
+  {
+    batch_number: 10003,
+    product_name: "Product A - PT10003",
+    quantity: "100",
+    start_date_time: "August 15, 2024 8:00 AM",
+    end_date_time: "August 18, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10004,
+    product_name: "Product A - PT10004",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10005,
+    product_name: "Product A - PT10005",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10006,
+    product_name: "Product A - PT10006",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10007,
+    product_name: "Product A - PT10007",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10008,
+    product_name: "Product A - PT10008",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 10009,
+    product_name: "Product A - PT10009",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 100010,
+    product_name: "Product A - PT100010",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 100011,
+    product_name: "Product A - PT100011",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 100012,
+    product_name: "Product A - PT100012",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 100013,
+    product_name: "Product A - PT100013",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+  {
+    batch_number: 100014,
+    product_name: "Product A - PT100014",
+    quantity: "20",
+    start_date_time: "August 13, 2024 8:00 AM",
+    end_date_time: "August 14, 2024 5:00 PM",
+    customer: "Doe, John",
+    status: "Pending",
+  },
+]);
 
 const rows = ref([]);
 const tableRef = ref();
 const filter = ref("");
-const loading = ref(false);
 const pagination = ref({
   sortBy: "desc",
   descending: false,
   page: 0,
-  rowsPerPage: 10,
+  rowsPerPage: 5,
   rowsNumber: 0,
 });
 
 const archiveDialog = ref(false);
 const archivePlanLoading = ref(false);
+const selectedRow = ref({});
 
 onMounted(() => {
   // get initial data from server (1st page)
@@ -222,41 +382,33 @@ function onRequest(props) {
   const { page, rowsPerPage, sortBy, descending } = props.pagination;
   const filter = props.filter;
 
-  loading.value = true;
+  // update rowsCount with appropriate value
+  pagination.value.rowsNumber = getRowsNumberCount(filter);
 
-  // emulate server
-  setTimeout(() => {
-    // update rowsCount with appropriate value
-    pagination.value.rowsNumber = getRowsNumberCount(filter);
+  // get all rows if "All" (0) is selected
+  const fetchCount =
+    rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage;
 
-    // get all rows if "All" (0) is selected
-    const fetchCount =
-      rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage;
+  // calculate starting row of data
+  const startRow = (page - 1) * rowsPerPage;
 
-    // calculate starting row of data
-    const startRow = (page - 1) * rowsPerPage;
+  // fetch data from "server"
+  const returnedData = fetchFromServer(
+    startRow,
+    fetchCount,
+    filter,
+    sortBy,
+    descending
+  );
 
-    // fetch data from "server"
-    const returnedData = fetchFromServer(
-      startRow,
-      fetchCount,
-      filter,
-      sortBy,
-      descending
-    );
+  // clear out existing data and add new
+  rows.value.splice(0, rows.value.length, ...returnedData);
 
-    // clear out existing data and add new
-    rows.value.splice(0, rows.value.length, ...returnedData);
-
-    // don't forget to update local pagination object
-    pagination.value.page = page;
-    pagination.value.rowsPerPage = rowsPerPage;
-    pagination.value.sortBy = sortBy;
-    pagination.value.descending = descending;
-
-    // ...and turn of loading indicator
-    loading.value = false;
-  }, 1500);
+  // don't forget to update local pagination object
+  pagination.value.page = page;
+  pagination.value.rowsPerPage = rowsPerPage;
+  pagination.value.sortBy = sortBy;
+  pagination.value.descending = descending;
 }
 
 // handle the option click
@@ -273,6 +425,11 @@ const editProductionPlan = (batch_number) => {
     name: "editProductionPlan",
     params: { id: batch_number },
   });
+};
+
+const showArchiveDialog = (rowData) => {
+  archiveDialog.value = true;
+  selectedRow.value = rowData;
 };
 
 // handle production plan archive
@@ -294,73 +451,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.more-vert {
-  position: absolute;
-  right: 0;
-  padding: 2px 6px;
-  border-radius: 100%;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  &:active {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
-}
-
-:deep(.q-table__container > div:first-child) {
-  background-color: #eef1f5;
-}
-:deep(.q-table__top) {
-  padding: 0 0 21px 0;
-}
-
-:deep(.q-table--cell-separator .q-table__top) {
-  border-bottom: none;
-}
-
-:deep(.q-field--standard .q-field__control:before) {
-  border-bottom: none;
-}
-
-:deep(.q-field__native) {
-  padding: 0 11px;
-}
-
-:deep(.q-field--outlined .q-field__control) {
-  padding: 0;
-}
-
-:deep(.q-table th) {
-  font-weight: 600;
-  font-size: 13px;
-}
-
-:deep(
-    .q-field--auto-height .q-field__control,
-    .q-field--auto-height .q-field__native
-  ) {
-  min-height: 29px;
-}
-
-:deep(.q-field--dense .q-field__control, .q-field--dense .q-field__marginal) {
-  height: 29px;
-}
-
-:deep(.q-field__marginal) {
-  height: 29px;
-}
-
-:deep(.q-field--outlined .q-field__control) {
-  border-radius: 0;
-}
-
-:deep(.q-field__native) {
-  min-height: 29px !important;
-}
-
 :deep(.q-table__linear-progress) {
   color: #fff !important;
   height: 5px;
