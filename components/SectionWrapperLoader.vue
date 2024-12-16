@@ -4,66 +4,51 @@
       <div class="column">
         <div
           class="skeleton"
-          :style="{ 'margin-bottom': px(26), height: px(100), width: '100%' }"
+          style="margin-bottom: 26px; height: 100px; width: 100%"
         ></div>
       </div>
     </template>
 
     <template #default>
-      <div
-        class="row justify-between"
-        :style="{
-          gap: px(50),
-          flexWrap: 'nowrap',
-        }"
-      >
-        <div class="column" :style="{ width: '100%' }">
+      <div class="row justify-between" style="gap: 50px; flex-wrap: nowrap">
+        <div class="column" style="width: 100%">
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
-          <div
-            class="skeleton"
-            :style="{ height: px(105), width: '100%' }"
-          ></div>
+          <div class="skeleton" style="height: 105px; width: 100%"></div>
         </div>
 
-        <div class="column" :style="{ width: '100%' }">
+        <div class="column" style="width: 100%">
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
-          <div
-            class="skeleton"
-            :style="{ height: px(40), width: '100%' }"
-          ></div>
+          <div class="skeleton" style="height: 40px; width: 100%"></div>
         </div>
 
-        <div class="column" :style="{ width: '100%' }">
+        <div class="column" style="width: 100%">
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
           <div
             class="skeleton"
-            :style="{ 'margin-bottom': px(26), height: px(40), width: '100%' }"
+            style="margin-bottom: 26px; height: 40px; width: 100%"
           ></div>
-          <div
-            class="skeleton"
-            :style="{ height: px(105), width: '100%' }"
-          ></div>
+          <div class="skeleton" style="height: 105px; width: 100%"></div>
         </div>
       </div>
     </template>
@@ -71,8 +56,6 @@
 </template>
 
 <script setup>
-import { px } from "../../lib/utils";
-
 import SectionWrapper from "./SectionWrapper.vue";
 
 defineProps({
