@@ -1,23 +1,38 @@
 <template>
-  <h5 class="q-ma-none text-weight-light text-grey-9 q-mb-md">{{ props.title }}</h5>
-  <div class="bg-white q-py-sm q-px-md q-mb-md">
-    <q-breadcrumbs class="text-grey-8" gutter="none">
-      <template v-slot:separator>
-        <q-icon size="1.5em" name="chevron_right" color="grey-8" class="q-mx-sm" />
-      </template>
+  <div>
+    <h4 class="q-ma-none text-weight-light text-grey-9 q-mb-md">
+      {{ props.title }}
+    </h4>
+    <div class="bg-white q-py-sm q-px-md q-mb-md">
+      <q-breadcrumbs class="text-grey-8" gutter="none">
+        <template v-slot:separator>
+          <q-icon
+            size="1.5em"
+            name="chevron_right"
+            color="grey-8"
+            class="q-mx-sm"
+          />
+        </template>
+        <q-breadcrumbs-el
+          label="Home"
+          icon="home"
+          exact
+          :to="{ name: 'Home' }"
+          class="text-grey-8"
+          active-class="current"
+        />
 
-      <q-breadcrumbs-el label="Home" icon="home" exact :to="{ name: 'Home' }" class="text-grey-8" active-class="current" />
-
-      <q-breadcrumbs-el
-        v-for="({ icon, label, ...item }, index) in props.items || []"
-        :key="index"
-        :label="label"
-        :icon="icon"
-        class="text-grey-8"
-        active-class="current"
-        v-bind="resolveLinkProps(item)"
-      />
-    </q-breadcrumbs>
+        <q-breadcrumbs-el
+          v-for="({ icon, label, ...item }, index) in props.items || []"
+          :key="index"
+          :label="label"
+          :icon="icon"
+          class="text-grey-8"
+          active-class="current"
+          v-bind="resolveLinkProps(item)"
+        />
+      </q-breadcrumbs>
+    </div>
   </div>
 </template>
 
