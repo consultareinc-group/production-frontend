@@ -13,7 +13,6 @@
             class="q-mx-sm"
           />
         </template>
-
         <q-breadcrumbs-el
           label="Home"
           icon="home"
