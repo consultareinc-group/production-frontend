@@ -3,23 +3,25 @@
     <div class="flex justify-end q-mb-md">
       <div class="flex justify-end items-center">
         <div class="q-mr-md">Search:</div>
-        <q-input v-model="filter" outlined dense class="bg-white" />
+        <q-input
+          v-model="search_keyword"
+          outlined
+          dense
+          class="bg-white"
+          debounce="1000"
+          @update:model-value="search"
+        />
       </div>
     </div>
 
     <q-table
       flat
-      ref="tableRef"
-      :rows="rows"
+      :rows="productionPlans"
       :columns="columns"
       row-key="id"
-      v-model:pagination="pagination"
-      :filter="filter"
-      :loading="loading"
-      binary-state-sort
-      @request="onRequest"
       table-header-class="bg-dark text-white"
       class="overflow-auto"
+      :loading="loading"
     >
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
@@ -30,7 +32,7 @@
                   <q-item
                     clickable
                     v-close-popup
-                    @click="viewProductionPlanDetails(props.row.batch_number)"
+                    @click="viewProductionPlanDetails(props.row.id)"
                   >
                     <q-item-section>View</q-item-section>
                   </q-item>
@@ -105,8 +107,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
+import { date } from "quasar";
 import { useRouter } from "vue-router";
+import { useProductionPlanStore } from "../../../stores/production-plan-store";
 
 const router = useRouter();
 
@@ -125,7 +129,7 @@ const columns = ref([
     required: true,
     label: "Product Name",
     align: "left",
-    field: (row) => row.product_name,
+    field: (row) => row.product_id,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -143,7 +147,8 @@ const columns = ref([
     required: true,
     label: "Start Date & Time",
     align: "left",
-    field: (row) => row.start_date_time,
+    field: (row) =>
+      date.formatDate(row.start_date_and_time, "MMMM D, YYYY h:mm A"),
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -152,7 +157,8 @@ const columns = ref([
     required: true,
     label: "End Date & Time",
     align: "left",
-    field: (row) => row.end_date_time,
+    field: (row) =>
+      date.formatDate(row.end_date_and_time, "MMMM D, YYYY h:mm A"),
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -161,7 +167,7 @@ const columns = ref([
     required: true,
     label: "Customer",
     align: "left",
-    field: (row) => row.customer,
+    field: (row) => row.customer_name,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -178,258 +184,61 @@ const columns = ref([
   // Add more columns as needed
 ]);
 
-const originalRows = ref([
-  {
-    batch_number: 10001,
-    product_name: "Product A - PT10001",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 16, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10002,
-    product_name: "Product A - PT10002",
-    quantity: "60",
-    start_date_time: "August 14, 2024 8:00 AM",
-    end_date_time: "August 17, 2024 5:00 PM",
-    customer: "Doe, Jane",
-    status: "Verified",
-  },
-  {
-    batch_number: 10003,
-    product_name: "Product A - PT10003",
-    quantity: "100",
-    start_date_time: "August 15, 2024 8:00 AM",
-    end_date_time: "August 18, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10004,
-    product_name: "Product A - PT10004",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10005,
-    product_name: "Product A - PT10005",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10006,
-    product_name: "Product A - PT10006",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10007,
-    product_name: "Product A - PT10007",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10008,
-    product_name: "Product A - PT10008",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 10009,
-    product_name: "Product A - PT10009",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 100010,
-    product_name: "Product A - PT100010",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 100011,
-    product_name: "Product A - PT100011",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 100012,
-    product_name: "Product A - PT100012",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 100013,
-    product_name: "Product A - PT100013",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-  {
-    batch_number: 100014,
-    product_name: "Product A - PT100014",
-    quantity: "20",
-    start_date_time: "August 13, 2024 8:00 AM",
-    end_date_time: "August 14, 2024 5:00 PM",
-    customer: "Doe, John",
-    status: "Pending",
-  },
-]);
-
-const rows = ref([]);
-const tableRef = ref();
-const loading = ref(false);
-const filter = ref("");
-const pagination = ref({
-  sortBy: "desc",
-  descending: false,
-  page: 0,
-  rowsPerPage: 5,
-  rowsNumber: 0,
-});
+const productionPlans = ref([]);
 
 const archiveDialog = ref(false);
 const archivePlanLoading = ref(false);
 const selectedRow = ref({});
+const loading = ref(false);
+const store = useProductionPlanStore();
+const search_keyword = ref("");
 
 onMounted(() => {
-  // get initial data from server (1st page)
-  tableRef.value.requestServerInteraction();
+  loading.value = true;
+  getProductionPlans();
 });
 
-// emulate ajax call
-// SELECT * FROM ... WHERE...LIMIT...
-function fetchFromServer(startRow, count, filter, sortBy, descending) {
-  let data = originalRows.value.slice();
+// get production plans
+const getProductionPlans = () => {
+  store
+    .GetProductionPlans({ offset: productionPlans.value.length })
+    .then((response) => {
+      loading.value = false;
+      if (response.status === "success") {
+        response.data.forEach((data) => {
+          productionPlans.value.push(data);
+        });
 
-  // Handle filtering
-  if (filter) {
-    data = data.filter((row) => {
-      return Object.values(row).some((val) =>
-        String(val).toLowerCase().includes(filter.toLowerCase())
-      );
+        if (response.data.length) {
+          getProductionPlans();
+        }
+      }
     });
-  }
+};
 
-  // Handle sorting
-  if (sortBy) {
-    data.sort(dynamicSort(sortBy, descending));
-  }
-
-  // Simulate server response
-  return data.slice(startRow, startRow + count);
-}
-
-function dynamicSort(field, descending) {
-  return function (a, b) {
-    let fieldA = a[field];
-    let fieldB = b[field];
-
-    // Handle different field types
-    if (typeof fieldA === "string" && typeof fieldB === "string") {
-      fieldA = fieldA.toLowerCase();
-      fieldB = fieldB.toLowerCase();
-    } else {
-      fieldA = parseFloat(fieldA);
-      fieldB = parseFloat(fieldB);
-    }
-
-    if (fieldA < fieldB) return descending ? 1 : -1;
-    if (fieldA > fieldB) return descending ? -1 : 1;
-    return 0;
-  };
-}
-
-// emulate 'SELECT count(*) FROM ...WHERE...'
-function getRowsNumberCount(filter) {
-  if (!filter) {
-    return originalRows.value.length;
-  }
-  let count = 0;
-  originalRows.value.forEach((row) => {
-    if (Object.values(row).some((val) => String(val).includes(filter))) {
-      ++count;
-    }
-  });
-  return count;
-}
-
-function onRequest(props) {
-  const { page, rowsPerPage, sortBy, descending } = props.pagination;
-  const filter = props.filter;
-
+// handle table search
+const search = () => {
   loading.value = true;
-
-  // emulate server
-  setTimeout(() => {
-    // update rowsCount with appropriate value
-    pagination.value.rowsNumber = getRowsNumberCount(filter);
-
-    // get all rows if "All" (0) is selected
-    const fetchCount =
-      rowsPerPage === 0 ? pagination.value.rowsNumber : rowsPerPage;
-
-    // calculate starting row of data
-    const startRow = (page - 1) * rowsPerPage;
-
-    // fetch data from "server"
-    const returnedData = fetchFromServer(
-      startRow,
-      fetchCount,
-      filter,
-      sortBy,
-      descending
-    );
-
-    // clear out existing data and add new
-    rows.value.splice(0, rows.value.length, ...returnedData);
-
-    // don't forget to update local pagination object
-    pagination.value.page = page;
-    pagination.value.rowsPerPage = rowsPerPage;
-    pagination.value.sortBy = sortBy;
-    pagination.value.descending = descending;
-
-    loading.value = false;
-  }, 1000);
-}
+  if (search_keyword.value) {
+    store
+      .SearchProductionPlans({ keyword: search_keyword.value })
+      .then((response) => {
+        loading.value = false;
+        if (response.status === "success") {
+          productionPlans.value = response.data;
+        }
+      });
+  } else {
+    productionPlans.value = [];
+    getProductionPlans();
+  }
+};
 
 // handle the option click
-const viewProductionPlanDetails = (batch_number) => {
+const viewProductionPlanDetails = (id) => {
   router.push({
     name: "viewProductionPlanDetails",
-    params: { id: batch_number },
+    params: { id },
   });
 };
 
@@ -441,6 +250,7 @@ const editProductionPlan = (batch_number) => {
   });
 };
 
+// show archive dialog
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
   selectedRow.value = rowData;
@@ -454,14 +264,6 @@ const archivePlan = () => {
     archivePlanLoading.value = false;
   }, 1500);
 };
-
-// Watch for changes in pagination.rowsPerPage and refetch data
-watch(
-  () => pagination.value.rowsPerPage,
-  () => {
-    onRequest({ pagination: pagination.value, filter: filter.value });
-  }
-);
 </script>
 
 <style lang="scss" scoped>
