@@ -94,7 +94,7 @@
             flat
             no-caps
             class="bg-accent text-white q-px-lg"
-            @click="archivePlan"
+            @click="archivePlan(selectedRow.id)"
             :disable="archivePlanLoading"
           >
             <q-spinner v-if="archivePlanLoading" />
@@ -108,11 +108,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 import { useProductionPlanStore } from "../../../stores/production-plan-store";
 
 const router = useRouter();
+const productionPlanStore = useProductionPlanStore();
+
+const $q = useQuasar();
 
 const columns = ref([
   {
@@ -185,13 +188,12 @@ const columns = ref([
 ]);
 
 const productionPlans = ref([]);
+const loading = ref(false);
+const search_keyword = ref("");
 
 const archiveDialog = ref(false);
 const archivePlanLoading = ref(false);
 const selectedRow = ref({});
-const loading = ref(false);
-const store = useProductionPlanStore();
-const search_keyword = ref("");
 
 onMounted(() => {
   loading.value = true;
@@ -200,12 +202,42 @@ onMounted(() => {
 
 // get production plans
 const getProductionPlans = () => {
-  store
+  productionPlanStore
     .GetProductionPlans({ offset: productionPlans.value.length })
     .then((response) => {
       loading.value = false;
       if (response.status === "success") {
         response.data.forEach((data) => {
+          // Convert status from int to string
+          switch (data.status) {
+            case 0:
+              data.status = "Pending";
+              break;
+            case 1:
+              data.status = "Verified";
+              break;
+            case 2:
+              data.status = "In Progress";
+              break;
+            case 3:
+              data.status = "On Hold";
+              break;
+            case 4:
+              data.status = "Completed";
+              break;
+            case 5:
+              data.status = "Closed";
+              break;
+            case 6:
+              data.status = "Cancelled";
+              break;
+            case 7:
+              data.status = "Delayed";
+              break;
+            default:
+              data.status = "Pending";
+          }
+
           productionPlans.value.push(data);
         });
 
@@ -220,7 +252,7 @@ const getProductionPlans = () => {
 const search = () => {
   loading.value = true;
   if (search_keyword.value) {
-    store
+    productionPlanStore
       .SearchProductionPlans({ keyword: search_keyword.value })
       .then((response) => {
         loading.value = false;
@@ -257,12 +289,38 @@ const showArchiveDialog = (rowData) => {
 };
 
 // handle production plan archive
-const archivePlan = () => {
+const archivePlan = (id) => {
+  let payload = {
+    id,
+    is_archived: 1,
+  };
+
   archivePlanLoading.value = true;
-  setTimeout(() => {
-    archiveDialog.value = false;
-    archivePlanLoading.value = false;
-  }, 1500);
+  productionPlanStore
+    .ArchiveProductionPlan({ id, payload })
+    .then((response) => {
+      if (response.status === "success") {
+        productionPlans.value = productionPlans.value.filter(
+          (plan) => plan.id !== id
+        );
+
+        $q.notify({
+          html: true,
+          message: `
+          <div style="font-size: 14px; color: #155724">
+          Production plan archived successfully <br />
+          Batch Number: <strong>${selectedRow.value.batch_number}</strong>
+          </div>
+          `,
+          color: "green-2",
+          position: "top-right",
+          timeout: 2000,
+        });
+      }
+      archiveDialog.value = false;
+      archivePlanLoading.value = false;
+      selectedRow.value = {};
+    });
 };
 </script>
 
