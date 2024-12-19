@@ -162,7 +162,17 @@
     </section>
 
     <section class="q-mt-xl">
-      <ActivityLogsTable :activity-logs="productionPlan.activity_logs" />
+      <q-table
+        flat
+        :rows="activityLogs"
+        :columns="activityLogsColumns"
+        row-key="id"
+        table-header-class="bg-dark text-white"
+        class="overflow-auto"
+        :loading="activityLogsLoading"
+        style="max-width: 460px"
+      >
+      </q-table>
     </section>
   </MainContentWrapper>
 </template>
@@ -174,7 +184,6 @@ import { useRoute } from "vue-router";
 import { useProductionPlanStore } from "../../stores/production-plan-store";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
-import ActivityLogsTable from "./components/ActivityLogsTable.vue";
 import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
@@ -287,6 +296,39 @@ const materialDetailsColumns = ref([
 const materialDetails = ref([]);
 const materialDetailsLoading = ref(false);
 
+// Activity Logs Variables
+const activityLogsColumns = ref([
+  {
+    name: "action",
+    required: true,
+    label: "Action",
+    align: "left",
+    field: (row) => row.action,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "personnel",
+    required: true,
+    label: "Personnel",
+    align: "left",
+    field: (row) => row.personnel_id,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "date_time",
+    required: true,
+    label: "Date & Time",
+    align: "left",
+    field: (row) => date.formatDate(row.date_and_time, "MMMM D, YYYY h:mm A"),
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+]);
+const activityLogs = ref([]);
+const activityLogsLoading = ref(false);
+
 // Lifecycle Hooks
 onMounted(() => {
   getProductionPlan();
@@ -329,10 +371,42 @@ const getProductionPlan = () => {
           response.data[0].status = "Pending";
       }
 
+      // Convert actions from int to string
+      response.data[0].activity_logs.forEach((activity) => {
+        switch (activity.action) {
+          case 0:
+            activity.action = "Performed";
+            break;
+          case 1:
+            activity.action = "Verified";
+            break;
+          case 2:
+            activity.action = "In Progress";
+            break;
+          case 3:
+            activity.action = "On Hold";
+            break;
+          case 4:
+            activity.action = "Completed";
+            break;
+          case 5:
+            activity.action = "Closed";
+            break;
+          case 6:
+            activity.action = "Cancelled";
+            break;
+          case 7:
+            activity.action = "Delayed";
+            break;
+          default:
+            activity.action = "Pending";
+        }
+      });
+
       productionPlan.value = response.data[0];
       statusValue.value = response.data[0].status;
       materialDetails.value = response.data[0].material_details;
-      console.log(materialDetails.value);
+      activityLogs.value = response.data[0].activity_logs;
     }
 
     loading.value = false;
