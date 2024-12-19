@@ -21,7 +21,7 @@
       row-key="id"
       table-header-class="bg-dark text-white"
       class="overflow-auto"
-      :loading="loading"
+      :loading="tableLoading"
     >
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
@@ -95,9 +95,9 @@
             no-caps
             class="bg-accent text-white q-px-lg"
             @click="archivePlan(selectedRow.id)"
-            :disable="archivePlanLoading"
+            :disable="archiveProductionPlanLoading"
           >
-            <q-spinner v-if="archivePlanLoading" />
+            <q-spinner v-if="archiveProductionPlanLoading" />
             <span v-else>Confirm</span>
           </q-btn>
         </q-card-section>
@@ -117,6 +117,15 @@ const productionPlanStore = useProductionPlanStore();
 
 const $q = useQuasar();
 
+const archiveDialog = ref(false);
+const archiveProductionPlanLoading = ref(false);
+const selectedRow = ref({});
+
+onMounted(() => {
+  tableLoading.value = true;
+  getProductionPlans();
+});
+// Production Plans Table Variables
 const columns = ref([
   {
     name: "batch_number",
@@ -188,24 +197,15 @@ const columns = ref([
 ]);
 
 const productionPlans = ref([]);
-const loading = ref(false);
+const tableLoading = ref(false);
 const search_keyword = ref("");
 
-const archiveDialog = ref(false);
-const archivePlanLoading = ref(false);
-const selectedRow = ref({});
-
-onMounted(() => {
-  loading.value = true;
-  getProductionPlans();
-});
-
-// get production plans
+// Production Plans Table Logic
 const getProductionPlans = () => {
   productionPlanStore
     .GetProductionPlans({ offset: productionPlans.value.length })
     .then((response) => {
-      loading.value = false;
+      tableLoading.value = false;
       if (response.status === "success") {
         response.data.forEach((data) => {
           // Convert status from int to string
@@ -248,14 +248,13 @@ const getProductionPlans = () => {
     });
 };
 
-// handle table search
 const search = () => {
-  loading.value = true;
+  tableLoading.value = true;
   if (search_keyword.value) {
     productionPlanStore
       .SearchProductionPlans({ keyword: search_keyword.value })
       .then((response) => {
-        loading.value = false;
+        tableLoading.value = false;
         if (response.status === "success") {
           productionPlans.value = response.data;
         }
@@ -266,7 +265,6 @@ const search = () => {
   }
 };
 
-// handle the option click
 const viewProductionPlanDetails = (id) => {
   router.push({
     name: "viewProductionPlanDetails",
@@ -274,7 +272,6 @@ const viewProductionPlanDetails = (id) => {
   });
 };
 
-// handle production plan edit
 const editProductionPlan = (batch_number) => {
   router.push({
     name: "editProductionPlan",
@@ -282,20 +279,19 @@ const editProductionPlan = (batch_number) => {
   });
 };
 
-// show archive dialog
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
   selectedRow.value = rowData;
 };
 
-// handle production plan archive
 const archivePlan = (id) => {
   let payload = {
     id,
     is_archived: 1,
   };
 
-  archivePlanLoading.value = true;
+  archiveProductionPlanLoading.value = true;
+
   productionPlanStore
     .ArchiveProductionPlan({ id, payload })
     .then((response) => {
@@ -317,8 +313,9 @@ const archivePlan = (id) => {
           timeout: 2000,
         });
       }
+
       archiveDialog.value = false;
-      archivePlanLoading.value = false;
+      archiveProductionPlanLoading.value = false;
       selectedRow.value = {};
     });
 };
