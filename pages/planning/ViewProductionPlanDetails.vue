@@ -133,9 +133,32 @@
     </SectionWrapper>
 
     <section class="q-mt-xl">
-      <!-- <MaterialDetailsTable
-        :material-details="productionPlan.material_details"
-      /> -->
+      <div class="full-width">
+        <q-table
+          flat
+          :rows="materialDetails"
+          :columns="materialDetailsColumns"
+          row-key="id"
+          table-header-class="bg-dark text-white"
+          class="overflow-auto"
+          :loading="materialDetailsLoading"
+        >
+          <template v-slot:body-cell="props">
+            <q-td
+              :props="props"
+              :style="{
+                'max-width':
+                  props.col.name === 'description' ? '400px' : 'none',
+                'min-width':
+                  props.col.name === 'description' ? '300px' : 'none',
+                'white-space': 'wrap',
+              }"
+            >
+              {{ props.value }}
+            </q-td>
+          </template>
+        </q-table>
+      </div>
     </section>
 
     <section class="q-mt-xl">
@@ -151,7 +174,6 @@ import { useRoute } from "vue-router";
 import { useProductionPlanStore } from "../../stores/production-plan-store";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
-import MaterialDetailsTable from "./components/MaterialDetailsTable.vue";
 import ActivityLogsTable from "./components/ActivityLogsTable.vue";
 import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
@@ -161,7 +183,6 @@ const route = useRoute();
 const productionPlanStore = useProductionPlanStore();
 
 const statusValue = ref("");
-
 const statusOptions = ref([
   { label: "Pending", value: 0 },
   { label: "Verified", value: 1 },
@@ -173,13 +194,103 @@ const statusOptions = ref([
   { label: "Delayed", value: 7 },
 ]);
 
-onMounted(() => {
-  getProductionPlan();
-});
-
 // Production Plan Details Variables
 const productionPlan = ref({});
 const loading = ref(false);
+
+// Material Details Variables
+const materialDetailsColumns = ref([
+  {
+    name: "material_name",
+    required: true,
+    label: "Material Name",
+    align: "left",
+    field: (row) => row.material_id,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "description",
+    required: true,
+    label: "Description",
+    align: "left",
+    field: (row) => row.description,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "uom",
+    required: true,
+    label: "Unit of Measure",
+    align: "left",
+    field: (row) => row.uom,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "lot_number",
+    required: true,
+    label: "Lot Number",
+    align: "left",
+    field: (row) => row.lot_number,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "amount",
+    required: true,
+    label: "Amount",
+    align: "left",
+    field: (row) => row.amount,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "batch",
+    required: true,
+    label: "Batch",
+    align: "left",
+    field: (row) => row.batch,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "amount_issued_date_time",
+    required: true,
+    label: "Amount Issued Date & Time",
+    align: "left",
+    field: (row) =>
+      date.formatDate(row.amount_issued_date_and_time, "MMMM D, YYYY h:mm A"),
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "pick_location",
+    required: true,
+    label: "Pick Location",
+    align: "left",
+    field: (row) => row.pick_location,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
+    name: "supplier_name",
+    required: true,
+    label: "Supplier Name",
+    align: "left",
+    field: (row) => row.supplier_id,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  // Add more columns as needed
+]);
+const materialDetails = ref([]);
+const materialDetailsLoading = ref(false);
+
+// Lifecycle Hooks
+onMounted(() => {
+  getProductionPlan();
+});
 
 // Production Plan Details Logic
 const getProductionPlan = () => {
@@ -220,6 +331,8 @@ const getProductionPlan = () => {
 
       productionPlan.value = response.data[0];
       statusValue.value = response.data[0].status;
+      materialDetails.value = response.data[0].material_details;
+      console.log(materialDetails.value);
     }
 
     loading.value = false;
@@ -246,5 +359,10 @@ const getProductionPlan = () => {
   font-size: 16px;
   font-weight: 300;
   margin: 0;
+}
+
+:deep(.q-table__linear-progress) {
+  color: #fff !important;
+  height: 5px;
 }
 </style>
