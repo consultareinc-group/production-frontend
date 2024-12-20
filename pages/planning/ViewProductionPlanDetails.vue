@@ -30,6 +30,7 @@
           class="q-mt-sm"
           :rules="[(val) => !!val || 'Field is required']"
           style="width: 200px"
+          @update:model-value="changeStatus(statusValue)"
         />
       </template>
 
@@ -134,6 +135,7 @@
 
     <section class="q-mt-xl">
       <div class="full-width">
+        <h6 class="q-mb-lg">Material Details</h6>
         <q-table
           flat
           :rows="materialDetails"
@@ -141,7 +143,7 @@
           row-key="id"
           table-header-class="bg-dark text-white"
           class="overflow-auto"
-          :loading="materialDetailsLoading"
+          :loading="loading"
         >
           <template v-slot:body-cell="props">
             <q-td
@@ -162,6 +164,7 @@
     </section>
 
     <section class="q-mt-xl">
+      <h6 class="q-mb-lg">Activity Logs</h6>
       <q-table
         flat
         :rows="activityLogs"
@@ -169,7 +172,7 @@
         row-key="id"
         table-header-class="bg-dark text-white"
         class="overflow-auto"
-        :loading="activityLogsLoading"
+        :loading="loading"
         style="max-width: 460px"
       >
       </q-table>
@@ -179,7 +182,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
 import { useRoute } from "vue-router";
 import { useProductionPlanStore } from "../../stores/production-plan-store";
 
@@ -190,8 +193,9 @@ import MainContentWrapper from "../../components/MainContentWrapper.vue";
 
 const route = useRoute();
 const productionPlanStore = useProductionPlanStore();
+const $q = useQuasar();
 
-const statusValue = ref("");
+const statusValue = ref({});
 const statusOptions = ref([
   { label: "Pending", value: 0 },
   { label: "Verified", value: 1 },
@@ -294,7 +298,6 @@ const materialDetailsColumns = ref([
   // Add more columns as needed
 ]);
 const materialDetails = ref([]);
-const materialDetailsLoading = ref(false);
 
 // Activity Logs Variables
 const activityLogsColumns = ref([
@@ -327,7 +330,6 @@ const activityLogsColumns = ref([
   },
 ]);
 const activityLogs = ref([]);
-const activityLogsLoading = ref(false);
 
 // Lifecycle Hooks
 onMounted(() => {
@@ -342,6 +344,8 @@ const getProductionPlan = () => {
   productionPlanStore.GetProductionPlan(id).then((response) => {
     if (response.status === "success") {
       // Convert status from int to string
+      const originalStatus = response.data[0].status;
+
       switch (response.data[0].status) {
         case 0:
           response.data[0].status = "Pending";
@@ -404,13 +408,54 @@ const getProductionPlan = () => {
       });
 
       productionPlan.value = response.data[0];
-      statusValue.value = response.data[0].status;
+      statusValue.value = {
+        label: response.data[0].status,
+        value: originalStatus,
+      };
       materialDetails.value = response.data[0].material_details;
       activityLogs.value = response.data[0].activity_logs;
     }
 
     loading.value = false;
   });
+};
+
+const changeStatus = (statusValue) => {
+  const payload = {
+    id: productionPlan.value.id,
+    status: statusValue.value,
+  };
+
+  productionPlanStore
+    .EditProductionPlanStatus({
+      id: productionPlan.value.id,
+      payload,
+    })
+    .then((response) => {
+      $q.notify({
+        html: true,
+        message: `<strong>Success!</strong> ${response.message}`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-success",
+      });
+
+      // add activity log
+      activityLogs.value.unshift({
+        action: statusValue.label,
+        personnel_id: 1,
+        date_and_time: new Date(),
+      });
+    })
+    .catch((error) => {
+      $q.notify({
+        html: true,
+        message: `<strong>Error!</strong> ${error.message}`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-error",
+      });
+    });
 };
 </script>
 
