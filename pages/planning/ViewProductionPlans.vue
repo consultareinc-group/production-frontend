@@ -65,7 +65,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editProductionPlan(props.row.batch_number)"
+                        @click="editProductionPlan(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
