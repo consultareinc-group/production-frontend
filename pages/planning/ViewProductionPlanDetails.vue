@@ -30,7 +30,7 @@
           class="q-mt-sm"
           :rules="[(val) => !!val || 'Field is required']"
           style="width: 200px"
-          @update:model-value="changeStatus(statusValue)"
+          @update:model-value="openChangeStatusDialog"
         />
       </template>
 
@@ -177,6 +177,52 @@
       >
       </q-table>
     </section>
+
+    <q-dialog v-model="changeStatusDialog" persistent>
+      <q-card>
+        <q-icon
+          name="cancel"
+          color="grey"
+          size="sm"
+          class="absolute-top-right q-mt-sm q-mr-sm cursor-pointer"
+          @click="closeChangeStatusDialog"
+        />
+        <q-card-section class="text-center q-mt-lg">
+          <q-icon name="archive" color="orange-10" size="lg" />
+          <div class="text-h6 text-weight-bold">Status Change</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-center">
+          Are you sure you want to change the status of this production plan?
+        </q-card-section>
+
+        <q-card-section class="q-pt-none text-center">
+          <span class="text-bold">Status will change to:</span>
+          {{ statusValue.label }}
+        </q-card-section>
+
+        <q-card-section class="flex justify-center q-my-lg">
+          <q-btn
+            flat
+            no-caps
+            label="Cancel"
+            class="border-000000-all q-px-lg"
+            @click="closeChangeStatusDialog"
+          />
+          <div class="q-mx-md"></div>
+          <q-btn
+            flat
+            no-caps
+            class="bg-accent text-white q-px-lg"
+            @click="changeStatus(statusValue)"
+            :disable="changeStatusLoading"
+          >
+            <q-spinner v-if="changeStatusLoading" />
+            <span v-else>Confirm</span>
+          </q-btn>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </MainContentWrapper>
 </template>
 
@@ -210,6 +256,8 @@ const statusOptions = ref([
 // Production Plan Details Variables
 const productionPlan = ref({});
 const loading = ref(false);
+const changeStatusDialog = ref(false);
+const changeStatusLoading = ref(false);
 
 // Material Details Variables
 const materialDetailsColumns = ref([
@@ -420,6 +468,39 @@ const getProductionPlan = () => {
   });
 };
 
+const openChangeStatusDialog = () => {
+  changeStatusDialog.value = true;
+};
+
+const closeChangeStatusDialog = () => {
+  changeStatusDialog.value = false;
+
+  statusValue.value = getPreviousStatusValue(productionPlan.value.status);
+};
+
+const getPreviousStatusValue = (status) => {
+  switch (status) {
+    case "Pending":
+      return { label: "Pending", value: 0 };
+    case "Verified":
+      return { label: "Verified", value: 1 };
+    case "In Progress":
+      return { label: "In Progress", value: 2 };
+    case "On Hold":
+      return { label: "On Hold", value: 3 };
+    case "Completed":
+      return { label: "Completed", value: 4 };
+    case "Closed":
+      return { label: "Closed", value: 5 };
+    case "Cancelled":
+      return { label: "Cancelled", value: 6 };
+    case "Delayed":
+      return { label: "Delayed", value: 7 };
+    default:
+      return { label: "Pending", value: 0 };
+  }
+};
+
 const changeStatus = (statusValue) => {
   const payload = {
     id: productionPlan.value.id,
@@ -446,15 +527,21 @@ const changeStatus = (statusValue) => {
         personnel_id: 1,
         date_and_time: new Date(),
       });
+
+      // close dialog
+      changeStatusDialog.value = false;
     })
     .catch((error) => {
       $q.notify({
         html: true,
-        message: `<strong>Error!</strong> ${error.message}`,
+        message: `<strong>Error!</strong> ${error.message} Reverting changes.`,
         position: "top-right",
         timeout: 2000,
         classes: "quasar-notification-error",
       });
+
+      // revert changes
+      closeChangeStatusDialog();
     });
 };
 </script>
