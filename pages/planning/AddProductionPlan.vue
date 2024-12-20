@@ -295,7 +295,7 @@
     <div v-else>
       <div
         v-for="(material, index) in materialDetails"
-        :key="material.id"
+        :key="material.key"
         class="q-mb-xl"
       >
         <SectionWrapper>
@@ -308,7 +308,7 @@
                 unelevated
                 icon="delete"
                 class="delete-icon"
-                @click="openDeleteDialog(material.id)"
+                @click="openDeleteDialog(material.key)"
               />
             </div>
           </template>
@@ -525,7 +525,7 @@
             flat
             no-caps
             class="bg-accent text-white q-px-lg"
-            @click="deleteMaterial(selectedMaterial.id)"
+            @click="deleteMaterial(selectedMaterial.key)"
             :disable="deleteMaterialLoading"
           >
             <q-spinner v-if="deleteMaterialLoading" />
@@ -582,33 +582,30 @@ const deleteMaterialLoading = ref(false);
 // let searchOptions = ref([]);
 
 const productDetails = ref({
-  batch_number: "Batch Test",
-  product_id: "Product Test",
-  description: "Description Test",
-  quantity: 100,
-  start_date_and_time: new Date().toISOString().slice(0, 16).replace("T", " "),
-  end_date_and_time: new Date().toISOString().slice(0, 16).replace("T", " "),
-  customer_name: "Sample user",
-  purchase_order_number: "PO-123",
-  sales_order_number: "SO-123",
-  comments_notes: "Comment Notes Test",
+  batch_number: null,
+  product_id: null,
+  description: null,
+  quantity: null,
+  start_date_and_time: null,
+  end_date_and_time: null,
+  customer_name: null,
+  purchase_order_number: null,
+  sales_order_number: null,
+  comments_notes: null,
 });
 
 const materialDetails = ref([
   {
-    id: Date.now(),
-    material_id: "Material Test",
-    description: "Material Description Test",
-    uom: "100 kg",
-    lot_number: "Lot Test",
-    amount: 10,
-    batch: 1,
-    amount_issued_date_and_time: new Date()
-      .toISOString()
-      .slice(0, 16)
-      .replace("T", " "),
-    pick_location: "Pick Location Test",
-    supplier_id: 1,
+    key: Date.now(),
+    material_id: null,
+    description: null,
+    uom: null,
+    lot_number: null,
+    amount: null,
+    batch: null,
+    amount_issued_date_and_time: null,
+    pick_location: null,
+    supplier_id: null,
   },
 ]);
 
@@ -620,7 +617,7 @@ onMounted(() => {
   loading.value = true;
   setTimeout(() => {
     loading.value = false;
-  }, 2000);
+  }, 1000);
 });
 
 // Functions
@@ -628,36 +625,33 @@ const addMaterial = () => {
   addMaterialLoading.value = true;
   setTimeout(() => {
     materialDetails.value.push({
-      id: Date.now(),
-      material_id: "Material Test",
-      description: "Material Description Test",
-      uom: "100 kg",
-      lot_number: "Lot Test",
-      amount: 10,
-      batch: 1,
-      amount_issued_date_and_time: new Date()
-        .toISOString()
-        .slice(0, 16)
-        .replace("T", " "),
-      pick_location: "Pick Location Test",
-      supplier_id: 1,
+      key: Date.now(),
+      material_id: null,
+      description: null,
+      uom: null,
+      lot_number: null,
+      amount: null,
+      batch: null,
+      amount_issued_date_and_time: null,
+      pick_location: null,
+      supplier_id: null,
     });
     addMaterialLoading.value = false;
   }, 1000);
 };
 
-const openDeleteDialog = (materialId) => {
+const openDeleteDialog = (materialKey) => {
   deleteDialog.value = true;
   selectedMaterial.value = materialDetails.value.find(
-    (material) => material.id === materialId
+    (material) => material.key === materialKey
   );
 };
 
-const deleteMaterial = (id) => {
+const deleteMaterial = (key) => {
   deleteMaterialLoading.value = true;
   setTimeout(() => {
     materialDetails.value = materialDetails.value.filter(
-      (material) => material.id !== id
+      (material) => material.key !== key
     );
 
     deleteMaterialLoading.value = false;
