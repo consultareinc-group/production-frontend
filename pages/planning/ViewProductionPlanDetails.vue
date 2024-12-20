@@ -237,6 +237,7 @@ import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 
+// Variables
 const route = useRoute();
 const productionPlanStore = useProductionPlanStore();
 const $q = useQuasar();
@@ -253,13 +254,11 @@ const statusOptions = ref([
   { label: "Delayed", value: 7 },
 ]);
 
-// Production Plan Details Variables
 const productionPlan = ref({});
 const loading = ref(false);
 const changeStatusDialog = ref(false);
 const changeStatusLoading = ref(false);
 
-// Material Details Variables
 const materialDetailsColumns = ref([
   {
     name: "material_name",
@@ -346,8 +345,6 @@ const materialDetailsColumns = ref([
   // Add more columns as needed
 ]);
 const materialDetails = ref([]);
-
-// Activity Logs Variables
 const activityLogsColumns = ref([
   {
     name: "action",
@@ -384,7 +381,7 @@ onMounted(() => {
   getProductionPlan();
 });
 
-// Production Plan Details Logic
+// Functions
 const getProductionPlan = () => {
   loading.value = true;
 

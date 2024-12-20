@@ -143,11 +143,11 @@ import { useProductionPlanStore } from "../../stores/production-plan-store";
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 
+// Variables
 const router = useRouter();
 const productionPlanStore = useProductionPlanStore();
 const $q = useQuasar();
 
-// Production Plans Table Variables
 const columns = ref([
   {
     name: "batch_number",
@@ -232,7 +232,7 @@ onMounted(() => {
   getProductionPlans();
 });
 
-// Production Plans Table Logic
+// Functions
 const getProductionPlans = () => {
   productionPlanStore
     .GetProductionPlans({ offset: productionPlans.value.length })
