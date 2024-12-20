@@ -63,6 +63,22 @@ export const useProductionPlanStore = defineStore("production-plan", {
       });
     },
 
+    EditProductionPlan(request) {
+      return new Promise((resolve, reject) => {
+        api
+          .put(
+            `cig-production/production-plan/production-planning/${request.id}`,
+            request.payload
+          )
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error.response.data);
+          });
+      });
+    },
+
     ArchiveProductionPlan(request) {
       return new Promise((resolve, reject) => {
         api
