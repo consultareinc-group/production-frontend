@@ -565,16 +565,19 @@
 import { ref, onMounted } from "vue";
 // import axios from "axios";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
+import { useProductionPlanStore } from "../../stores/production-plan-store";
 
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
-import { useProductionPlanStore } from "../../stores/production-plan-store";
 
 // Variables
 const productionPlanStore = useProductionPlanStore();
 const $q = useQuasar();
+const router = useRouter();
+
 const loading = ref(false);
 const addMaterialLoading = ref(false);
 const deleteMaterialLoading = ref(false);
@@ -710,6 +713,8 @@ const saveProductionPlan = () => {
         timeout: 2000,
         classes: "quasar-notification-success",
       });
+
+      router.push({ name: "viewProductionPlans" });
     })
     .catch((error) => {
       console.log(error);
