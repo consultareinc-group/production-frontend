@@ -697,7 +697,7 @@ const saveProductionPlan = () => {
 
   const payload = {
     ...productDetails.value,
-    material_details: materialDetails.value.map(({ id, ...rest }) => rest),
+    material_details: materialDetails.value.map(({ key, ...rest }) => rest),
   };
 
   productionPlanStore
