@@ -8,7 +8,7 @@
         },
         {
           label: 'View Pre-Operations Verification',
-          to: { name: 'viewPreOperationsVerification' },
+          to: { name: 'view-pre-operation-verification' },
         },
       ]"
     />
@@ -51,14 +51,16 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="viewProductionPlanDetails(props.row.id)"
+                        @click="
+                          viewPreOperationVerificationDetails(props.row.id)
+                        "
                       >
                         <q-item-section>View</q-item-section>
                       </q-item>
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editProductionPlan(props.row.id)"
+                        @click="editPreOperationsVerification(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
@@ -132,8 +134,11 @@ import { ref, onMounted } from "vue";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
+import { useRouter } from "vue-router";
 
 // Variables
+const router = useRouter();
+
 const columns = ref([
   {
     name: "batch_number",
@@ -238,23 +243,26 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-const viewProductionPlanDetails = (id) => {
-  console.log("View Production Plan", id);
+const viewPreOperationVerificationDetails = (id) => {
+  router.push({
+    name: "view-pre-operation-verification-details",
+    params: { id },
+  });
 };
 
-const editProductionPlan = (id) => {
-  console.log("Edit Production Plan", id);
+const editPreOperationsVerification = (id) => {
+  console.log("Edit Pre-operations Verification", id);
 };
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
   selectedRow.value = rowData;
-  console.log("Archive Production Plan", rowData);
+  console.log("Archive Pre-operations verification", rowData);
 };
 
 const archivePreOperationsVerification = (id) => {
   archiveProductionPlanLoading.value = true;
-  console.log("Archive Production Plan", id);
+  console.log("Archive Pre-operations verification", id);
 
   setTimeout(() => {
     archiveDialog.value = false;
