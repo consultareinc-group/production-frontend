@@ -5,11 +5,11 @@
       :items="[
         {
           label: 'Production Planning',
-          to: { name: 'viewProductionPlans' },
+          to: { name: 'view-production-plans' },
         },
         {
           label: 'View Production Plan Details',
-          to: { name: 'viewProductionPlanDetails' },
+          to: { name: 'view-production-plan-details' },
         },
       ]"
     />

@@ -8,7 +8,7 @@
         },
         {
           label: 'View Production Plans',
-          to: { name: 'viewProductionPlans' },
+          to: { name: 'view-production-plans' },
         },
       ]"
     />
@@ -20,7 +20,7 @@
         no-caps
         flat
         class="bg-primary text-white"
-        :to="{ name: 'addProductionPlan' }"
+        :to="{ name: 'add-production-plan' }"
       />
     </div>
 
@@ -299,14 +299,14 @@ const search = () => {
 
 const viewProductionPlanDetails = (id) => {
   router.push({
-    name: "viewProductionPlanDetails",
+    name: "view-production-plan-details",
     params: { id },
   });
 };
 
 const editProductionPlan = (batch_number) => {
   router.push({
-    name: "editProductionPlan",
+    name: "edit-production-plan",
     params: { id: batch_number },
   });
 };

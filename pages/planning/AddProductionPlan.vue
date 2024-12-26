@@ -5,11 +5,11 @@
       :items="[
         {
           label: 'Production Planning',
-          to: { name: 'viewProductionPlans' },
+          to: { name: 'view-production-plans' },
         },
         {
           label: 'Add Production Plan',
-          to: { name: 'addProductionPlan' },
+          to: { name: 'add-production-plan' },
         },
       ]"
     />
@@ -714,7 +714,7 @@ const saveProductionPlan = () => {
         classes: "quasar-notification-success",
       });
 
-      router.push({ name: "viewProductionPlans" });
+      router.push({ name: "view-production-plans" });
     })
     .catch((error) => {
       console.log(error);

@@ -17,7 +17,7 @@
           label="Home"
           icon="home"
           exact
-          :to="{ name: 'Home' }"
+          :to="{ name: 'home' }"
           class="text-grey-8"
           active-class="current"
         />

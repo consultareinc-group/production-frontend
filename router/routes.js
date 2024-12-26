@@ -11,29 +11,29 @@ const routes = [
       },
       {
         path: "planning",
-        name: "Planning",
-        redirect: { name: "viewProductionPlans" },
+        name: "planning",
+        redirect: { name: "view-production-plans" },
         children: [
           {
             path: "view-production-plans",
-            name: "viewProductionPlans",
+            name: "view-production-plans",
             component: () =>
               import("../pages/planning/ViewProductionPlans.vue"),
           },
           {
             path: "view-production-plans/:id",
-            name: "viewProductionPlanDetails",
+            name: "view-production-plan-details",
             component: () =>
               import("../pages/planning/ViewProductionPlanDetails.vue"),
           },
           {
             path: "add-production-plan",
-            name: "addProductionPlan",
+            name: "add-production-plan",
             component: () => import("../pages/planning/AddProductionPlan.vue"),
           },
           {
             path: "edit-production-plan/:id",
-            name: "editProductionPlan",
+            name: "edit-production-plan",
             component: () => import("../pages/planning/EditProductionPlan.vue"),
           },
         ],
