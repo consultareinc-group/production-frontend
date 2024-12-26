@@ -11,15 +11,23 @@ const routes = [
       },
       {
         path: "pre-operations-verification",
-        name: "Pre-Operations Verification",
-        redirect: { name: "viewPreOperationsVerification" },
+        name: "pre-operation-verification",
+        redirect: { name: "view-pre-operation-verification" },
         children: [
           {
             path: "view",
-            name: "viewPreOperationsVerification",
+            name: "view-pre-operation-verification",
             component: () =>
               import(
                 "../pages/pre-operations-verification/ViewPreOperationsVerification.vue"
+              ),
+          },
+          {
+            path: "view/:id",
+            name: "view-pre-operation-verification-details",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/ViewPreOperationsVerificationDetails.vue"
               ),
           },
         ],
