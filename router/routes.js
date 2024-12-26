@@ -13,7 +13,7 @@ const routes = [
         path: "planning",
         name: "Planning",
         component: () => import("../pages/planning/IndexPage.vue"),
-        redirect: "../pages/planning/ViewProductionPlans.vue",
+        redirect: { name: "viewProductionPlans" },
         children: [
           {
             path: "view-production-plans",
