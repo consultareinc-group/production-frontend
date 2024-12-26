@@ -12,7 +12,6 @@ const routes = [
       {
         path: "planning",
         name: "Planning",
-        component: () => import("../pages/planning/IndexPage.vue"),
         redirect: { name: "viewProductionPlans" },
         children: [
           {
