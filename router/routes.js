@@ -30,6 +30,14 @@ const routes = [
                 "../pages/pre-operations-verification/ViewPreOperationsVerificationDetails.vue"
               ),
           },
+          {
+            path: "add",
+            name: "add-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/AddPreOperationsVerification.vue"
+              ),
+          },
         ],
       },
 
