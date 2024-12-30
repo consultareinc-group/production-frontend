@@ -12,7 +12,7 @@ const routes = [
       {
         path: "pre-operations-verification",
         name: "pre-operations-verification",
-        redirect: { name: "view-pre-operation-verification" },
+        redirect: { name: "view-pre-operations-verification" },
         children: [
           {
             path: "view",

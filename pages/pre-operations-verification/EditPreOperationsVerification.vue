@@ -7,8 +7,8 @@
           label: 'Pre-Operations Verification',
         },
         {
-          label: 'View Pre-Operations Verification',
-          to: { name: 'view-pre-operations-verification' },
+          label: 'Edit Pre-Operations Verification',
+          to: { name: 'edit-pre-operations-verification' },
         },
       ]"
     />
