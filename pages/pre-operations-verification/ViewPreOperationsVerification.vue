@@ -257,7 +257,10 @@ const viewPreOperationVerificationDetails = (id) => {
 };
 
 const editPreOperationsVerification = (id) => {
-  console.log("Edit Pre-operations Verification", id);
+  router.push({
+    name: "edit-pre-operations-verification",
+    params: { id },
+  });
 };
 
 const showArchiveDialog = (rowData) => {

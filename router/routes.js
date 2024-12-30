@@ -38,6 +38,14 @@ const routes = [
                 "../pages/pre-operations-verification/AddPreOperationsVerification.vue"
               ),
           },
+          {
+            path: "edit/:id",
+            name: "edit-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/EditPreOperationsVerification.vue"
+              ),
+          },
         ],
       },
 
