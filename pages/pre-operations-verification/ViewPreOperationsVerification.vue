@@ -8,7 +8,7 @@
         },
         {
           label: 'View Pre-Operations Verification',
-          to: { name: 'view-pre-operation-verification' },
+          to: { name: 'view-pre-operations-verification' },
         },
       ]"
     />
@@ -245,7 +245,7 @@ const search = () => {
 
 const viewPreOperationVerificationDetails = (id) => {
   router.push({
-    name: "view-pre-operation-verification-details",
+    name: "view-pre-operations-verification-details",
     params: { id },
   });
 };
