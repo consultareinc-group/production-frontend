@@ -14,6 +14,7 @@
     />
 
     <div class="row justify-end q-mt-lg q-gutter-x-md">
+      <q-btn label="Archives" no-caps flat class="bg-accent text-white" />
       <q-btn
         :to="{ name: 'add-pre-operations-verification' }"
         label="Add New"
