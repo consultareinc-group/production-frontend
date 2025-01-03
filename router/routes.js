@@ -20,6 +20,12 @@ const routes = [
             component: () =>
               import("../pages/compounding-mixing/ViewCompoundsMixes.vue"),
           },
+          {
+            path: "view:id",
+            name: "view-compound-mix-details",
+            component: () =>
+              import("../pages/compounding-mixing/ViewCompoundMixDetails.vue"),
+          },
         ],
       },
 

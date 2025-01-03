@@ -260,7 +260,7 @@ const search = () => {
 
 const viewCompoundsMixes = (id) => {
   router.push({
-    name: "view-pre-operations-verification-details",
+    name: "view-compound-mix-details",
     params: { id },
   });
 };
