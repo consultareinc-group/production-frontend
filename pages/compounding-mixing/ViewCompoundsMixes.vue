@@ -16,7 +16,7 @@
     <div class="row justify-end q-mt-lg q-gutter-x-md">
       <q-btn label="Archives" no-caps flat class="bg-accent text-white" />
       <q-btn
-        :to="{ name: 'add-compounds-mixes' }"
+        :to="{ name: 'add-compound-mix' }"
         label="Add New"
         no-caps
         flat
@@ -267,7 +267,7 @@ const viewCompoundsMixes = (id) => {
 
 const editCompoundMix = (id) => {
   router.push({
-    name: "edit-pre-operations-verification",
+    name: "edit-compound-mix",
     params: { id },
   });
 };

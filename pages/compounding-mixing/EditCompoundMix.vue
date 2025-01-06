@@ -7,8 +7,8 @@
           label: 'Compounding/Mixing',
         },
         {
-          label: 'Add Compounds/Mixes',
-          to: { name: 'add-compound-mix' },
+          label: 'Edit Compounds/Mixes',
+          to: { name: 'edit-compound-mix' },
         },
       ]"
     />
@@ -564,8 +564,8 @@
 
     <div>
       <q-btn
-        @click="saveCompoundingMixing"
-        label="Save"
+        @click="updateCompoundingMixing"
+        label="Update"
         no-caps
         flat
         class="bg-accent text-white q-mt-xl"
@@ -583,8 +583,10 @@ import MainContentWrapper from "../../components/MainContentWrapper.vue";
 import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
 import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
+import { useRoute } from "vue-router";
 
 // Variables
+const route = useRoute();
 const $q = useQuasar();
 const productionBatchNumber = ref("");
 const sopReference = ref(null);
@@ -652,6 +654,7 @@ onMounted(() => {
   loading.value = true;
 
   setTimeout(() => {
+    productionBatchNumber.value = +route.params.id;
     loading.value = false;
   }, 1000);
 });
@@ -702,12 +705,12 @@ const deleteMaterial = (key) => {
   }, 1000);
 };
 
-const saveCompoundingMixing = () => {
-  console.log("Save Compounding/Mixing");
+const updateCompoundingMixing = () => {
+  console.log("Updated Compounding/Mixing");
 
   $q.notify({
     html: true,
-    message: `<strong>Success!</strong> Compounding/Mixing has been added successfully.`,
+    message: `<strong>Success!</strong> Compounding/Mixing has been updated successfully.`,
     position: "top-right",
     timeout: 2000,
     classes: "quasar-notification-success",
