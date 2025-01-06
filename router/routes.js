@@ -26,6 +26,12 @@ const routes = [
             component: () =>
               import("../pages/compounding-mixing/ViewCompoundMixDetails.vue"),
           },
+          {
+            path: "add",
+            name: "add-compounds-mixes",
+            component: () =>
+              import("../pages/compounding-mixing/AddCompoundMix.vue"),
+          },
         ],
       },
 
