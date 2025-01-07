@@ -1,14 +1,15 @@
 <template>
   <MainContentWrapper>
     <PageBreadcrumbs
-      title="Pre-Operations Verification"
+      title="Equipment"
       :items="[
         {
-          label: 'Pre-Operations Verification',
+          label: 'Equipment',
+          to: { name: 'view-equipments' },
         },
         {
-          label: 'View Pre-Operations Verification Details',
-          to: { name: 'view-pre-operation-verification-details' },
+          label: 'View Equipment Details',
+          to: { name: 'view-equipment-details' },
         },
       ]"
     />
