@@ -10,29 +10,29 @@ const routes = [
         component: () => import("../pages/IndexPage.vue"),
       },
       {
-        path: "planning",
-        name: "planning",
+        path: "production-planning",
+        name: "production-planning",
         redirect: { name: "view-production-plans" },
         children: [
           {
-            path: "view-production-plans",
+            path: "view",
             name: "view-production-plans",
             component: () =>
               import("../pages/planning/ViewProductionPlans.vue"),
           },
           {
-            path: "view-production-plans/:id",
+            path: "view/:id",
             name: "view-production-plan-details",
             component: () =>
               import("../pages/planning/ViewProductionPlanDetails.vue"),
           },
           {
-            path: "add-production-plan",
+            path: "add",
             name: "add-production-plan",
             component: () => import("../pages/planning/AddProductionPlan.vue"),
           },
           {
-            path: "edit-production-plan/:id",
+            path: "edit/:id",
             name: "edit-production-plan",
             component: () => import("../pages/planning/EditProductionPlan.vue"),
           },
