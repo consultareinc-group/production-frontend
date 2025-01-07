@@ -242,7 +242,7 @@ const search = () => {
 
 const viewEquipmentDetails = (id) => {
   router.push({
-    name: "view-pre-operations-verification-details",
+    name: "view-equipment-details",
     params: { id },
   });
 };

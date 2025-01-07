@@ -19,6 +19,12 @@ const routes = [
             name: "view-equipments",
             component: () => import("../pages/equipment/ViewEquipments.vue"),
           },
+          {
+            path: "view/:id",
+            name: "view-equipment-details",
+            component: () =>
+              import("../pages/equipment/ViewEquipmentDetails.vue"),
+          },
         ],
       },
 
