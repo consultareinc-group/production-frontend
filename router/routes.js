@@ -25,6 +25,11 @@ const routes = [
             component: () =>
               import("../pages/equipment/ViewEquipmentDetails.vue"),
           },
+          {
+            path: "add",
+            name: "add-equipment",
+            component: () => import("../pages/equipment/AddEquipment.vue"),
+          },
         ],
       },
 
