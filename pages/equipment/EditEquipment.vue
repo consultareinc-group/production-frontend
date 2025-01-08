@@ -554,7 +554,7 @@ const saveEquipment = () => {
 
   $q.notify({
     html: true,
-    message: `<strong>Success!</strong> Equipment added successfully.`,
+    message: `<strong>Success!</strong> Equipment updated successfully.`,
     position: "top-right",
     timeout: 2000,
     classes: "quasar-notification-success",
