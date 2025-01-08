@@ -14,7 +14,7 @@
       ]"
     />
 
-    <!-- Pre-operations Verification details -->
+    <!-- Add Equipment -->
     <SectionWrapperLoader v-if="loading" has-header class="q-mb-xl q-mt-xl" />
     <SectionWrapper v-else class="q-mt-xl">
       <template #header>
@@ -355,14 +355,6 @@
             </div>
           </div>
         </div>
-
-        <div
-          v-if="addInspectionLoading"
-          class="q-mt-xl"
-          style="border: 1px solid #c6c6c6"
-        >
-          <SectionWrapperLoader class="q-mt-xl" />
-        </div>
       </template>
     </SectionWrapper>
 
@@ -417,7 +409,6 @@ const equipment = ref({
 });
 
 const loading = ref(false);
-const addInspectionLoading = ref(false);
 
 const categoryOptions = [
   {
