@@ -280,27 +280,39 @@
                 />
               </div>
 
+              <!-- Calibration Validity -->
+              <div style="height: 90px">
+                <label>Calibration Validity</label>
+                <q-input
+                  outlined
+                  v-model="equipment.calibration_validity"
+                  dense
+                  class="q-mt-sm"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          minimal
+                          v-model="equipment.calibration_validity"
+                          mask="YYYY-MM-DD"
+                        />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+
               <!-- Equipment Image -->
               <div style="height: 90px">
                 <label>Equipment Image</label>
                 <q-file
                   outlined
                   v-model="equipment.equipment_image"
-                  dense
-                  class="q-mt-sm"
-                >
-                  <template v-slot:append>
-                    <q-icon name="upload" />
-                  </template>
-                </q-file>
-              </div>
-
-              <!-- Safety Manual -->
-              <div style="height: 90px">
-                <label>Safety Manual</label>
-                <q-file
-                  outlined
-                  v-model="equipment.safety_manual"
                   dense
                   class="q-mt-sm"
                 >
@@ -325,31 +337,16 @@
                 </q-file>
               </div>
 
-              <!-- Maintenance Manual -->
-              <div style="height: 90px">
-                <label>Maintenance Manual</label>
-                <q-file
-                  outlined
-                  v-model="equipment.maintenance_manual"
-                  dense
-                  class="q-mt-sm"
-                >
-                  <template v-slot:append>
-                    <q-icon name="upload" />
-                  </template>
-                </q-file>
-              </div>
-
-              <!-- Additional Notes -->
-              <div style="height: 90px">
-                <label>Additional Notes</label>
+              <!-- Remarks -->
+              <div style="height: 196px">
+                <label>Remarks</label>
                 <q-input
                   outlined
-                  v-model="equipment.additional_notes"
+                  v-model="equipment.remarks"
                   type="textarea"
                   dense
                   class="q-mt-sm"
-                  input-style="height: 70px"
+                  input-style="height: 140px"
                 />
               </div>
             </div>
@@ -401,11 +398,10 @@ const equipment = ref({
   maintenance_schedule: null,
   status: null,
   description: null,
+  calibration_validity: null,
   equipment_image: null,
-  safety_manual: null,
   operation_manual: null,
-  maintenance_manual: null,
-  additional_notes: null,
+  remarks: null,
 });
 
 const loading = ref(false);

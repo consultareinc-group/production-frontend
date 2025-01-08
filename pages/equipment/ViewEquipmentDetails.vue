@@ -98,28 +98,25 @@
 
         <div class="column q-gutter-y-md full-width" style="max-width: 297px">
           <div>
-            <h6 class="q-ma-none text-subtitle1">Equipment Image:</h6>
-            <q-img
-              src="https://placehold.co/600x400"
-              alt="Equipment Image"
-              fit
-              style="width: 212px; height: 212px"
-            ></q-img>
+            <h6 class="q-ma-none text-subtitle1">Calibration Validity:</h6>
+            <p class="text-subtitle2">October 11, 2024</p>
           </div>
           <div>
-            <h6 class="q-ma-none text-subtitle1">Safety Manual:</h6>
-            <p class="text-subtitle2">safety_manual.pdf</p>
+            <h6 class="q-ma-none text-subtitle1">Equipment Image:</h6>
+            <q-img
+              src="https://placehold.co/600x400@2x.png"
+              alt="Equipment Image"
+              fit="cover"
+              class="q-mt-sm"
+              style="width: 212px; height: 196px"
+            ></q-img>
           </div>
           <div>
             <h6 class="q-ma-none text-subtitle1">Operation Manual:</h6>
             <p class="text-subtitle2">operation_manual.pdf</p>
           </div>
           <div>
-            <h6 class="q-ma-none text-subtitle1">Maintenance Manual:</h6>
-            <p class="text-subtitle2">maintenance_manual.pdf</p>
-          </div>
-          <div>
-            <h6 class="q-ma-none text-subtitle1">Additional Notes:</h6>
+            <h6 class="q-ma-none text-subtitle1">Remarks:</h6>
             <p class="text-subtitle2">
               Ensure regular lubrication of moving parts.
             </p>
