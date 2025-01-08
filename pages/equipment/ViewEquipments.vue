@@ -255,7 +255,7 @@ const viewEquipmentDetails = (id) => {
 
 const editEquipment = (id) => {
   router.push({
-    name: "edit-pre-operations-verification",
+    name: "edit-equipment",
     params: { id },
   });
 };
@@ -263,12 +263,12 @@ const editEquipment = (id) => {
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
   selectedRow.value = rowData;
-  console.log("Archive Pre-operations verification", rowData);
+  console.log("Archive Equipment", rowData);
 };
 
 const archiveEquipment = (id) => {
   archiveEquipmentLoading.value = true;
-  console.log("Archive Pre-operations verification", id);
+  console.log("Archive Equipment", id);
 
   setTimeout(() => {
     archiveDialog.value = false;

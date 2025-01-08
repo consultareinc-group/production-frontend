@@ -30,6 +30,11 @@ const routes = [
             name: "add-equipment",
             component: () => import("../pages/equipment/AddEquipment.vue"),
           },
+          {
+            path: "edit/:id",
+            name: "edit-equipment",
+            component: () => import("../pages/equipment/EditEquipment.vue"),
+          },
         ],
       },
 
