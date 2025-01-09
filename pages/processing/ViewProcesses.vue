@@ -52,9 +52,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="
-                          viewPreOperationVerificationDetails(props.row.id)
-                        "
+                        @click="viewProcessDetails(props.row.id)"
                       >
                         <q-item-section>View</q-item-section>
                       </q-item>
@@ -254,12 +252,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewPreOperationVerificationDetails = (id) => {
-//   router.push({
-//     name: "view-pre-operations-verification-details",
-//     params: { id },
-//   });
-// };
+const viewProcessDetails = (id) => {
+  router.push({
+    name: "view-process-details",
+    params: { id },
+  });
+};
 
 // const editPreOperationsVerification = (id) => {
 //   router.push({
