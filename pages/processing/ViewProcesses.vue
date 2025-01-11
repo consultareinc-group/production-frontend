@@ -15,7 +15,13 @@
 
     <div class="row justify-end q-mt-lg q-gutter-x-md">
       <q-btn label="Archives" no-caps flat class="bg-accent text-white" />
-      <q-btn label="Add New" no-caps flat class="bg-primary text-white" />
+      <q-btn
+        :to="{ name: 'add-process' }"
+        label="Add New"
+        no-caps
+        flat
+        class="bg-primary text-white"
+      />
     </div>
 
     <div class="q-mt-lg">
