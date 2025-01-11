@@ -30,14 +30,11 @@ const routes = [
             name: "add-process",
             component: () => import("../pages/processing/AddProcess.vue"),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-pre-operations-verification",
-          //   component: () =>
-          //     import(
-          //       "../pages/pre-operations-verification/EditPreOperationsVerification.vue"
-          //     ),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-process",
+            component: () => import("../pages/processing/EditProcess.vue"),
+          },
         ],
       },
 

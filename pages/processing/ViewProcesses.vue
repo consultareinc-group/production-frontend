@@ -65,7 +65,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editPreOperationsVerification(props.row.id)"
+                        @click="editProcessDetails(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
@@ -265,12 +265,12 @@ const viewProcessDetails = (id) => {
   });
 };
 
-// const editPreOperationsVerification = (id) => {
-//   router.push({
-//     name: "edit-pre-operations-verification",
-//     params: { id },
-//   });
-// };
+const editProcessDetails = (id) => {
+  router.push({
+    name: "edit-process",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
