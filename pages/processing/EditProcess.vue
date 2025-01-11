@@ -8,8 +8,8 @@
           to: { name: 'view-processes' },
         },
         {
-          label: 'Add Process',
-          to: { name: 'add-process' },
+          label: 'Edit Process',
+          to: { name: 'edit-process' },
         },
       ]"
     />
