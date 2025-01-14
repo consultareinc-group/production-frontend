@@ -19,12 +19,12 @@ const routes = [
             name: "view-weigh-out",
             component: () => import("../pages/weigh-out/ViewWeighOut.vue"),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-equipment-details",
-          //   component: () =>
-          //     import("../pages/equipment/ViewEquipmentDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-weigh-out-details",
+            component: () =>
+              import("../pages/weigh-out/ViewWeighOutDetails.vue"),
+          },
           // {
           //   path: "add",
           //   name: "add-equipment",

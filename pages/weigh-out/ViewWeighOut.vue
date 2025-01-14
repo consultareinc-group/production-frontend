@@ -142,13 +142,13 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 
 // Variables
-// const router = useRouter();
+const router = useRouter();
 
 const columns = ref([
   {
@@ -264,12 +264,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewWeighOutDetails = (id) => {
-//   router.push({
-//     name: "view-equipment-details",
-//     params: { id },
-//   });
-// };
+const viewWeighOutDetails = (id) => {
+  router.push({
+    name: "view-weigh-out-details",
+    params: { id },
+  });
+};
 
 // const editWeighOut = (id) => {
 //   router.push({
