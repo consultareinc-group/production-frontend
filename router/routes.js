@@ -25,11 +25,11 @@ const routes = [
             component: () =>
               import("../pages/weigh-out/ViewWeighOutDetails.vue"),
           },
-          // {
-          //   path: "add",
-          //   name: "add-equipment",
-          //   component: () => import("../pages/equipment/AddEquipment.vue"),
-          // },
+          {
+            path: "add",
+            name: "add-weigh-out",
+            component: () => import("../pages/weigh-out/AddWeighOut.vue"),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-equipment",
