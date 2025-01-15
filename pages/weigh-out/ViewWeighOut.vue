@@ -277,12 +277,12 @@ const viewWeighOutDetails = (id) => {
   });
 };
 
-// const editWeighOut = (id) => {
-//   router.push({
-//     name: "edit-equipment",
-//     params: { id },
-//   });
-// };
+const editWeighOut = (id) => {
+  router.push({
+    name: "edit-weigh-out",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
