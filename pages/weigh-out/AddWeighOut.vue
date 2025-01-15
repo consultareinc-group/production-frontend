@@ -150,15 +150,29 @@
                 <!-- First Column -->
                 <div class="q-gutter-y-md full-width">
                   <!-- Material Code -->
-                  <div>
-                    <label>Material Code <span class="text-red">*</span></label>
-                    <q-input
+                  <div style="height: 90px">
+                    <label>Material Code</label>
+                    <q-select
+                      use-input
                       outlined
-                      v-model="material.material_code"
                       dense
+                      v-model="material.material_code"
+                      :options="materialCodeOptions"
+                      :option-label="materialCodeOptions.label"
+                      :option-value="materialCodeOptions.value"
+                      input-debounce="500"
+                      hide-selected
+                      hide-dropdown-icon
+                      fill-input
+                      map-options
+                      emit-value
+                      @filter="filterMaterialCodeOptions"
                       class="q-mt-sm"
-                      :rules="[(val) => !!val || 'Field is required']"
-                    />
+                    >
+                      <template v-slot:append>
+                        <q-icon name="search" />
+                      </template>
+                    </q-select>
                   </div>
 
                   <!-- Component Description -->
@@ -604,6 +618,15 @@ const sopReference = ref(null);
 
 const weighOutMaterials = ref([]);
 
+const materialCodeOptions = ref([
+  { label: "Material A - MAT-100001", value: 0 },
+  { label: "Material B - MAT-100002", value: 1 },
+  { label: "Material C - MAT-100003", value: 2 },
+  { label: "Material D - MAT-100004", value: 3 },
+  { label: "Material E - MAT-100005", value: 4 },
+  { label: "Material F - MAT-100006", value: 5 },
+]);
+
 const uomOptions = ref([
   { label: "Piece (pc)", value: 0 },
   { label: "Kilogram (kg)", value: 1 },
@@ -628,16 +651,9 @@ const uomOptions = ref([
 ]);
 
 const supplierNameOptions = ref([
-  { label: "Supplier 1", value: 0 },
-  { label: "Supplier 2", value: 1 },
-  { label: "Supplier 3", value: 2 },
-  { label: "Supplier 4", value: 3 },
-  { label: "Supplier 5", value: 4 },
-  { label: "Supplier 6", value: 5 },
-  { label: "Supplier 7", value: 6 },
-  { label: "Supplier 8", value: 7 },
-  { label: "Supplier 9", value: 8 },
-  { label: "Supplier 10", value: 9 },
+  { label: "Farms Co. - FFC001", value: 0 },
+  { label: "Farms Co. - FFC002", value: 1 },
+  { label: "Farms Co. - FFC003", value: 2 },
 ]);
 
 const addMaterialLoading = ref(false);
@@ -714,6 +730,26 @@ const deleteMaterial = (key) => {
   }, 1000);
 };
 
+const filterMaterialCodeOptions = (val, update) => {
+  update(() => {
+    materialCodeOptions.value = [
+      { label: "Material A - MAT-100001", value: 0 },
+      { label: "Material B - MAT-100002", value: 1 },
+      { label: "Material C - MAT-100003", value: 2 },
+      { label: "Material D - MAT-100004", value: 3 },
+      { label: "Material E - MAT-100005", value: 4 },
+      { label: "Material F - MAT-100006", value: 5 },
+    ];
+  });
+
+  update(() => {
+    const needle = val.toLowerCase();
+    materialCodeOptions.value = materialCodeOptions.value.filter(
+      (v) => v.label.toLowerCase().indexOf(needle) > -1
+    );
+  });
+};
+
 const filterUomOptions = (val, update) => {
   update(() => {
     uomOptions.value = [
@@ -751,24 +787,10 @@ const filterUomOptions = (val, update) => {
 const filterSupplierNameOptions = (val, update) => {
   update(() => {
     supplierNameOptions.value = [
-      { label: "Supplier 1", value: 0 },
-      { label: "Supplier 2", value: 1 },
-      { label: "Supplier 3", value: 2 },
-      { label: "Supplier 4", value: 3 },
-      { label: "Supplier 5", value: 4 },
-      { label: "Supplier 6", value: 5 },
-      { label: "Supplier 7", value: 6 },
-      { label: "Supplier 8", value: 7 },
-      { label: "Supplier 9", value: 8 },
-      { label: "Supplier 10", value: 9 },
+      { label: "Farms Co. - FFC001", value: 0 },
+      { label: "Farms Co. - FFC002", value: 1 },
+      { label: "Farms Co. - FFC003", value: 2 },
     ];
-  });
-
-  update(() => {
-    const needle = val.toLowerCase();
-    supplierNameOptions.value = supplierNameOptions.value.filter(
-      (v) => v.label.toLowerCase().indexOf(needle) > -1
-    );
   });
 };
 
