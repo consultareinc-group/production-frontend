@@ -20,12 +20,14 @@ const routes = [
             component: () =>
               import("../pages/yield-calculation/ViewYieldCalculations.vue"),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-weigh-out-details",
-          //   component: () =>
-          //     import("../pages/weigh-out/ViewWeighOutDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-yield-calculation-details",
+            component: () =>
+              import(
+                "../pages/yield-calculation/ViewYieldCalculationDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-weigh-out",

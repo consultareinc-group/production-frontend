@@ -252,12 +252,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewYieldCalculationDetails = (id) => {
-//   router.push({
-//     name: "view-weigh-out-details",
-//     params: { id },
-//   });
-// };
+const viewYieldCalculationDetails = (id) => {
+  router.push({
+    name: "view-yield-calculation-details",
+    params: { id },
+  });
+};
 
 // const editYieldCalculation = (id) => {
 //   router.push({
