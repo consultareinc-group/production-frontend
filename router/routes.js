@@ -28,11 +28,12 @@ const routes = [
                 "../pages/yield-calculation/ViewYieldCalculationDetails.vue"
               ),
           },
-          // {
-          //   path: "add",
-          //   name: "add-weigh-out",
-          //   component: () => import("../pages/weigh-out/AddWeighOut.vue"),
-          // },
+          {
+            path: "add",
+            name: "add-yield-calculation",
+            component: () =>
+              import("../pages/yield-calculation/AddYieldCalculation.vue"),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-weigh-out",
