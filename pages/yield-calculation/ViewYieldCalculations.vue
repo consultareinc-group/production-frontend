@@ -265,12 +265,12 @@ const viewYieldCalculationDetails = (id) => {
   });
 };
 
-// const editYieldCalculation = (id) => {
-//   router.push({
-//     name: "edit-weigh-out",
-//     params: { id },
-//   });
-// };
+const editYieldCalculation = (id) => {
+  router.push({
+    name: "edit-yield-calculation",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;

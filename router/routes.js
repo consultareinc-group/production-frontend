@@ -34,11 +34,12 @@ const routes = [
             component: () =>
               import("../pages/yield-calculation/AddYieldCalculation.vue"),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-weigh-out",
-          //   component: () => import("../pages/weigh-out/EditWeighOut.vue"),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-yield-calculation",
+            component: () =>
+              import("../pages/yield-calculation/EditYieldCalculation.vue"),
+          },
         ],
       },
 
