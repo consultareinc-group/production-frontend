@@ -222,6 +222,24 @@
             </div>
           </div>
         </div>
+
+        <!-- Add Material Button -->
+        <div class="q-mt-xl">
+          <q-btn
+            @click="addMaterial"
+            no-caps
+            flat
+            class="bg-primary text-white"
+          >
+            <q-spinner
+              v-if="addMaterialLoading"
+              size="24px"
+              color="positive"
+              class="q-mr-md"
+            />
+            Add Material
+          </q-btn>
+        </div>
       </template>
     </SectionWrapper>
 
@@ -280,18 +298,6 @@
     </q-dialog>
 
     <!-- Action Buttons -->
-    <div class="q-mt-xl">
-      <q-btn @click="addMaterial" no-caps flat class="bg-primary text-white">
-        <q-spinner
-          v-if="addMaterialLoading"
-          size="24px"
-          color="positive"
-          class="q-mr-md"
-        />
-        Add Material
-      </q-btn>
-    </div>
-
     <div>
       <q-btn
         @click="saveProcess"
