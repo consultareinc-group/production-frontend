@@ -30,11 +30,14 @@ const routes = [
                 "../pages/label-and-carton-reconcillation/ViewLabelAndCartonReconcillationDetails.vue"
               ),
           },
-          // {
-          //   path: "add",
-          //   name: "add-weigh-out",
-          //   component: () => import("../pages/weigh-out/AddWeighOut.vue"),
-          // },
+          {
+            path: "add",
+            name: "add-label-and-carton-reconcillation",
+            component: () =>
+              import(
+                "../pages/label-and-carton-reconcillation/AddLabelAndCartonReconcillation.vue"
+              ),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-weigh-out",
