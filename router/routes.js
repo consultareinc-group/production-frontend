@@ -22,12 +22,14 @@ const routes = [
                 "../pages/label-and-carton-reconcillation/ViewLabelAndCartonReconcillation.vue"
               ),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-weigh-out-details",
-          //   component: () =>
-          //     import("../pages/weigh-out/ViewWeighOutDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-label-and-carton-reconcillation-details",
+            component: () =>
+              import(
+                "../pages/label-and-carton-reconcillation/ViewLabelAndCartonReconcillationDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-weigh-out",

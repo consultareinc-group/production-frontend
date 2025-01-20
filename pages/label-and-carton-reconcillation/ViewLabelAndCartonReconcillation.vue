@@ -43,18 +43,6 @@
           class="overflow-auto"
           :loading="tableLoading"
         >
-          <template v-slot:body-cell-quantity_required="props">
-            <q-td :props="props"> {{ props.row.quantity_required }} kg </q-td>
-          </template>
-
-          <template v-slot:body-cell-quantity_weighed="props">
-            <q-td :props="props"> {{ props.row.quantity_weighed }} kg </q-td>
-          </template>
-
-          <template v-slot:body-cell-tolerance="props">
-            <q-td :props="props"> {{ props.row.tolerance }} kg </q-td>
-          </template>
-
           <template v-slot:body-cell-action="props">
             <q-td :props="props">
               <div class="table-menu">
@@ -267,12 +255,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewLabelAndCartonReconcillationDetails = (id) => {
-//   router.push({
-//     name: "view-weigh-out-details",
-//     params: { id },
-//   });
-// };
+const viewLabelAndCartonReconcillationDetails = (id) => {
+  router.push({
+    name: "view-label-and-carton-reconcillation-details",
+    params: { id },
+  });
+};
 
 // const editLabelAndCartonReconcillation = (id) => {
 //   router.push({
@@ -288,7 +276,7 @@ const showArchiveDialog = (rowData) => {
 
 const archiveLabelAndCartonReconcillation = (id) => {
   archiveLabelAndCartonReconcillationtLoading.value = true;
-  console.log("Archive Weigh-Out", id);
+  console.log("Archive Label and Carton Reconcillation", id);
 
   setTimeout(() => {
     archiveDialog.value = false;
