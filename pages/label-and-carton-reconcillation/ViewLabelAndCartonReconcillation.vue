@@ -268,12 +268,12 @@ const viewLabelAndCartonReconcillationDetails = (id) => {
   });
 };
 
-// const editLabelAndCartonReconcillation = (id) => {
-//   router.push({
-//     name: "edit-weigh-out",
-//     params: { id },
-//   });
-// };
+const editLabelAndCartonReconcillation = (id) => {
+  router.push({
+    name: "edit-label-and-carton-reconcillation",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;

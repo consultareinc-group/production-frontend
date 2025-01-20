@@ -38,11 +38,14 @@ const routes = [
                 "../pages/label-and-carton-reconcillation/AddLabelAndCartonReconcillation.vue"
               ),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-weigh-out",
-          //   component: () => import("../pages/weigh-out/EditWeighOut.vue"),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-label-and-carton-reconcillation",
+            component: () =>
+              import(
+                "../pages/label-and-carton-reconcillation/EditLabelAndCartonReconcillation.vue"
+              ),
+          },
         ],
       },
 
