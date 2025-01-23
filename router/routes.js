@@ -4,8 +4,43 @@ const routes = [
     name: "Production Management System",
     component: () => import("../layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "Home", component: () => import("../pages/IndexPage.vue") },
-      { path: "menu-item", name: "menu-item", component: () => import("../pages/IndexPage.vue") },
+      {
+        path: "",
+        name: "Home",
+        component: () => import("../pages/IndexPage.vue"),
+      },
+      {
+        path: "packaging-material-trace",
+        name: "packaging-material-trace",
+        redirect: { name: "view-packaging-material-traces" },
+        children: [
+          {
+            path: "view",
+            name: "view-packaging-material-traces",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/ViewPackagingMaterialTraces.vue"
+              ),
+          },
+          // {
+          //   path: "view/:id",
+          //   name: "view-weigh-out-details",
+          //   component: () =>
+          //     import("../pages/weigh-out/ViewWeighOutDetails.vue"),
+          // },
+          // {
+          //   path: "add",
+          //   name: "add-weigh-out",
+          //   component: () => import("../pages/weigh-out/AddWeighOut.vue"),
+          // },
+          // {
+          //   path: "edit/:id",
+          //   name: "edit-weigh-out",
+          //   component: () => import("../pages/weigh-out/EditWeighOut.vue"),
+          // },
+        ],
+      },
+
       // Add your route here
     ],
   },
