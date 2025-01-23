@@ -267,14 +267,14 @@ const search = () => {
 
 const viewPackagingMaterialTraceDetails = (id) => {
   router.push({
-    name: "view-packaging-material-trace-details",
+    name: "view-packaging-material-traces-details",
     params: { id },
   });
 };
 
 const editPackagingMaterialTrace = (id) => {
   router.push({
-    name: "edit-packaging-material-trace",
+    name: "edit-packaging-material-traces",
     params: { id },
   });
 };

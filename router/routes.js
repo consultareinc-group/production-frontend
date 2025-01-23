@@ -22,12 +22,14 @@ const routes = [
                 "../pages/packaging-material-trace/ViewPackagingMaterialTraces.vue"
               ),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-weigh-out-details",
-          //   component: () =>
-          //     import("../pages/weigh-out/ViewWeighOutDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-packaging-material-traces-details",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/ViewPackagingMaterialTracesDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-weigh-out",
