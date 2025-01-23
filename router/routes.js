@@ -38,11 +38,14 @@ const routes = [
                 "../pages/packaging-material-trace/AddPackagingMaterialTrace.vue"
               ),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-weigh-out",
-          //   component: () => import("../pages/weigh-out/EditWeighOut.vue"),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-packaging-material-trace",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/EditPackagingMaterialTrace.vue"
+              ),
+          },
         ],
       },
 

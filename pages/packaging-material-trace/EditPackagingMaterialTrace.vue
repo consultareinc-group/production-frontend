@@ -8,8 +8,8 @@
           to: { name: 'view-packaging-material-traces' },
         },
         {
-          label: 'Add Packaging Material Trace',
-          to: { name: 'add-packaging-material-trace' },
+          label: 'Edit Packaging Material Trace',
+          to: { name: 'edit-packaging-material-trace' },
         },
       ]"
     />
@@ -438,20 +438,20 @@
     <!-- Action Buttons -->
     <div>
       <q-btn
-        :disable="savePackagingMaterialTraceLoading"
-        @click="savePackagingMaterialTrace"
+        :disable="updatePackagingMaterialTraceLoading"
+        @click="updatePackagingMaterialTrace"
         no-caps
         flat
         class="bg-accent text-white q-mt-xl"
         style="width: 322px; height: 46px; font-size: 1rem; font-weight: 700"
       >
         <q-spinner
-          v-if="savePackagingMaterialTraceLoading"
+          v-if="updatePackagingMaterialTraceLoading"
           size="24px"
           color="positive"
           class="q-mr-md"
         />
-        Save
+        Update
       </q-btn>
     </div>
   </MainContentWrapper>
@@ -465,8 +465,10 @@ import MainContentWrapper from "../../components/MainContentWrapper.vue";
 import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
 import SectionWrapper from "../../components/SectionWrapper.vue";
 import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
+import { useRoute } from "vue-router";
 
 // Variables
+const route = useRoute();
 const $q = useQuasar();
 const loading = ref(false);
 const productionBatchNumber = ref(null);
@@ -508,13 +510,14 @@ const materialsDeleteDialog = ref(false);
 const deleteMaterialLoading = ref(false);
 const selectedMaterial = ref(null);
 
-const savePackagingMaterialTraceLoading = ref(false);
+const updatePackagingMaterialTraceLoading = ref(false);
 
 // Lifecycle Hooks
 onMounted(() => {
   loading.value = true;
 
   setTimeout(() => {
+    productionBatchNumber.value = +route.params.id;
     loading.value = false;
   }, 1000);
 
@@ -624,9 +627,9 @@ const filterSupplierOptions = (val, update) => {
   });
 };
 
-// save the whole process
-const savePackagingMaterialTrace = () => {
-  savePackagingMaterialTraceLoading.value = true;
+// update the whole process
+const updatePackagingMaterialTrace = () => {
+  updatePackagingMaterialTraceLoading.value = true;
 
   let payload = {
     production_batch_number: productionBatchNumber.value,
@@ -635,17 +638,17 @@ const savePackagingMaterialTrace = () => {
   };
 
   setTimeout(() => {
-    console.log("Saved", payload);
+    console.log("Updated", payload);
 
     $q.notify({
       html: true,
-      message: `<strong>Success!</strong> The record has been saved.`,
+      message: `<strong>Success!</strong> The record has been updated.`,
       position: "top-right",
       timeout: 2000,
       classes: "quasar-notification-success",
     });
 
-    savePackagingMaterialTraceLoading.value = false;
+    updatePackagingMaterialTraceLoading.value = false;
   }, 1000);
 };
 </script>

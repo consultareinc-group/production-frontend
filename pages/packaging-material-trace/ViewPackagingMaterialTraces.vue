@@ -280,7 +280,7 @@ const viewPackagingMaterialTraceDetails = (id) => {
 
 const editPackagingMaterialTrace = (id) => {
   router.push({
-    name: "edit-packaging-material-traces",
+    name: "edit-packaging-material-trace",
     params: { id },
   });
 };
