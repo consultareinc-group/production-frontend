@@ -268,12 +268,12 @@ const viewFinishedGoodsDetails = (id) => {
   });
 };
 
-// const editFinishedGoods = (id) => {
-//   router.push({
-//     name: "edit-finished-goods",
-//     params: { id },
-//   });
-// };
+const editFinishedGoods = (id) => {
+  router.push({
+    name: "edit-finished-goods",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;

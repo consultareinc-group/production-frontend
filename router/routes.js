@@ -32,14 +32,12 @@ const routes = [
             component: () =>
               import("../pages/finished-goods/AddFinishedGoods.vue"),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-packaging-material-trace",
-          //   component: () =>
-          //     import(
-          //       "../pages/packaging-material-trace/EditPackagingMaterialTrace.vue"
-          //     ),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-finished-goods",
+            component: () =>
+              import("../pages/finished-goods/EditFinishedGoods.vue"),
+          },
         ],
       },
 
