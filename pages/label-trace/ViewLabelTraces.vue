@@ -99,8 +99,7 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none text-center">
-              Are you sure you want to archive the Label & Carton
-              Reconciliation?
+              Are you sure you want to archive the label trace?
             </q-card-section>
 
             <q-card-section class="q-pt-none text-center">
@@ -121,10 +120,10 @@
                 flat
                 no-caps
                 class="bg-accent text-white q-px-lg"
-                @click="archiveLabelAndCartonReconcillation(selectedRow.id)"
-                :disable="archiveLabelAndCartonReconcillationtLoading"
+                @click="archiveLabelTraces(selectedRow.id)"
+                :disable="archiveLabelTracestLoading"
               >
-                <q-spinner v-if="archiveLabelAndCartonReconcillationtLoading" />
+                <q-spinner v-if="archiveLabelTracestLoading" />
                 <span v-else>Confirm</span>
               </q-btn>
             </q-card-section>
@@ -279,7 +278,7 @@ const showArchiveDialog = (rowData) => {
   selectedRow.value = rowData;
 };
 
-const archiveLabelAndCartonReconcillation = (id) => {
+const archiveLabelTraces = (id) => {
   archiveLabelTracesLoading.value = true;
   console.log("Archive Label Traces", id);
 

@@ -1,15 +1,15 @@
 <template>
   <MainContentWrapper>
     <PageBreadcrumbs
-      title="Yield Calculation"
+      title="Label Trace"
       :items="[
         {
-          label: 'Yield Calculation',
-          to: { name: 'view-yield-calculations' },
+          label: 'Label Trace',
+          to: { name: 'view-label-traces' },
         },
         {
-          label: 'View Yield Calculation Details',
-          to: { name: 'view-yield-calculation-details' },
+          label: 'View Label Trace Details',
+          to: { name: 'view-label-trace-details' },
         },
       ]"
     />
