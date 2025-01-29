@@ -26,14 +26,12 @@ const routes = [
             component: () =>
               import("../pages/finished-goods/ViewFinishedGoodsDetails.vue"),
           },
-          // {
-          //   path: "add",
-          //   name: "add-packaging-material-trace",
-          //   component: () =>
-          //     import(
-          //       "../pages/packaging-material-trace/AddPackagingMaterialTrace.vue"
-          //     ),
-          // },
+          {
+            path: "add",
+            name: "add-finished-goods",
+            component: () =>
+              import("../pages/finished-goods/AddFinishedGoods.vue"),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-packaging-material-trace",
