@@ -4,8 +4,49 @@ const routes = [
     name: "Production Management System",
     component: () => import("../layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "Home", component: () => import("../pages/IndexPage.vue") },
-      { path: "menu-item", name: "menu-item", component: () => import("../pages/IndexPage.vue") },
+      {
+        path: "",
+        name: "Home",
+        component: () => import("../pages/IndexPage.vue"),
+      },
+      {
+        path: "finished-goods",
+        name: "finished-goods",
+        redirect: { name: "view-finished-goods" },
+        children: [
+          {
+            path: "view",
+            name: "view-finished-goods",
+            component: () =>
+              import("../pages/finished-goods/ViewFinishedGoods.vue"),
+          },
+          // {
+          //   path: "view/:id",
+          //   name: "view-packaging-material-traces-details",
+          //   component: () =>
+          //     import(
+          //       "../pages/packaging-material-trace/ViewPackagingMaterialTracesDetails.vue"
+          //     ),
+          // },
+          // {
+          //   path: "add",
+          //   name: "add-packaging-material-trace",
+          //   component: () =>
+          //     import(
+          //       "../pages/packaging-material-trace/AddPackagingMaterialTrace.vue"
+          //     ),
+          // },
+          // {
+          //   path: "edit/:id",
+          //   name: "edit-packaging-material-trace",
+          //   component: () =>
+          //     import(
+          //       "../pages/packaging-material-trace/EditPackagingMaterialTrace.vue"
+          //     ),
+          // },
+        ],
+      },
+
       // Add your route here
     ],
   },
