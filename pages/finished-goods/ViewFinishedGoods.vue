@@ -255,12 +255,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewFinishedGoodsDetails = (id) => {
-//   router.push({
-//     name: "view-finished-goods-details",
-//     params: { id },
-//   });
-// };
+const viewFinishedGoodsDetails = (id) => {
+  router.push({
+    name: "view-finished-goods-details",
+    params: { id },
+  });
+};
 
 // const editFinishedGoods = (id) => {
 //   router.push({

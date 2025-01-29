@@ -20,14 +20,12 @@ const routes = [
             component: () =>
               import("../pages/finished-goods/ViewFinishedGoods.vue"),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-packaging-material-traces-details",
-          //   component: () =>
-          //     import(
-          //       "../pages/packaging-material-trace/ViewPackagingMaterialTracesDetails.vue"
-          //     ),
-          // },
+          {
+            path: "view/:id",
+            name: "view-finished-goods-details",
+            component: () =>
+              import("../pages/finished-goods/ViewFinishedGoodsDetails.vue"),
+          },
           // {
           //   path: "add",
           //   name: "add-packaging-material-trace",
