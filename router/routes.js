@@ -25,14 +25,11 @@ const routes = [
             component: () =>
               import("../pages/label-trace/ViewLabelTraceDetails.vue"),
           },
-          // {
-          //   path: "add",
-          //   name: "add-label-and-carton-reconcillation",
-          //   component: () =>
-          //     import(
-          //       "../pages/label-and-carton-reconcillation/AddLabelAndCartonReconcillation.vue"
-          //     ),
-          // },
+          {
+            path: "add",
+            name: "add-label-trace",
+            component: () => import("../pages/label-trace/AddLabelTrace.vue"),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-label-and-carton-reconcillation",
