@@ -19,14 +19,12 @@ const routes = [
             name: "view-label-traces",
             component: () => import("../pages/label-trace/ViewLabelTraces.vue"),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-label-and-carton-reconcillation-details",
-          //   component: () =>
-          //     import(
-          //       "../pages/label-and-carton-reconcillation/ViewLabelAndCartonReconcillationDetails.vue"
-          //     ),
-          // },
+          {
+            path: "view/:id",
+            name: "view-label-trace-details",
+            component: () =>
+              import("../pages/label-trace/ViewLabelTraceDetails.vue"),
+          },
           // {
           //   path: "add",
           //   name: "add-label-and-carton-reconcillation",

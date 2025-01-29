@@ -52,9 +52,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="
-                          viewLabelAndCartonReconcillationDetails(props.row.id)
-                        "
+                        @click="viewLabelTraceDetails(props.row.id)"
                       >
                         <q-item-section>View</q-item-section>
                       </q-item>
@@ -256,12 +254,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewLabelAndCartonReconcillationDetails = (id) => {
-//   router.push({
-//     name: "view-label-and-carton-reconcillation-details",
-//     params: { id },
-//   });
-// };
+const viewLabelTraceDetails = (id) => {
+  router.push({
+    name: "view-label-trace-details",
+    params: { id },
+  });
+};
 
 // const editLabelAndCartonReconcillation = (id) => {
 //   router.push({
