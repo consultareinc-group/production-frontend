@@ -65,7 +65,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editLabelAndCartonReconcillation(props.row.id)"
+                        @click="editLabelTrace(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
@@ -267,12 +267,12 @@ const viewLabelTraceDetails = (id) => {
   });
 };
 
-// const editLabelAndCartonReconcillation = (id) => {
-//   router.push({
-//     name: "edit-label-and-carton-reconcillation",
-//     params: { id },
-//   });
-// };
+const editLabelTrace = (id) => {
+  router.push({
+    name: "edit-label-trace",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;

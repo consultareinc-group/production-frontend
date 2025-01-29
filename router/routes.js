@@ -30,14 +30,11 @@ const routes = [
             name: "add-label-trace",
             component: () => import("../pages/label-trace/AddLabelTrace.vue"),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-label-and-carton-reconcillation",
-          //   component: () =>
-          //     import(
-          //       "../pages/label-and-carton-reconcillation/EditLabelAndCartonReconcillation.vue"
-          //     ),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-label-trace",
+            component: () => import("../pages/label-trace/EditLabelTrace.vue"),
+          },
         ],
       },
 
