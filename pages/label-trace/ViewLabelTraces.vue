@@ -121,9 +121,9 @@
                 no-caps
                 class="bg-accent text-white q-px-lg"
                 @click="archiveLabelTraces(selectedRow.id)"
-                :disable="archiveLabelTracestLoading"
+                :disable="archiveLabelTracesLoading"
               >
-                <q-spinner v-if="archiveLabelTracestLoading" />
+                <q-spinner v-if="archiveLabelTracesLoading" />
                 <span v-else>Confirm</span>
               </q-btn>
             </q-card-section>
