@@ -38,12 +38,14 @@ const routes = [
                 "../pages/scrap-material-report/AddScrapMaterialReport.vue"
               ),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-finished-goods",
-          //   component: () =>
-          //     import("../pages/finished-goods/EditFinishedGoods.vue"),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-scrap-material-report",
+            component: () =>
+              import(
+                "../pages/scrap-material-report/EditScrapMaterialReport.vue"
+              ),
+          },
         ],
       },
 

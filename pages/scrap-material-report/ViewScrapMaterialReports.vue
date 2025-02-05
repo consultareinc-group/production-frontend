@@ -65,7 +65,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editFinishedGoods(props.row.id)"
+                        @click="editScrapMaterialReport(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
@@ -255,12 +255,12 @@ const viewScrapMaterialReportDetails = (id) => {
   });
 };
 
-// const editFinishedGoods = (id) => {
-//   router.push({
-//     name: "edit-finished-goods",
-//     params: { id },
-//   });
-// };
+const editScrapMaterialReport = (id) => {
+  router.push({
+    name: "edit-scrap-material-report",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
