@@ -67,7 +67,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="editLabelTrace(props.row.id)"
+                        @click="editPostProductionVerification(props.row.id)"
                       >
                         <q-item-section>Edit</q-item-section>
                       </q-item>
@@ -252,12 +252,12 @@ const viewPostProductionVerificationDetails = (id) => {
   });
 };
 
-// const editLabelTrace = (id) => {
-//   router.push({
-//     name: "edit-label-trace",
-//     params: { id },
-//   });
-// };
+const editPostProductionVerification = (id) => {
+  router.push({
+    name: "edit-post-production-verification",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
