@@ -22,12 +22,14 @@ const routes = [
                 "../pages/scrap-material-report/ViewScrapMaterialReports.vue"
               ),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-finished-goods-details",
-          //   component: () =>
-          //     import("../pages/finished-goods/ViewFinishedGoodsDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-scrap-material-report-details",
+            component: () =>
+              import(
+                "../pages/scrap-material-report/ViewScrapMaterialReportDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-finished-goods",

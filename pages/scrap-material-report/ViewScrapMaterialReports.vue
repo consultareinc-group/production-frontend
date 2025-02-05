@@ -8,7 +8,7 @@
         },
         {
           label: 'View Scrap Material Reports',
-          to: { name: 'view-finished-goods' },
+          to: { name: 'view-scrap-material-reports' },
         },
       ]"
     />
@@ -52,7 +52,7 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="viewFinishedGoodsDetails(props.row.id)"
+                        @click="viewScrapMaterialReportDetails(props.row.id)"
                       >
                         <q-item-section>View</q-item-section>
                       </q-item>
@@ -242,12 +242,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewFinishedGoodsDetails = (id) => {
-//   router.push({
-//     name: "view-finished-goods-details",
-//     params: { id },
-//   });
-// };
+const viewScrapMaterialReportDetails = (id) => {
+  router.push({
+    name: "view-scrap-material-report-details",
+    params: { id },
+  });
+};
 
 // const editFinishedGoods = (id) => {
 //   router.push({
