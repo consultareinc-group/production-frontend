@@ -30,11 +30,14 @@ const routes = [
                 "../pages/post-production-verification/ViewPostProductionVerificationDetails.vue"
               ),
           },
-          // {
-          //   path: "add",
-          //   name: "add-weigh-out",
-          //   component: () => import("../pages/weigh-out/AddWeighOut.vue"),
-          // },
+          {
+            path: "add",
+            name: "add-post-production-verification",
+            component: () =>
+              import(
+                "../pages/post-production-verification/AddPostProductionVerification.vue"
+              ),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-weigh-out",
