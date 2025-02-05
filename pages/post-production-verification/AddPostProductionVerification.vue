@@ -409,6 +409,18 @@
           Are you sure you want to remove this inspection?
         </q-card-section>
 
+        <q-card-section
+          v-if="
+            selectedInspection.inspection !== null &&
+            selectedInspection.inspection !== undefined &&
+            selectedInspection.inspection !== ''
+          "
+          class="q-pt-none text-center"
+        >
+          <span class="text-bold">Inspection: </span>
+          {{ selectedInspection.inspection }}
+        </q-card-section>
+
         <q-card-section class="flex justify-center q-my-lg">
           <q-btn
             flat
