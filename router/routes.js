@@ -30,12 +30,14 @@ const routes = [
                 "../pages/scrap-material-report/ViewScrapMaterialReportDetails.vue"
               ),
           },
-          // {
-          //   path: "add",
-          //   name: "add-finished-goods",
-          //   component: () =>
-          //     import("../pages/finished-goods/AddFinishedGoods.vue"),
-          // },
+          {
+            path: "add",
+            name: "add-scrap-material-report",
+            component: () =>
+              import(
+                "../pages/scrap-material-report/AddScrapMaterialReport.vue"
+              ),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-finished-goods",
