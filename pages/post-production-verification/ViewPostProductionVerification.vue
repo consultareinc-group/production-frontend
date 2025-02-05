@@ -52,7 +52,9 @@
                       <q-item
                         clickable
                         v-close-popup
-                        @click="viewLabelTraceDetails(props.row.id)"
+                        @click="
+                          viewPostProductionVerificationDetails(props.row.id)
+                        "
                       >
                         <q-item-section>View</q-item-section>
                       </q-item>
@@ -237,12 +239,12 @@ const search = () => {
   console.log("Search", search_keyword.value);
 };
 
-// const viewLabelTraceDetails = (id) => {
-//   router.push({
-//     name: "view-label-trace-details",
-//     params: { id },
-//   });
-// };
+const viewPostProductionVerificationDetails = (id) => {
+  router.push({
+    name: "view-post-production-verification-details",
+    params: { id },
+  });
+};
 
 // const editLabelTrace = (id) => {
 //   router.push({

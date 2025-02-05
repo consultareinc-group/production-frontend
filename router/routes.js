@@ -22,12 +22,14 @@ const routes = [
                 "../pages/post-production-verification/ViewPostProductionVerification.vue"
               ),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-weigh-out-details",
-          //   component: () =>
-          //     import("../pages/weigh-out/ViewWeighOutDetails.vue"),
-          // },
+          {
+            path: "view/:id",
+            name: "view-post-production-verification-details",
+            component: () =>
+              import(
+                "../pages/post-production-verification/ViewPostProductionVerificationDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-weigh-out",
