@@ -28,14 +28,12 @@ const routes = [
                 "../pages/rework-reprocess/ViewReworkReprocessDetails.vue"
               ),
           },
-          // {
-          //   path: "add",
-          //   name: "add-scrap-material-report",
-          //   component: () =>
-          //     import(
-          //       "../pages/scrap-material-report/AddScrapMaterialReport.vue"
-          //     ),
-          // },
+          {
+            path: "add",
+            name: "add-rework-reprocess",
+            component: () =>
+              import("../pages/rework-reprocess/AddReworkReprocess.vue"),
+          },
           // {
           //   path: "edit/:id",
           //   name: "edit-scrap-material-report",
