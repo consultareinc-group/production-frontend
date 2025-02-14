@@ -93,7 +93,7 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none text-center">
-              Are you sure you want to archive this scrap material report?
+              Are you sure you want to archive this rework/reproces?
             </q-card-section>
 
             <q-card-section class="q-pt-none text-center">
@@ -250,7 +250,7 @@ const showArchiveDialog = (rowData) => {
 
 const archiveReworkReprocess = (id) => {
   archiveReworkReprocessLoading.value = true;
-  console.log("Archive Scrap Material Report", id);
+  console.log("Archive Rework Reprocess", id);
 
   setTimeout(() => {
     archiveDialog.value = false;
