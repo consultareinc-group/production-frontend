@@ -20,14 +20,14 @@ const routes = [
             component: () =>
               import("../pages/rework-reprocess/ViewReworkReprocess.vue"),
           },
-          // {
-          //   path: "view/:id",
-          //   name: "view-scrap-material-report-details",
-          //   component: () =>
-          //     import(
-          //       "../pages/scrap-material-report/ViewScrapMaterialReportDetails.vue"
-          //     ),
-          // },
+          {
+            path: "view/:id",
+            name: "view-rework-reprocess-details",
+            component: () =>
+              import(
+                "../pages/rework-reprocess/ViewReworkReprocessDetails.vue"
+              ),
+          },
           // {
           //   path: "add",
           //   name: "add-scrap-material-report",

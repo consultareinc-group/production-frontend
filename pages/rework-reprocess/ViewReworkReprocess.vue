@@ -158,11 +158,11 @@ const columns = ref([
     sortable: true,
   },
   {
-    name: "material_quantity_for_processing",
+    name: "material_quantity_for_reprocessing",
     required: true,
-    label: "Material Quantity for Processing",
+    label: "Material Quantity for Reprocessing",
     align: "left",
-    field: (row) => row.material_quantity_for_processing,
+    field: (row) => row.material_quantity_for_reprocessing,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -200,38 +200,24 @@ const fetchSampleData = () => {
     reworkReprocess.value = [
       {
         id: 1,
-        batch_number: "BATCH-001",
+        batch_number: "PB-0001",
         material_name: "Material 1",
-        material_quantity_for_processing: 100,
-        material_quantity_for_rework: 10,
+        material_quantity_for_reprocessing: 10,
+        material_quantity_for_rework: 5,
       },
       {
         id: 2,
-        batch_number: "BATCH-002",
+        batch_number: "PB-0002",
         material_name: "Material 2",
-        material_quantity_for_processing: 200,
-        material_quantity_for_rework: 20,
+        material_quantity_for_reprocessing: 15,
+        material_quantity_for_rework: 7,
       },
       {
         id: 3,
-        batch_number: "BATCH-003",
+        batch_number: "PB-0003",
         material_name: "Material 3",
-        material_quantity_for_processing: 300,
-        material_quantity_for_rework: 30,
-      },
-      {
-        id: 4,
-        batch_number: "BATCH-004",
-        material_name: "Material 4",
-        material_quantity_for_processing: 400,
-        material_quantity_for_rework: 40,
-      },
-      {
-        id: 5,
-        batch_number: "BATCH-005",
-        material_name: "Material 5",
-        material_quantity_for_processing: 500,
-        material_quantity_for_rework: 50,
+        material_quantity_for_reprocessing: 20,
+        material_quantity_for_rework: 10,
       },
     ];
 
@@ -245,17 +231,17 @@ const search = () => {
 
 const viewReworkReprocessDetails = (id) => {
   router.push({
-    name: "view-scrap-material-report-details",
+    name: "view-rework-reprocess-details",
     params: { id },
   });
 };
 
-const editReworkReprocess = (id) => {
-  router.push({
-    name: "edit-scrap-material-report",
-    params: { id },
-  });
-};
+// const editReworkReprocess = (id) => {
+//   router.push({
+//     name: "edit-scrap-material-report",
+//     params: { id },
+//   });
+// };
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
