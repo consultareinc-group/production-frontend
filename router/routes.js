@@ -10,6 +10,189 @@ const routes = [
         component: () => import("../pages/IndexPage.vue"),
       },
       {
+        path: "production-planning",
+        name: "production-planning",
+        redirect: { name: "view-production-plans" },
+        children: [
+          {
+            path: "view",
+            name: "view-production-plans",
+            component: () =>
+              import("../pages/planning/ViewProductionPlans.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-production-plan-details",
+            component: () =>
+              import("../pages/planning/ViewProductionPlanDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-production-plan",
+            component: () => import("../pages/planning/AddProductionPlan.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-production-plan",
+            component: () => import("../pages/planning/EditProductionPlan.vue"),
+          },
+        ],
+      },
+      {
+        path: "pre-operations-verification",
+        name: "pre-operations-verification",
+        redirect: { name: "view-pre-operations-verification" },
+        children: [
+          {
+            path: "view",
+            name: "view-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/ViewPreOperationsVerification.vue"
+              ),
+          },
+          {
+            path: "view/:id",
+            name: "view-pre-operations-verification-details",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/ViewPreOperationsVerificationDetails.vue"
+              ),
+          },
+          {
+            path: "add",
+            name: "add-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/AddPreOperationsVerification.vue"
+              ),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/EditPreOperationsVerification.vue"
+              ),
+          },
+        ],
+      },
+      {
+        path: "compounding-mixing",
+        name: "compounding-mixing",
+        redirect: { name: "view-compounds-mixes" },
+        children: [
+          {
+            path: "view",
+            name: "view-compounds-mixes",
+            component: () =>
+              import("../pages/compounding-mixing/ViewCompoundsMixes.vue"),
+          },
+          {
+            path: "view:id",
+            name: "view-compound-mix-details",
+            component: () =>
+              import("../pages/compounding-mixing/ViewCompoundMixDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-compound-mix",
+            component: () =>
+              import("../pages/compounding-mixing/AddCompoundMix.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-compound-mix",
+            component: () =>
+              import("../pages/compounding-mixing/EditCompoundMix.vue"),
+          },
+        ],
+      },
+      {
+        path: "equipment",
+        name: "equipment",
+        redirect: { name: "view-equipments" },
+        children: [
+          {
+            path: "view",
+            name: "view-equipments",
+            component: () => import("../pages/equipment/ViewEquipments.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-equipment-details",
+            component: () =>
+              import("../pages/equipment/ViewEquipmentDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-equipment",
+            component: () => import("../pages/equipment/AddEquipment.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-equipment",
+            component: () => import("../pages/equipment/EditEquipment.vue"),
+          },
+        ],
+      },
+      {
+        path: "processing",
+        name: "processing",
+        redirect: { name: "view-processes" },
+        children: [
+          {
+            path: "view",
+            name: "view-processes",
+            component: () => import("../pages/processing/ViewProcesses.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-process-details",
+            component: () =>
+              import("../pages/processing/ViewProcessDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-process",
+            component: () => import("../pages/processing/AddProcess.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-process",
+            component: () => import("../pages/processing/EditProcess.vue"),
+          },
+        ],
+      },
+      {
+        path: "weigh-out",
+        name: "weigh-out",
+        redirect: { name: "view-weigh-out" },
+        children: [
+          {
+            path: "view",
+            name: "view-weigh-out",
+            component: () => import("../pages/weigh-out/ViewWeighOut.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-weigh-out-details",
+            component: () =>
+              import("../pages/weigh-out/ViewWeighOutDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-weigh-out",
+            component: () => import("../pages/weigh-out/AddWeighOut.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-weigh-out",
+            component: () => import("../pages/weigh-out/EditWeighOut.vue"),
+          },
+        ],
+      },
+      {
         path: "label-and-carton-reconcillation",
         name: "label-and-carton-reconcillation",
         redirect: { name: "view-label-and-carton-reconcillation" },
@@ -48,7 +231,6 @@ const routes = [
           },
         ],
       },
-
       // Add your route here
     ],
   },
