@@ -440,6 +440,39 @@ const routes = [
           },
         ],
       },
+      {
+        path: "rework-reprocess",
+        name: "rework-reprocess",
+        redirect: { name: "view-rework-reprocess" },
+        children: [
+          {
+            path: "view",
+            name: "view-rework-reprocess",
+            component: () =>
+              import("../pages/rework-reprocess/ViewReworkReprocess.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-rework-reprocess-details",
+            component: () =>
+              import(
+                "../pages/rework-reprocess/ViewReworkReprocessDetails.vue"
+              ),
+          },
+          {
+            path: "add",
+            name: "add-rework-reprocess",
+            component: () =>
+              import("../pages/rework-reprocess/AddReworkReprocess.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-rework-reprocess",
+            component: () =>
+              import("../pages/rework-reprocess/EditReworkReprocess.vue"),
+          },
+        ],
+      },
       // Add your route here
     ],
   },
