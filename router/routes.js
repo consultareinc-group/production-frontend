@@ -4,8 +4,51 @@ const routes = [
     name: "Production Management System",
     component: () => import("../layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "Home", component: () => import("../pages/IndexPage.vue") },
-      { path: "menu-item", name: "menu-item", component: () => import("../pages/IndexPage.vue") },
+      {
+        path: "",
+        name: "Home",
+        component: () => import("../pages/IndexPage.vue"),
+      },
+      {
+        path: "post-production-verification",
+        name: "post-production-verification",
+        redirect: { name: "view-post-production-verification" },
+        children: [
+          {
+            path: "view",
+            name: "view-post-production-verification",
+            component: () =>
+              import(
+                "../pages/post-production-verification/ViewPostProductionVerification.vue"
+              ),
+          },
+          {
+            path: "view/:id",
+            name: "view-post-production-verification-details",
+            component: () =>
+              import(
+                "../pages/post-production-verification/ViewPostProductionVerificationDetails.vue"
+              ),
+          },
+          {
+            path: "add",
+            name: "add-post-production-verification",
+            component: () =>
+              import(
+                "../pages/post-production-verification/AddPostProductionVerification.vue"
+              ),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-post-production-verification",
+            component: () =>
+              import(
+                "../pages/post-production-verification/EditPostProductionVerification.vue"
+              ),
+          },
+        ],
+      },
+
       // Add your route here
     ],
   },
