@@ -38,7 +38,45 @@ const routes = [
           },
         ],
       },
-
+      {
+        path: "pre-operations-verification",
+        name: "pre-operations-verification",
+        redirect: { name: "view-pre-operations-verification" },
+        children: [
+          {
+            path: "view",
+            name: "view-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/ViewPreOperationsVerification.vue"
+              ),
+          },
+          {
+            path: "view/:id",
+            name: "view-pre-operations-verification-details",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/ViewPreOperationsVerificationDetails.vue"
+              ),
+          },
+          {
+            path: "add",
+            name: "add-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/AddPreOperationsVerification.vue"
+              ),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-pre-operations-verification",
+            component: () =>
+              import(
+                "../pages/pre-operations-verification/EditPreOperationsVerification.vue"
+              ),
+          },
+        ],
+      },
       // Add your route here
     ],
   },
