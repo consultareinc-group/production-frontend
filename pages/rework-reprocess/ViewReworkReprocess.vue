@@ -242,12 +242,12 @@ const viewReworkReprocessDetails = (id) => {
   });
 };
 
-// const editReworkReprocess = (id) => {
-//   router.push({
-//     name: "edit-scrap-material-report",
-//     params: { id },
-//   });
-// };
+const editReworkReprocess = (id) => {
+  router.push({
+    name: "edit-rework-reprocess",
+    params: { id },
+  });
+};
 
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
