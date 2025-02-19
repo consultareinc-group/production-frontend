@@ -4,8 +4,40 @@ const routes = [
     name: "Production Management System",
     component: () => import("../layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "Home", component: () => import("../pages/IndexPage.vue") },
-      { path: "menu-item", name: "menu-item", component: () => import("../pages/IndexPage.vue") },
+      {
+        path: "",
+        name: "Home",
+        component: () => import("../pages/IndexPage.vue"),
+      },
+      {
+        path: "weigh-out",
+        name: "weigh-out",
+        redirect: { name: "view-weigh-out" },
+        children: [
+          {
+            path: "view",
+            name: "view-weigh-out",
+            component: () => import("../pages/weigh-out/ViewWeighOut.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-weigh-out-details",
+            component: () =>
+              import("../pages/weigh-out/ViewWeighOutDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-weigh-out",
+            component: () => import("../pages/weigh-out/AddWeighOut.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-weigh-out",
+            component: () => import("../pages/weigh-out/EditWeighOut.vue"),
+          },
+        ],
+      },
+
       // Add your route here
     ],
   },
