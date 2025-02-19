@@ -231,6 +231,45 @@ const routes = [
           },
         ],
       },
+      {
+        path: "packaging-material-trace",
+        name: "packaging-material-trace",
+        redirect: { name: "view-packaging-material-traces" },
+        children: [
+          {
+            path: "view",
+            name: "view-packaging-material-traces",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/ViewPackagingMaterialTraces.vue"
+              ),
+          },
+          {
+            path: "view/:id",
+            name: "view-packaging-material-traces-details",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/ViewPackagingMaterialTracesDetails.vue"
+              ),
+          },
+          {
+            path: "add",
+            name: "add-packaging-material-trace",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/AddPackagingMaterialTrace.vue"
+              ),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-packaging-material-trace",
+            component: () =>
+              import(
+                "../pages/packaging-material-trace/EditPackagingMaterialTrace.vue"
+              ),
+          },
+        ],
+      },
       // Add your route here
     ],
   },
