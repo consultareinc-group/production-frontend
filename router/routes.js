@@ -163,6 +163,34 @@ const routes = [
             component: () => import("../pages/processing/EditProcess.vue"),
           },
         ],
+      },
+      {
+        path: "weigh-out",
+        name: "weigh-out",
+        redirect: { name: "view-weigh-out" },
+        children: [
+          {
+            path: "view",
+            name: "view-weigh-out",
+            component: () => import("../pages/weigh-out/ViewWeighOut.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-weigh-out-details",
+            component: () =>
+              import("../pages/weigh-out/ViewWeighOutDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-weigh-out",
+            component: () => import("../pages/weigh-out/AddWeighOut.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-weigh-out",
+            component: () => import("../pages/weigh-out/EditWeighOut.vue"),
+          },
+        ],
       }
       // Add your route here
     ],
