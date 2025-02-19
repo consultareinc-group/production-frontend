@@ -34,14 +34,12 @@ const routes = [
             component: () =>
               import("../pages/rework-reprocess/AddReworkReprocess.vue"),
           },
-          // {
-          //   path: "edit/:id",
-          //   name: "edit-scrap-material-report",
-          //   component: () =>
-          //     import(
-          //       "../pages/scrap-material-report/EditScrapMaterialReport.vue"
-          //     ),
-          // },
+          {
+            path: "edit/:id",
+            name: "edit-rework-reprocess",
+            component: () =>
+              import("../pages/rework-reprocess/EditReworkReprocess.vue"),
+          },
         ],
       },
 
