@@ -10,6 +10,35 @@ const routes = [
         component: () => import("../pages/IndexPage.vue"),
       },
       {
+        path: "production-planning",
+        name: "production-planning",
+        redirect: { name: "view-production-plans" },
+        children: [
+          {
+            path: "view",
+            name: "view-production-plans",
+            component: () =>
+              import("../pages/planning/ViewProductionPlans.vue"),
+          },
+          {
+            path: "view/:id",
+            name: "view-production-plan-details",
+            component: () =>
+              import("../pages/planning/ViewProductionPlanDetails.vue"),
+          },
+          {
+            path: "add",
+            name: "add-production-plan",
+            component: () => import("../pages/planning/AddProductionPlan.vue"),
+          },
+          {
+            path: "edit/:id",
+            name: "edit-production-plan",
+            component: () => import("../pages/planning/EditProductionPlan.vue"),
+          },
+        ],
+      },
+      {
         path: "pre-operations-verification",
         name: "pre-operations-verification",
         redirect: { name: "view-pre-operations-verification" },
@@ -48,7 +77,6 @@ const routes = [
           },
         ],
       },
-
       // Add your route here
     ],
   },
