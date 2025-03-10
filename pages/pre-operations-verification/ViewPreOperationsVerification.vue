@@ -142,9 +142,11 @@ import { ref, onMounted } from "vue";
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 import { useRouter } from "vue-router";
+import { usePreOperationsVerificationStore } from "../../stores/pre-operations-verification-store";
 
 // Variables
 const router = useRouter();
+const preOperationsVerificationStore = usePreOperationsVerificationStore();
 
 const columns = ref([
   {
@@ -161,7 +163,7 @@ const columns = ref([
     required: true,
     label: "Inspections",
     align: "left",
-    field: (row) => row.inspections,
+    field: (row) => row.inspection,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -197,53 +199,30 @@ const selectedRow = ref({});
 
 // Lifecycle Hooks
 onMounted(() => {
-  fetchSampleData();
+  getPreOperationsVerifications();
 });
 
 // Functions
-const fetchSampleData = () => {
+const getPreOperationsVerifications = () => {
   tableLoading.value = true;
 
-  setTimeout(() => {
-    preOperationVerifications.value = [
-      {
-        id: 1,
-        batch_number: "BATCH-001",
-        inspections: "Inspection 1, Inspection 2",
-        status: "Pending",
-        sop_reference: "SOP-001",
-      },
-      {
-        id: 2,
-        batch_number: "BATCH-002",
-        inspections: "Inspection 1, Inspection 2",
-        status: "Pending",
-        sop_reference: "SOP-002",
-      },
-      {
-        id: 3,
-        batch_number: "BATCH-003",
-        inspections: "Inspection 1, Inspection 2",
-        status: "Pending",
-        sop_reference: "SOP-003",
-      },
-      {
-        id: 4,
-        batch_number: "BATCH-004",
-        inspections: "Inspection 1, Inspection 2",
-        status: "Pending",
-        sop_reference: "SOP-004",
-      },
-      {
-        id: 5,
-        batch_number: "BATCH-005",
-        inspections: "Inspection 1, Inspection 2",
-        status: "Pending",
-        sop_reference: "SOP-005",
-      },
-    ];
-    tableLoading.value = false;
-  }, 1000);
+  preOperationsVerificationStore
+    .GetPreOperationVerifications({
+      offset: preOperationVerifications.value.length,
+    })
+    .then((response) => {
+      // convert status to string
+      response.data.forEach((item) => {
+        item.status = item.status === 1 ? "Compliant" : "Non-Compliant";
+      });
+      preOperationVerifications.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      tableLoading.value = false;
+    });
 };
 
 const search = () => {
