@@ -32,6 +32,20 @@ export const usePreOperationsVerificationStore = defineStore(
             });
         });
       },
+      SearchPreOperationVerifications(request) {
+        return new Promise((resolve, reject) => {
+          api
+            .get(
+              `production/preoperation-verification?search_keyword=${request.keyword}`
+            )
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
     },
   }
 );
