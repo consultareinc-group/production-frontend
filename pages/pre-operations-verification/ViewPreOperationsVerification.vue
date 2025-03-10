@@ -226,7 +226,23 @@ const getPreOperationsVerifications = () => {
 };
 
 const search = () => {
-  console.log("Search", search_keyword.value);
+  tableLoading.value = true;
+
+  preOperationsVerificationStore
+    .SearchPreOperationVerifications({ keyword: search_keyword.value })
+    .then((response) => {
+      // convert status to string
+      response.data.forEach((item) => {
+        item.status = item.status === 1 ? "Compliant" : "Non-Compliant";
+      });
+      preOperationVerifications.value = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      tableLoading.value = false;
+    });
 };
 
 const viewPreOperationVerificationDetails = (id) => {
