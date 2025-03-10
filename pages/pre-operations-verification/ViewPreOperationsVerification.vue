@@ -138,13 +138,15 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
-import { useRouter } from "vue-router";
 import { usePreOperationsVerificationStore } from "../../stores/pre-operations-verification-store";
 
 // Variables
+const $q = useQuasar();
 const router = useRouter();
 const preOperationsVerificationStore = usePreOperationsVerificationStore();
 
@@ -262,17 +264,39 @@ const editPreOperationsVerification = (id) => {
 const showArchiveDialog = (rowData) => {
   archiveDialog.value = true;
   selectedRow.value = rowData;
-  console.log("Archive Pre-operations verification", rowData);
 };
 
 const archivePreOperationsVerification = (id) => {
   archiveProductionPlanLoading.value = true;
-  console.log("Archive Pre-operations verification", id);
 
-  setTimeout(() => {
-    archiveDialog.value = false;
-    archiveProductionPlanLoading.value = false;
-  }, 1000);
+  let payload = {
+    id,
+    is_archived: 1,
+  };
+
+  preOperationsVerificationStore
+    .ArchivePreOperationVerification({ id, payload })
+    .then(() => {
+      // Remove the archived item from the table
+      preOperationVerifications.value = preOperationVerifications.value.filter(
+        (item) => item.id !== id
+      );
+      archiveDialog.value = false;
+
+      $q.notify({
+        html: true,
+        message: `<strong>Success!</strong> Pre-Operation Verification Archived Successfully.`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-success",
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      archiveProductionPlanLoading.value = false;
+    });
 };
 </script>
 

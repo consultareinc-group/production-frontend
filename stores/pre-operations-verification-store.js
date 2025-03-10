@@ -46,6 +46,21 @@ export const usePreOperationsVerificationStore = defineStore(
             });
         });
       },
+      ArchivePreOperationVerification(request) {
+        return new Promise((resolve, reject) => {
+          api
+            .post(
+              `production/preoperation-verification/${request.id}`,
+              request.payload
+            )
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
     },
   }
 );
