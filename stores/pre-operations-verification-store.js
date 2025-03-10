@@ -20,6 +20,18 @@ export const usePreOperationsVerificationStore = defineStore(
             });
         });
       },
+      GetPreOperationVerification(id) {
+        return new Promise((resolve, reject) => {
+          api
+            .get(`production/preoperation-verification/${id}`)
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
     },
   }
 );
