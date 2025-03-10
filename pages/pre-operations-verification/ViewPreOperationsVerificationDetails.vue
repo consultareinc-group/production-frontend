@@ -16,12 +16,14 @@
     <SectionWrapper class="q-mt-lg">
       <template #header>
         <h6 class="q-ma-none">Production Batch Number:</h6>
-        <span>{{ route.params.id }}</span>
+        <!-- <span v-if="preOperationVerificationsDetails.batch_number">{{
+          preOperationVerificationsDetails.batch_number
+        }}</span> -->
       </template>
 
       <q-table
         flat
-        :rows="preOperationVerificationsDetails"
+        :rows="inspections"
         :columns="columns"
         row-key="id"
         table-header-class="bg-dark text-white"
@@ -35,7 +37,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
+import { usePreOperationsVerificationStore } from "../../stores/pre-operations-verification-store";
 import { useRoute } from "vue-router";
 
 import PageBreadcrumbs from "src/components/PageBreadcrumbs.vue";
@@ -44,6 +47,8 @@ import SectionWrapper from "../../components/SectionWrapper.vue";
 
 // Variables
 const route = useRoute();
+const preOperationsVerificationStore = usePreOperationsVerificationStore();
+const $q = useQuasar();
 
 const columns = ref([
   {
@@ -104,46 +109,43 @@ const columns = ref([
   // Add more columns as needed
 ]);
 
-const preOperationVerificationsDetails = ref([]);
+const preOperationVerificationsDetails = ref();
+const inspections = ref([]);
 const tableLoading = ref(false);
 
 // Lifecycle Hooks
 onMounted(() => {
-  fetchSampleData();
+  getPreOperationsVerification();
 });
 
-const fetchSampleData = () => {
+const getPreOperationsVerification = () => {
   tableLoading.value = true;
 
-  setTimeout(() => {
-    preOperationVerificationsDetails.value = [
-      {
-        inspection: "Inspection 1",
-        status: "Passed",
-        sop_reference: "SOP-001",
-        performed_by: "John Doe",
-        performed_date_and_time: "2021-10-01 08:00:00",
-        verified_by: "Jane Doe",
-      },
-      {
-        inspection: "Inspection 2",
-        status: "Failed",
-        sop_reference: "SOP-002",
-        performed_by: "John Doe",
-        performed_date_and_time: "2021-10-01 08:00:00",
-        verified_by: "Jane Doe",
-      },
-      {
-        inspection: "Inspection 3",
-        status: "Passed",
-        sop_reference: "SOP-003",
-        performed_by: "John Doe",
-        performed_date_and_time: "2021-10-01 08:00:00",
-        verified_by: "Jane Doe",
-      },
-    ];
-    tableLoading.value = false;
-  }, 1000);
+  preOperationsVerificationStore
+    .GetPreOperationVerification(route.params.id)
+    .then((response) => {
+      response.data.preoperation_verifications_inspections.forEach(
+        (inspection) => {
+          inspection.status =
+            inspection.status === 1 ? "Compliant" : "Non Compliant";
+        }
+      );
+
+      preOperationVerificationsDetails.value = response.data;
+      inspections.value = response.data.preoperation_verifications_inspections;
+    })
+    .catch((error) => {
+      $q.notify({
+        html: true,
+        message: `<strong>Error!</strong> Pre-Operations Verification not found.`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-error",
+      });
+    })
+    .finally(() => {
+      tableLoading.value = false;
+    });
 };
 </script>
 
