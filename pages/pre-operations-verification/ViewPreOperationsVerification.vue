@@ -293,6 +293,14 @@ const archivePreOperationsVerification = (id) => {
     })
     .catch((error) => {
       console.log(error);
+
+      $q.notify({
+        html: true,
+        message: `<strong>Error!</strong> Failed to archive Pre-Operation Verification.`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-error",
+      });
     })
     .finally(() => {
       archiveProductionPlanLoading.value = false;
