@@ -26,13 +26,29 @@
         <!-- Production batch number -->
         <div class="q-mt-xl" style="max-width: 304px">
           <label>Production Batch Number <span class="text-red">*</span></label>
-          <q-input
+          <q-select
+            use-input
             outlined
-            v-model="productionBatchNumber"
             dense
-            class="q-mt-sm"
+            v-model="productionBatchNumber"
+            :options="productionBatchNumberList"
+            option-label="batch_number"
+            option-value="batch_number"
+            input-debounce="500"
+            hide-selected
+            hide-dropdown-icon
+            fill-input
+            map-options
+            emit-value
+            @filter="productionBatchNumberListFilter"
             :rules="[(val) => !!val || 'Field is required']"
-          />
+            lazy-rules
+            class="q-mt-sm q-mb-md"
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-select>
         </div>
 
         <div
@@ -101,15 +117,39 @@
 
             <div class="q-gutter-y-md" style="width: 100%">
               <!-- Performed By -->
-              <div>
+              <div style="height: 88px">
                 <label>Performed By <span class="text-red">*</span></label>
-                <q-input
+                <q-select
+                  use-input
                   outlined
-                  v-model="inspection.performed_by"
                   dense
-                  class="q-mt-sm"
-                  :rules="[(val) => !!val || 'Field is required']"
-                />
+                  v-model="inspection.performed_by"
+                  :options="UserList"
+                  option-label="personnel_name"
+                  option-value="personnel_name"
+                  input-debounce="500"
+                  hide-selected
+                  hide-dropdown-icon
+                  fill-input
+                  map-options
+                  emit-value
+                  @filter="userListFilter"
+                  class="q-mt-sm q-mb-md"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-select>
+                <p
+                  class="text-red q-ma-none"
+                  style="
+                    font-size: 11px;
+                    transform: translateY(-10px);
+                    padding-left: 12px;
+                  "
+                >
+                  {{ performedByError }}
+                </p>
               </div>
 
               <!-- Performed Date and time -->
@@ -178,15 +218,39 @@
               </div>
 
               <!-- Verified By -->
-              <div>
+              <div style="height: 88px">
                 <label>Verified By <span class="text-red">*</span></label>
-                <q-input
+                <q-select
+                  use-input
                   outlined
-                  v-model="inspection.verified_by"
                   dense
-                  class="q-mt-sm"
-                  :rules="[(val) => !!val || 'Field is required']"
-                />
+                  v-model="inspection.verified_by"
+                  :options="UserList"
+                  option-label="personnel_name"
+                  option-value="personnel_name"
+                  input-debounce="500"
+                  hide-selected
+                  hide-dropdown-icon
+                  fill-input
+                  map-options
+                  emit-value
+                  @filter="userListFilter"
+                  class="q-mt-sm q-mb-md"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-select>
+                <p
+                  class="text-red q-ma-none"
+                  style="
+                    font-size: 11px;
+                    transform: translateY(-10px);
+                    padding-left: 12px;
+                  "
+                >
+                  {{ verifiedByError }}
+                </p>
               </div>
 
               <!-- Verified Date and time -->
@@ -285,15 +349,39 @@
 
               <div class="q-gutter-y-md" style="width: 100%">
                 <!-- Corrected By -->
-                <div>
+                <div style="height: 88px">
                   <label>Corrected By <span class="text-red">*</span></label>
-                  <q-input
+                  <q-select
+                    use-input
                     outlined
-                    v-model="inspection.corrected_by"
                     dense
-                    class="q-mt-sm"
-                    :rules="[(val) => !!val || 'Field is required']"
-                  />
+                    v-model="inspection.corrected_by"
+                    :options="UserList"
+                    option-label="personnel_name"
+                    option-value="personnel_name"
+                    input-debounce="500"
+                    hide-selected
+                    hide-dropdown-icon
+                    fill-input
+                    map-options
+                    emit-value
+                    @filter="userListFilter"
+                    class="q-mt-sm q-mb-md"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-select>
+                  <p
+                    class="text-red q-ma-none"
+                    style="
+                      font-size: 11px;
+                      transform: translateY(-10px);
+                      padding-left: 12px;
+                    "
+                  >
+                    {{ correctedByError }}
+                  </p>
                 </div>
 
                 <!-- Corrected Date and time -->
@@ -459,8 +547,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
+import { usePreOperationsVerificationStore } from "../../stores/pre-operations-verification-store";
 
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
 import PageBreadcrumbs from "../../components/PageBreadcrumbs.vue";
@@ -469,7 +558,9 @@ import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
 
 // Variables
 const $q = useQuasar();
+const preOperationsVerificationStore = usePreOperationsVerificationStore();
 const productionBatchNumber = ref("");
+const productionBatchNumberList = ref([]);
 
 const inspections = ref([
   {
@@ -481,8 +572,17 @@ const inspections = ref([
     performed_date_and_time: null,
     verified_by: null,
     verified_date_and_time: null,
+    observation: null,
+    corrected_by: null,
+    corrected_date_and_time: null,
+    corrective_action: null,
   },
 ]);
+
+const UserList = ref([]);
+const performedByError = ref(null);
+const verifiedByError = ref(null);
+const correctedByError = ref(null);
 
 const loading = ref(false);
 const addInspectionLoading = ref(false);
@@ -512,6 +612,32 @@ onMounted(() => {
 });
 
 // Functions
+const productionBatchNumberListFilter = (val, update) => {
+  preOperationsVerificationStore
+    .GetProductionBatchNumber({ batch_number: val })
+    .then((response) => {
+      update(() => {
+        productionBatchNumberList.value = response.data;
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+const userListFilter = (val, update) => {
+  preOperationsVerificationStore
+    .GetUserInfo({ personnel_name: val })
+    .then((response) => {
+      update(() => {
+        UserList.value = response.data;
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const addInspection = () => {
   addInspectionLoading.value = true;
 
@@ -563,6 +689,57 @@ const savePreOperationsVerification = () => {
     classes: "quasar-notification-success",
   });
 };
+
+// Watchers
+watch(
+  () => inspections.value,
+  (newValues) => {
+    newValues.forEach((value) => {
+      const { performed_by, verified_by, corrected_by } = value;
+
+      performedByError.value = "";
+      verifiedByError.value = "";
+      correctedByError.value = "";
+
+      if (performed_by && verified_by && performed_by === verified_by) {
+        performedByError.value =
+          "Performed By should be different from Verified By";
+        verifiedByError.value =
+          "Verified By should be different from Performed By";
+      }
+
+      if (performed_by && corrected_by && performed_by === corrected_by) {
+        performedByError.value =
+          "Performed By should be different from Corrected By";
+        correctedByError.value =
+          "Corrected By should be different from Performed By";
+      }
+
+      if (verified_by && corrected_by && verified_by === corrected_by) {
+        verifiedByError.value =
+          "Verified By should be different from Corrected By";
+        correctedByError.value =
+          "Corrected By should be different from Verified By";
+      }
+
+      if (
+        performed_by &&
+        verified_by &&
+        corrected_by &&
+        performed_by === verified_by &&
+        performed_by === corrected_by
+      ) {
+        performedByError.value =
+          "Performed By should be different from both Verified By and Corrected By";
+        verifiedByError.value =
+          "Verified By should be different from both Performed By and Corrected By";
+        correctedByError.value =
+          "Corrected By should be different from both Performed By and Verified By";
+      }
+    });
+  },
+  { deep: true }
+);
 </script>
 
 <style lang="scss" scoped>
