@@ -61,6 +61,36 @@ export const usePreOperationsVerificationStore = defineStore(
             });
         });
       },
+      GetProductionBatchNumber(request) {
+        return new Promise((resolve, reject) => {
+          api
+            .get(
+              `production/preoperation-verification?batch_number=${request.batch_number}`,
+              request.payload
+            )
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
+      GetUserInfo(request) {
+        return new Promise((resolve, reject) => {
+          api
+            .get(
+              `production/preoperation-verification?personnel_name=${request.personnel_name}`,
+              request.payload
+            )
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
     },
   }
 );
