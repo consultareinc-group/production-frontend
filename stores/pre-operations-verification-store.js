@@ -91,6 +91,19 @@ export const usePreOperationsVerificationStore = defineStore(
             });
         });
       },
+
+      AddPreOperationVerification(request) {
+        return new Promise((resolve, reject) => {
+          api
+            .post(`production/preoperation-verification/`, request.payload)
+            .then((response) => {
+              resolve(response.data);
+            })
+            .catch((error) => {
+              reject(error.response.data);
+            });
+        });
+      },
     },
   }
 );

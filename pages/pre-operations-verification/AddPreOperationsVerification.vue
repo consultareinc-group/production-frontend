@@ -33,7 +33,7 @@
             v-model="productionBatchNumber"
             :options="productionBatchNumberList"
             option-label="batch_number"
-            option-value="batch_number"
+            option-value="id"
             input-debounce="500"
             hide-selected
             hide-dropdown-icon
@@ -549,6 +549,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 import { usePreOperationsVerificationStore } from "../../stores/pre-operations-verification-store";
 
 import MainContentWrapper from "../../components/MainContentWrapper.vue";
@@ -558,6 +559,7 @@ import SectionWrapperLoader from "../../components/SectionWrapperLoader.vue";
 
 // Variables
 const $q = useQuasar();
+const router = useRouter();
 const preOperationsVerificationStore = usePreOperationsVerificationStore();
 const productionBatchNumber = ref("");
 const productionBatchNumberList = ref([]);
@@ -565,13 +567,13 @@ const productionBatchNumberList = ref([]);
 const inspections = ref([
   {
     key: Date.now(),
-    inspection: null,
-    status: null,
+    inspection: "Dummy Inspection",
+    status: { label: "Compliant", value: "compliant" },
     sop_reference: null,
-    performed_by: null,
-    performed_date_and_time: null,
-    verified_by: null,
-    verified_date_and_time: null,
+    performed_by: "admin admin",
+    performed_date_and_time: "2023-10-10 10:00",
+    verified_by: "John Miller Doe",
+    verified_date_and_time: "2023-10-10 12:00",
     observation: null,
     corrected_by: null,
     corrected_date_and_time: null,
@@ -644,13 +646,17 @@ const addInspection = () => {
   setTimeout(() => {
     inspections.value.push({
       key: Date.now(),
-      inspection: null,
-      status: null,
+      inspection: "Dummy Inspection",
+      status: { label: "Compliant", value: "compliant" },
       sop_reference: null,
-      performed_by: null,
-      performed_date_and_time: null,
-      verified_by: null,
-      verified_date_and_time: null,
+      performed_by: "admin admin",
+      performed_date_and_time: "2023-10-10 10:00",
+      verified_by: "John Miller Doe",
+      verified_date_and_time: "2023-10-10 12:00",
+      observation: null,
+      corrected_by: null,
+      corrected_date_and_time: null,
+      corrective_action: null,
     });
 
     addInspectionLoading.value = false;
@@ -665,7 +671,6 @@ const openDeleteDialog = (inspectionKey) => {
 };
 
 const deleteInspection = (key) => {
-  console.log("Delete Inspection", key);
   deleteInspectionLoading.value = true;
 
   setTimeout(() => {
@@ -679,15 +684,130 @@ const deleteInspection = (key) => {
 };
 
 const savePreOperationsVerification = () => {
-  console.log("Save Pre-Operations Verification");
-
-  $q.notify({
-    html: true,
-    message: `<strong>Success!</strong> Production plan added successfully.`,
-    position: "top-right",
-    timeout: 2000,
-    classes: "quasar-notification-success",
+  inspections.value.forEach((inspection) => {
+    if (!inspection.performed_by) {
+      performedByError.value = "Field is required";
+    }
+    if (!inspection.verified_by) {
+      verifiedByError.value = "Field is required";
+    }
+    if (
+      inspection.status &&
+      inspection.status.value === "non_compliant" &&
+      !inspection.corrected_by
+    ) {
+      correctedByError.value = "Field is required";
+    }
   });
+
+  // validations
+  if (
+    !productionBatchNumber.value ||
+    performedByError.value ||
+    verifiedByError.value ||
+    correctedByError.value ||
+    inspections.value.some(
+      (inspection) =>
+        !inspection.inspection ||
+        !inspection.status ||
+        !inspection.sop_reference ||
+        !inspection.performed_date_and_time ||
+        !inspection.verified_date_and_time ||
+        (inspection.status.value === "non_compliant" &&
+          (!inspection.observation ||
+            !inspection.corrective_action ||
+            !inspection.corrected_date_and_time))
+    )
+  ) {
+    $q.notify({
+      html: true,
+      message: `<strong>Error!</strong> Please check the errors and fill out the required fields.`,
+      position: "top-right",
+      timeout: 2000,
+      classes: "quasar-notification-error",
+    });
+    return;
+  }
+
+  // Save the data
+  let payload = new FormData();
+  payload.append("production_id", productionBatchNumber.value);
+  inspections.value.forEach((inspection, index) => {
+    payload.append(
+      `preoperation_verifications_inspections[${index}][key]`,
+      inspection.key
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][inspection]`,
+      inspection.inspection
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][status]`,
+      inspection.status.value === "compliant" ? 1 : 0
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][sop_reference]`,
+      inspection.sop_reference
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][performed_by]`,
+      inspection.performed_by
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][performed_date_and_time]`,
+      inspection.performed_date_and_time
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][verified_by]`,
+      inspection.verified_by
+    );
+    payload.append(
+      `preoperation_verifications_inspections[${index}][verified_date_and_time]`,
+      inspection.verified_date_and_time
+    );
+    if (inspection.status.value === "non_compliant") {
+      payload.append(
+        `preoperation_verifications_inspections[${index}][observation]`,
+        inspection.observation
+      );
+      payload.append(
+        `preoperation_verifications_inspections[${index}][corrected_by]`,
+        inspection.corrected_by
+      );
+      payload.append(
+        `preoperation_verifications_inspections[${index}][corrected_date_and_time]`,
+        inspection.corrected_date_and_time
+      );
+      payload.append(
+        `preoperation_verifications_inspections[${index}][corrective_action]`,
+        inspection.corrective_action
+      );
+    }
+  });
+
+  // API call
+  preOperationsVerificationStore
+    .AddPreOperationVerification({ payload })
+    .then((response) => {
+      $q.notify({
+        html: true,
+        message: `<strong>Success!</strong> Pre-Operations Verification added successfully.`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-success",
+      });
+
+      router.push({ name: "pre-operations-verification" });
+    })
+    .catch((error) => {
+      $q.notify({
+        html: true,
+        message: `<strong>Error!</strong> Unable to add Pre-Operations Verification.`,
+        position: "top-right",
+        timeout: 2000,
+        classes: "quasar-notification-error",
+      });
+    });
 };
 
 // Watchers
