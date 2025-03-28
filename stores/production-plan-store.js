@@ -96,21 +96,21 @@ export const useProductionPlanStore = defineStore("production-plan", {
     //   });
     // },
 
-    // ArchiveProductionPlan(request) {
-    //   return new Promise((resolve, reject) => {
-    //     api
-    //       .put(
-    //         `cig-production/production-plan/production-planning/archive/${request.id}`,
-    //         request.payload
-    //       )
-    //       .then((response) => {
-    //         resolve(response.data);
-    //       })
-    //       .catch((error) => {
-    //         reject(error.response.data);
-    //       });
-    //   });
-    // },
+    ArchiveProductionPlan(request) {
+      return new Promise((resolve, reject) => {
+        api
+          .put(
+            `production-management/production-planning/${request.id}`,
+            request.payload
+          )
+          .then((response) => {
+            resolve(response.data);
+          })
+          .catch((error) => {
+            reject(error.response.data);
+          });
+      });
+    },
 
     // EditProductionPlanStatus(request) {
     //   return new Promise((resolve, reject) => {
