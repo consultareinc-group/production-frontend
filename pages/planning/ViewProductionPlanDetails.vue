@@ -53,7 +53,7 @@
 
             <div>
               <h3 style="margin: 0; line-height: 1.5rem" class="header">
-                Batch Number:
+                Description:
               </h3>
               <p class="value">
                 {{ productionPlan.description }}
@@ -387,41 +387,42 @@ const getProductionPlan = () => {
 
   const id = +route.params.id;
   productionPlanStore.GetProductionPlan(id).then((response) => {
+    console.log(response);
     if (response.status === "success") {
       // Convert status from int to string
-      const originalStatus = response.data[0].status;
+      const originalStatus = response.data.status;
 
-      switch (response.data[0].status) {
+      switch (response.data.status) {
         case 0:
-          response.data[0].status = "Pending";
+          response.data.status = "Pending";
           break;
         case 1:
-          response.data[0].status = "Verified";
+          response.data.status = "Verified";
           break;
         case 2:
-          response.data[0].status = "In Progress";
+          response.data.status = "In Progress";
           break;
         case 3:
-          response.data[0].status = "On Hold";
+          response.data.status = "On Hold";
           break;
         case 4:
-          response.data[0].status = "Completed";
+          response.data.status = "Completed";
           break;
         case 5:
-          response.data[0].status = "Closed";
+          response.data.status = "Closed";
           break;
         case 6:
-          response.data[0].status = "Cancelled";
+          response.data.status = "Cancelled";
           break;
         case 7:
-          response.data[0].status = "Delayed";
+          response.data.status = "Delayed";
           break;
         default:
-          response.data[0].status = "Pending";
+          response.data.status = "Pending";
       }
 
       // Convert actions from int to string
-      response.data[0].activity_logs.forEach((activity) => {
+      response.data.activity_logs.forEach((activity) => {
         switch (activity.action) {
           case 0:
             activity.action = "Performed";
@@ -452,13 +453,13 @@ const getProductionPlan = () => {
         }
       });
 
-      productionPlan.value = response.data[0];
+      productionPlan.value = response.data;
       statusValue.value = {
-        label: response.data[0].status,
+        label: response.data.status,
         value: originalStatus,
       };
-      materialDetails.value = response.data[0].material_details;
-      activityLogs.value = response.data[0].activity_logs;
+      materialDetails.value = response.data.material_details;
+      activityLogs.value = response.data.activity_logs;
     }
 
     loading.value = false;
