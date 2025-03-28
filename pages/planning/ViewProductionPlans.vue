@@ -26,15 +26,183 @@
 
     <div class="q-mt-lg">
       <div class="full-width">
-        <div class="flex justify-end q-mb-md">
-          <div class="flex justify-end items-center">
-            <div class="q-mr-md">Search:</div>
+        <div class="row justify-end items-center q-mb-md">
+          <!-- Search -->
+          <div class="q-mr-sm">
+            <label>Search</label>
             <q-input
               v-model="search_keyword"
               outlined
               dense
-              class="bg-white"
+              class="bg-white q-mt-sm"
               debounce="1000"
+              @update:model-value="search"
+            />
+          </div>
+
+          <!-- Start Date and Time -->
+          <div class="q-mx-sm">
+            <label>Start Date and Time:</label>
+            <q-input
+              outlined
+              v-model="start_date_and_time"
+              dense
+              class="q-mt-sm"
+              @update:model-value="
+                () => {
+                  search();
+                }
+              "
+            >
+              <template v-slot:prepend>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      v-model="start_date_and_time"
+                      mask="YYYY-MM-DD HH:mm"
+                      color="dark"
+                      @update:model-value="
+                        () => {
+                          search();
+                        }
+                      "
+                    >
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+
+              <template v-slot:append>
+                <q-icon name="access_time" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-time
+                      v-model="start_date_and_time"
+                      mask="YYYY-MM-DD HH:mm"
+                      format24h
+                      color="dark"
+                      @update:model-value="
+                        () => {
+                          search();
+                        }
+                      "
+                    >
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-time>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+
+          <!-- End Date and Time -->
+          <div class="q-mx-sm">
+            <label>End Date and Time:</label>
+            <q-input
+              outlined
+              v-model="end_date_and_time"
+              dense
+              class="q-mt-sm"
+              @update:model-value="
+                () => {
+                  search();
+                }
+              "
+            >
+              <template v-slot:prepend>
+                <q-icon name="event" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      v-model="end_date_and_time"
+                      mask="YYYY-MM-DD HH:mm"
+                      color="dark"
+                      @update:model-value="
+                        () => {
+                          search();
+                        }
+                      "
+                    >
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+
+              <template v-slot:append>
+                <q-icon name="access_time" class="cursor-pointer">
+                  <q-popup-proxy
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-time
+                      v-model="end_date_and_time"
+                      mask="YYYY-MM-DD HH:mm"
+                      format24h
+                      color="dark"
+                      @update:model-value="
+                        () => {
+                          search();
+                        }
+                      "
+                    >
+                      <div class="row items-center justify-end">
+                        <q-btn
+                          v-close-popup
+                          label="Close"
+                          color="primary"
+                          flat
+                        />
+                      </div>
+                    </q-time>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+
+          <!-- Status -->
+          <div class="q-ml-sm">
+            <label>Status</label>
+            <q-select
+              v-model="status"
+              outlined
+              dense
+              class="bg-white q-mt-sm"
+              :options="statusOptions"
               @update:model-value="search"
             />
           </div>
@@ -220,7 +388,22 @@ const columns = ref([
 
 const productionPlans = ref([]);
 const tableLoading = ref(false);
+
 const search_keyword = ref("");
+const status = ref("All");
+const statusOptions = [
+  { label: "All", value: "" },
+  { label: "Pending", value: 0 },
+  { label: "Verified", value: 1 },
+  { label: "In Progress", value: 2 },
+  { label: "On Hold", value: 3 },
+  { label: "Completed", value: 4 },
+  { label: "Closed", value: 5 },
+  { label: "Cancelled", value: 6 },
+  { label: "Delayed", value: 7 },
+];
+const start_date_and_time = ref(null);
+const end_date_and_time = ref(null);
 
 const archiveDialog = ref(false);
 const archiveProductionPlanLoading = ref(false);
@@ -229,14 +412,29 @@ const selectedRow = ref({});
 // Lifecycle Hooks
 onMounted(() => {
   tableLoading.value = true;
-  getProductionPlans();
+
+  search();
 });
 
 // Functions
-const getProductionPlans = () => {
-  productionPlanStore
-    .GetProductionPlans({ offset: productionPlans.value.length })
-    .then((response) => {
+const search = () => {
+  tableLoading.value = true;
+  productionPlans.value = [];
+
+  if (
+    search_keyword.value ||
+    status.value ||
+    start_date_and_time.value ||
+    end_date_and_time.value
+  ) {
+    let payload = {
+      search_keyword: search_keyword.value,
+      status: status.value,
+      start_date_and_time: start_date_and_time.value,
+      end_date_and_time: end_date_and_time.value,
+    };
+
+    productionPlanStore.SearchProductionPlans(payload).then((response) => {
       tableLoading.value = false;
       if (response.status === "success") {
         response.data.forEach((data) => {
@@ -270,27 +468,10 @@ const getProductionPlans = () => {
               data.status = "Pending";
           }
 
-          productionPlans.value.push(data);
+          productionPlans.value = response.data;
         });
-
-        if (response.data.length) {
-          getProductionPlans();
-        }
       }
     });
-};
-
-const search = () => {
-  tableLoading.value = true;
-  if (search_keyword.value) {
-    productionPlanStore
-      .SearchProductionPlans({ keyword: search_keyword.value })
-      .then((response) => {
-        tableLoading.value = false;
-        if (response.status === "success") {
-          productionPlans.value = response.data;
-        }
-      });
   } else {
     productionPlans.value = [];
     getProductionPlans();
