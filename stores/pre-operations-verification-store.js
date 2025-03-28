@@ -10,7 +10,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .get(
-              `production/preoperation-verification?offset=${request.offset}`
+              `production-management/preoperation-verification?offset=${request.offset}`
             )
             .then((response) => {
               resolve(response.data);
@@ -23,7 +23,7 @@ export const usePreOperationsVerificationStore = defineStore(
       GetPreOperationVerification(id) {
         return new Promise((resolve, reject) => {
           api
-            .get(`production/preoperation-verification/${id}`)
+            .get(`production-management/preoperation-verification/${id}`)
             .then((response) => {
               resolve(response.data);
             })
@@ -36,7 +36,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .get(
-              `production/preoperation-verification?search_keyword=${request.keyword}`
+              `production-management/preoperation-verification?search_keyword=${request.keyword}`
             )
             .then((response) => {
               resolve(response.data);
@@ -50,7 +50,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .post(
-              `production/preoperation-verification/${request.id}`,
+              `production-management/preoperation-verification/${request.id}`,
               request.payload
             )
             .then((response) => {
@@ -65,7 +65,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .get(
-              `production/preoperation-verification?batch_number=${request.batch_number}`,
+              `production-management/preoperation-verification?batch_number=${request.batch_number}`,
               request.payload
             )
             .then((response) => {
@@ -80,7 +80,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .get(
-              `production/preoperation-verification?personnel_name=${request.personnel_name}`,
+              `production-management/preoperation-verification?personnel_name=${request.personnel_name}`,
               request.payload
             )
             .then((response) => {
@@ -95,7 +95,10 @@ export const usePreOperationsVerificationStore = defineStore(
       AddPreOperationVerification(request) {
         return new Promise((resolve, reject) => {
           api
-            .post(`production/preoperation-verification/`, request.payload)
+            .post(
+              `production-management/preoperation-verification/`,
+              request.payload
+            )
             .then((response) => {
               resolve(response.data);
             })
@@ -109,7 +112,7 @@ export const usePreOperationsVerificationStore = defineStore(
         return new Promise((resolve, reject) => {
           api
             .post(
-              `production/preoperation-verification/${request.id}`,
+              `production-management/preoperation-verification/${request.id}`,
               request.payload
             )
             .then((response) => {
